@@ -1,65 +1,96 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { motion, useScroll, useTransform, useMotionValueEvent, useSpring } from "framer-motion";
+import GridSnakes from "@/components/GridSnakes";
+import InteractiveScene from "@/components/InteractiveScene";
+import Particles from "@/components/Particles";
+import LightAgitationSection from "@/components/LightAgitationSection";
+import Navbar from "@/components/Navbar";
+import CustomCursor from "@/components/CustomCursor";
 
 export default function Home() {
+  const [activeCard, setActiveCard] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const { scrollY, scrollYProgress } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 100); // Sembunyikan navbar setelah scroll 100px ke bawah
+  });
+
+  // Animasi Premium: Saat putih meluncur naik, hero perlahan meredup dan "ketarik" ke atas sedikit (parallax)
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
+
+  // Wave parallax linked to scroll (shifts horizontally as you scroll)
+  const waveXRaw = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  // Make the scroll movement ultra-smooth and slightly delayed using heavy spring physics
+  const waveX = useSpring(waveXRaw, { stiffness: 20, damping: 25, mass: 1.5, restDelta: 0.001 });
+
+  // Navbar disembunyikan saat sedang fokus kartu ATAU saat pengguna scroll ke bawah
+  const isNavbarHidden = !!activeCard || isScrolled;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="relative bg-[#0a0a0a]">
+      {/* Global Elements */}
+      <CustomCursor />
+      <div className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[100] w-full flex justify-center pointer-events-none">
+        <Navbar isHidden={isNavbarHidden} />
+      </div>
+
+      {/* Hero Section - sticky so it stays in background as we scroll */}
+      {/* No scaling down so the background remains expansive and edges are not visible */}
+      <motion.div 
+        style={{ opacity: heroOpacity, y: heroY }}
+        className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center z-0"
+      >
+        {/* Moving Black Curtain Background */}
+        <div className="absolute inset-0 z-0 bg-curtain pointer-events-none"></div>
+
+        {/* Grid Background */}
+        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+
+        {/* Glowing Neon Snake Animation on Grid */}
+        <GridSnakes />
+
+        {/* Subtle Dust Particles */}
+        <Particles />
+
+        {/* Radial fade for grid so it blends into the dark edges */}
+        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_800px_at_50%_50%,transparent,var(--background))] pointer-events-none"></div>
+
+        {/* Interactive 3D Camera Scene */}
+        <InteractiveScene activeCard={activeCard} setActiveCard={setActiveCard} />
+      </motion.div>
+
+      {/* Next Section: Slides up naturally over the sticky hero background */}
+      {/* Passing z-20 so it goes over the hero (z-0) but under the Navbar (z-[100]) */}
+      <motion.div 
+        className="relative z-20 w-full h-[100dvh] bg-[#fafafa] mt-[80px]"
+      >
+        {/* The subtle wave that shifts based on scroll */}
+        <div className="absolute bottom-full left-0 w-full h-[80px] overflow-hidden pointer-events-none flex items-end">
+          {/* Premium Frosted Glass Halo Effect behind the wave */}
+          <div className="absolute bottom-[-1px] left-0 w-full h-[80px] bg-gradient-to-b from-transparent via-white/40 to-[#fafafa] backdrop-blur-[8px] [mask-image:linear-gradient(to_bottom,transparent,black)]" />
+          
+          <motion.svg 
+            style={{ x: waveX }}
+            className="absolute bottom-[-2px] left-0 w-[200%] h-[40px]"
+            viewBox="0 0 2000 40" 
+            preserveAspectRatio="none"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            <path 
+              d="M0,20 Q250,40 500,20 T1000,20 T1500,20 T2000,20 L2000,40 L0,40 Z" 
+              fill="#fafafa" 
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </motion.svg>
         </div>
-      </main>
-    </div>
+
+        {/* Content container with overflow hidden to lock 1-frame */}
+        <div className="w-full h-full overflow-hidden relative">
+          <LightAgitationSection />
+        </div>
+      </motion.div>
+    </main>
   );
 }
