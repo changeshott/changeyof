@@ -4,7 +4,12 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
-const navLinks = ["Features", "Integrations", "Pricing", "Changelog"];
+const navLinks = [
+  { name: "Features", href: "#features" },
+  { name: "Integrations", href: "#integrations" },
+  { name: "Pricing", href: "#pricing" },
+  { name: "FAQ", href: "#faq" }
+];
 
 export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -78,19 +83,19 @@ export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
                 >
                   {navLinks.map((link) => (
                     <div
-                      key={link}
+                      key={link.name}
                       className="relative px-4 py-2"
-                      onMouseEnter={() => setHoveredLink(link)}
+                      onMouseEnter={() => setHoveredLink(link.name)}
                     >
-                      {hoveredLink === link && (
+                      {hoveredLink === link.name && (
                         <motion.div
                           layoutId="navbar-hover"
                           className="absolute inset-0 bg-white/10 rounded-full"
                           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                         />
                       )}
-                      <Link href="#" className={`relative z-10 transition-colors duration-300 ${hoveredLink === link ? 'text-white' : ''}`}>
-                        {link}
+                      <Link href={link.href} className={`relative z-10 transition-colors duration-300 ${hoveredLink === link.name ? 'text-white' : ''}`}>
+                        {link.name}
                       </Link>
                     </div>
                   ))}
@@ -132,7 +137,7 @@ export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
               className="flex flex-col gap-5 px-6 pb-6 pt-2 md:hidden w-full border-t border-white/5 mt-1 relative z-10"
             >
               {navLinks.map((link) => (
-                <Link key={link} href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-white/60 hover:text-white text-sm font-medium transition-colors">{link}</Link>
+                <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="text-white/60 hover:text-white text-sm font-medium transition-colors">{link.name}</Link>
               ))}
             </motion.div>
           )}

@@ -26,7 +26,7 @@ export function WhatsNewCard({ onClick }: { onClick?: () => void }) {
       </div>
       <div className="flex-1 relative">
         <div className="flex items-center gap-1.5 mb-0.5">
-           <h3 className="text-white/90 font-bold text-sm tracking-tight group-hover:text-yellow-300 transition-colors">What's New</h3>
+           <h3 className="text-white/90 font-bold text-sm tracking-tight group-hover:text-yellow-300 transition-colors">What&apos;s New</h3>
            <Sparkles size={12} className="text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
         <p className="text-white/50 text-xs">Seamless in-app sync</p>
@@ -36,7 +36,7 @@ export function WhatsNewCard({ onClick }: { onClick?: () => void }) {
       <div className="absolute -top-3 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 w-64 bg-[#0a0a0f]/95 backdrop-blur-3xl border border-white/10 p-3.5 rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] scale-95 group-hover:scale-100 origin-bottom">
         <p className="text-xs text-white/70 leading-relaxed text-center">
           <strong className="text-white block mb-1 font-semibold text-sm">In-App Widget</strong> 
-          Keep your community engaged with a sleek "What's New" widget that integrates natively into your product's UI.
+          Keep your community engaged with a sleek &quot;What&apos;s New&quot; widget that integrates natively into your product&apos;s UI.
         </p>
         {/* Tooltip Triangle Arrow pointing down */}
         <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0a0a0f] border-r border-b border-white/10 rotate-45"></div>

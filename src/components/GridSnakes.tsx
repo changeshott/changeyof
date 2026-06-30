@@ -24,22 +24,27 @@ function generateSnake(gridSize: number, startX: number, startY: number, steps: 
 }
 
 export default function GridSnakes() {
-  const [paths, setPaths] = useState<string[]>([]);
+  const [paths, setPaths] = useState<{path: string, duration: number, delay: number}[]>([]);
   const gridSize = 64; // 4rem = 64px
 
   useEffect(() => {
+    let mounted = true;
     // Generate some random paths that traverse the screen
     // We assume a large virtual canvas (e.g., 3000x2000) so they cover any screen size
     const newPaths = [
-      generateSnake(gridSize, -2, 2, 12, "R-D"), // Top-Left to Bottom-Right
-      generateSnake(gridSize, 10, -2, 10, "R-D"), // Top-Middle to Bottom-Right
-      generateSnake(gridSize, 30, -2, 14, "L-D"), // Top-Right to Bottom-Left
-      generateSnake(gridSize, -2, 15, 12, "R-U"), // Bottom-Left to Top-Right
-      generateSnake(gridSize, 40, 20, 15, "L-U"), // Bottom-Right to Top-Left
-      generateSnake(gridSize, -2, 8, 10, "R-D"),  // Mid-Left to Bottom-Right
+      { path: generateSnake(gridSize, -2, 2, 12, "R-D"), duration: Math.random() * 5 + 10, delay: Math.random() * 5 },
+      { path: generateSnake(gridSize, 10, -2, 10, "R-D"), duration: Math.random() * 5 + 10, delay: Math.random() * 5 },
+      { path: generateSnake(gridSize, 30, -2, 14, "L-D"), duration: Math.random() * 5 + 10, delay: Math.random() * 5 },
+      { path: generateSnake(gridSize, -2, 15, 12, "R-U"), duration: Math.random() * 5 + 10, delay: Math.random() * 5 },
+      { path: generateSnake(gridSize, 40, 20, 15, "L-U"), duration: Math.random() * 5 + 10, delay: Math.random() * 5 },
+      { path: generateSnake(gridSize, -2, 8, 10, "R-D"), duration: Math.random() * 5 + 10, delay: Math.random() * 5 },
     ];
-    setPaths(newPaths);
-  }, []);
+    if (mounted) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPaths(newPaths);
+    }
+    return () => { mounted = false; };
+  }, [gridSize]);
 
   if (paths.length === 0) return null;
 
@@ -59,7 +64,7 @@ export default function GridSnakes() {
         {paths.map((path, i) => (
           <motion.path
             key={i}
-            d={path}
+            d={path.path}
             stroke="#22c55e" /* Neon Green / Emerald-500 */
             strokeWidth="1.5"
             strokeLinecap="round"
@@ -73,10 +78,10 @@ export default function GridSnakes() {
             }}
             transition={{
               pathOffset: {
-                duration: Math.random() * 5 + 10, // 10s to 15s speed
+                duration: path.duration, // 10s to 15s speed
                 repeat: Infinity,
                 ease: "linear",
-                delay: Math.random() * 5, // Random start delay
+                delay: path.delay, // Random start delay
               },
               pathLength: {
                 duration: 0.1, // Instantly set the length

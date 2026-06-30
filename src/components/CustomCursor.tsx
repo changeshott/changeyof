@@ -18,6 +18,7 @@ export default function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [hoverColor, setHoverColor] = useState("#ccff00");
+  const [cursorText, setCursorText] = useState("Click Me!");
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -28,7 +29,9 @@ export default function CustomCursor() {
       
       if (cardWrapper) {
         const cardId = cardWrapper.getAttribute("data-card-id");
+        const cText = cardWrapper.getAttribute("data-cursor-text");
         setHoverColor(getCardColor(cardId));
+        setCursorText(cText || "Click Me!");
         setIsHovering(true);
       } else {
         setIsHovering(false);
@@ -63,7 +66,7 @@ export default function CustomCursor() {
               imageRendering: "pixelated"
             }}
           >
-            Click Me!
+            {cursorText}
           </div>
         </motion.div>
       )}

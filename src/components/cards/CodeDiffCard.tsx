@@ -31,8 +31,8 @@ export function CodeDiffCard({ onClick }: { onClick?: () => void }) {
       </div>
       <div className="p-4 font-mono text-[11px] leading-relaxed relative overflow-hidden rounded-b-2xl">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite] opacity-0 group-hover:opacity-100 z-0 pointer-events-none"></div>
-        <div className="text-red-400/90 bg-red-500/10 px-2 py-0.5 rounded-md mb-1.5 border border-red-500/10 relative z-10">- const workflow = "manual";</div>
-        <div className="text-green-400/90 bg-green-500/10 px-2 py-0.5 rounded-md border border-green-500/10 relative z-10">+ const workflow = "automated";</div>
+        <div className="text-red-400/90 bg-red-500/10 px-2 py-0.5 rounded-md mb-1.5 border border-red-500/10 relative z-10">- const workflow = &quot;manual&quot;;</div>
+        <div className="text-green-400/90 bg-green-500/10 px-2 py-0.5 rounded-md border border-green-500/10 relative z-10">+ const workflow = &quot;automated&quot;;</div>
       </div>
 
       {/* Premium Tooltip */}
