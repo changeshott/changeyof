@@ -1,121 +1,162 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants, useScroll, useTransform } from "framer-motion";
 import { PenTool, Code, Rocket } from "lucide-react";
+import { useRef } from "react";
 
 const steps = [
   {
     icon: PenTool,
     title: "Write an Update",
-    desc: "Draft your latest release note in our clean, distraction-free dashboard.",
-    color: "text-blue-400",
-    bg: "from-blue-500 to-transparent"
+    desc: "Draft your latest release note in our clean, distraction-free dashboard."
   },
   {
     icon: Code,
     title: "Copy the Snippet",
-    desc: "Grab the unique, lightweight <script> tag generated for your project.",
-    color: "text-indigo-400",
-    bg: "from-indigo-500 to-transparent"
+    desc: "Grab the unique, lightweight <script> tag generated for your project."
   },
   {
     icon: Rocket,
     title: "Paste & Publish",
-    desc: "Drop it into your root layout file, and your changelog is instantly live.",
-    color: "text-purple-400",
-    bg: "from-purple-500 to-transparent"
+    desc: "Drop it into your root layout file, and your changelog is instantly live."
   }
 ];
 
 export default function IntegrationSection() {
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "start center"]
+  });
+
+  const pathTransform = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [
+      "M 0 100 Q 500 100 1000 100 L 1000 100 L 0 100 Z",
+      "M 0 0 Q 500 200 1000 0 L 1000 100 L 0 100 Z"
+    ]
+  );
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.25,
+      }
+    }
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 15, filter: "blur(8px)" },
+    show: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
   return (
-    <section className="w-full bg-[#0a0a0a] relative z-20 flex flex-col items-center overflow-hidden">
-      
-      {/* Divider */}
-      <div className="w-full max-w-7xl mx-auto px-4 relative z-10">
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+    <section ref={containerRef} className="w-full bg-[#fafafa] relative z-30 flex flex-col items-center min-h-[100dvh]">
+
+      {/* Scroll-based Cone Transition overlapping the section above */}
+      <div className="absolute bottom-full left-0 w-full h-[100px] sm:h-[150px] overflow-hidden pointer-events-none flex items-end">
+        <motion.svg
+          className="absolute bottom-[-1px] left-0 w-full h-full"
+          viewBox="0 0 1000 100"
+          preserveAspectRatio="none"
+        >
+          <motion.path
+            d={pathTransform}
+            fill="#fafafa"
+          />
+        </motion.svg>
       </div>
 
-      {/* SECOND SECTION: How It Works */}
-      <div className="w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 md:py-20 px-4 relative z-10 overflow-hidden">
-        {/* Ambient Glows */}
-        <div className="absolute top-1/2 left-[20%] -translate-y-1/2 w-[400px] h-[300px] bg-blue-500/10 blur-[120px] pointer-events-none z-0" />
-        <div className="absolute top-1/2 right-[20%] -translate-y-1/2 w-[400px] h-[300px] bg-purple-500/10 blur-[120px] pointer-events-none z-0" />
+      {/* Grid Pattern (Light Mode) */}
+      <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,black_10%,transparent_90%)]">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+      </div>
 
+      <div className="w-full flex flex-col items-center justify-start pt-24 md:pt-32 px-4 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="w-full max-w-7xl relative z-10 flex flex-col items-center"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="text-center flex flex-col items-center max-w-5xl px-4 md:px-6 relative z-10"
         >
           {/* Header */}
-          <div className="text-center mb-16 md:mb-20 w-full">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#111111] border border-white/10 text-slate-300 text-xs md:text-sm font-medium mb-6 shadow-xl backdrop-blur-md">
-              <Rocket className="w-4 h-4 text-indigo-400" />
-              Integration
-            </div>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tighter text-white leading-[1.1]">
-              Live in <br className="md:hidden" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">3 Simple Steps.</span>
-            </h2>
-          </div>
+          <motion.h2
+            variants={itemVariants}
+            className="text-xl sm:text-xl md:text-2xl font-medium tracking-tight mb-2 leading-tight"
+          >
+            <motion.span
+              animate={{ backgroundPosition: ["200% 0%", "-200% 0%"] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+              className="bg-[linear-gradient(90deg,rgba(0,0,0,1)_0%,rgba(0,0,0,0.4)_20%,rgba(0,0,0,1)_40%,rgba(0,0,0,1)_100%)] bg-[length:200%_auto] text-transparent bg-clip-text"
+            >
+              Live in 3 Simple Steps
+            </motion.span>
+          </motion.h2>
+
+          <motion.p
+            variants={itemVariants}
+            className="text-base sm:text-sm md:text-sm text-slate-500 mb-8 md:mb-12 max-w-lg leading-relaxed px-4 mx-auto"
+          >
+            Integration is fast and seamless. Add the snippet to your project and broadcast your updates instantly.
+          </motion.p>
 
           {/* Steps Container */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full relative">
-            
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 w-full relative"
+          >
             {/* Animated Connecting Line (Desktop) */}
-            <div className="hidden md:block absolute top-[40px] md:top-[48px] left-[15%] right-[15%] h-[2px] bg-white/5 z-0 rounded-full overflow-hidden">
-              <motion.div 
+            <div className="hidden md:block absolute top-[28px] md:top-[32px] left-[15%] right-[15%] h-[2px] bg-slate-200 z-0 rounded-full overflow-hidden">
+              <motion.div
                 initial={{ width: "0%" }}
                 whileInView={{ width: "100%" }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 1.5, ease: "easeInOut", delay: 0.3 }}
-                className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]"
+                className="h-full bg-gradient-to-r from-transparent via-slate-400 to-transparent"
               />
             </div>
 
             {steps.map((step, idx) => {
               const Icon = step.icon;
               return (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: 0.2 + idx * 0.2, duration: 0.6, type: "spring", stiffness: 60 }}
+                <div
+                  key={idx}
                   className="relative z-10 flex flex-col items-center group"
                 >
-                  {/* Glowing Step Number / Icon Container */}
-                  <div className="relative mb-10">
-                    {/* Hover Glow Behind */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${step.bg} rounded-full blur-2xl opacity-20 group-hover:opacity-60 transition-opacity duration-700 ease-out`}></div>
-                    
-                    <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-[#111111] border border-white/10 flex items-center justify-center shadow-2xl group-hover:border-white/20 transition-all duration-500 group-hover:-translate-y-2">
+                  {/* Step Number / Icon Container */}
+                  <div className="relative mb-4 md:mb-6">
+                    <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full bg-white border border-slate-200 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:bg-slate-50 shadow-sm">
                       {/* Number Indicator */}
-                      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-indigo-500 border-2 border-[#0a0a0a] text-white font-bold flex items-center justify-center text-sm shadow-[0_0_15px_rgba(99,102,241,0.5)] z-20 transition-transform duration-500 group-hover:scale-110 group-hover:bg-indigo-400">
+                      <div className="absolute -top-1 -right-1 md:-top-2 md:-right-2 w-5 h-5 md:w-6 md:h-6 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-[10px] md:text-xs z-20">
                         {idx + 1}
                       </div>
-                      
-                      {/* Inner gradient fill */}
-                      <div className="absolute inset-2 rounded-full bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
-                      <Icon className={`w-8 h-8 md:w-10 md:h-10 ${step.color} relative z-10 transition-transform duration-500 group-hover:scale-110`} strokeWidth={1.5} />
+
+                      <Icon className="w-5 h-5 md:w-6 md:h-6 text-slate-600 relative z-10 group-hover:text-slate-900 transition-colors" strokeWidth={1.5} />
                     </div>
                   </div>
 
                   {/* Text Content */}
-                  <div className="bg-[#111111]/50 backdrop-blur-md border border-white/5 rounded-[2rem] p-6 md:p-8 text-center w-full max-w-sm hover:bg-[#181818]/80 hover:border-white/10 transition-all duration-300 shadow-xl">
-                    <h3 className="text-xl md:text-2xl font-bold text-white mb-3 tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-400 transition-all duration-300">
+                  <div className="text-center w-full max-w-sm">
+                    <h3 className="text-base md:text-lg font-medium text-slate-900 mb-1.5 md:mb-2 tracking-tight group-hover:text-slate-700 transition-colors">
                       {step.title}
                     </h3>
-                    <p className="text-sm md:text-base text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
+                    <p className="text-xs md:text-sm text-slate-500 leading-relaxed group-hover:text-slate-400 transition-colors">
                       {step.desc}
                     </p>
                   </div>
-                </motion.div>
+                </div>
               )
             })}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
