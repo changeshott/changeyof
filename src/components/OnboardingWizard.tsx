@@ -73,10 +73,7 @@ export default function OnboardingWizard() {
   };
 
   return (
-    <div className="fixed inset-0 w-full h-full bg-[#0a0a0a] z-50 overflow-y-auto flex flex-col items-center justify-start sm:justify-center px-4 py-12 md:py-16">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-indigo-500/10 blur-[100px] pointer-events-none rounded-full"></div>
-      
+    <div className="fixed inset-0 w-full h-full bg-[#050505] z-[100] overflow-y-auto flex flex-col items-center justify-start sm:justify-center px-4 py-12 md:py-16">
       <div className="max-w-lg w-full mx-auto relative z-10 my-auto">
         <div className="text-center mb-5 relative z-10">
         <motion.h1 
@@ -102,9 +99,9 @@ export default function OnboardingWizard() {
         </div>
       </div>
 
-      <div className="bg-[#111] border border-white/10 rounded-2xl shadow-2xl relative z-10 overflow-hidden min-h-[250px]">
+      <div className="bg-[#111] border border-[#222] rounded-2xl shadow-xl relative z-10 min-h-[250px]">
         <form onSubmit={handleSubmit} className="flex flex-col h-full">
-          <div className="p-4 md:p-5 flex-1">
+          <div className="p-4 md:p-6 flex-1">
             <AnimatePresence mode="wait">
               {step === 1 && (
                 <motion.div
@@ -246,7 +243,7 @@ export default function OnboardingWizard() {
             </AnimatePresence>
           </div>
 
-          <div className="p-4 border-t border-white/10 bg-white/5 flex justify-between items-center">
+          <div className="p-4 md:p-5 border-t border-[#222] bg-[#161616] rounded-b-2xl flex justify-between items-center">
             {step > 1 ? (
               <button 
                 type="button" 
