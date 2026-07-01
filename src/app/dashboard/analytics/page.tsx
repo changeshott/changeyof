@@ -2,6 +2,8 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { BarChart3, ThumbsUp, ThumbsDown, MessageSquare, Quote } from "lucide-react";
 
+import AnimatedHeader from "@/components/AnimatedHeader";
+
 export default async function AnalyticsPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -34,14 +36,11 @@ export default async function AnalyticsPage() {
   const total = validFeedbacks.length;
 
   return (
-    <main className="max-w-6xl mx-auto px-8 py-12">
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight mb-2 flex items-center gap-3">
-          <BarChart3 className="w-8 h-8 text-indigo-400" />
-          Feedback Analytics
-        </h1>
-        <p className="text-slate-400">AI-powered sentiment analysis from your widget.</p>
-      </header>
+    <main className="max-w-6xl mx-auto">
+      <AnimatedHeader 
+        title="Feedback Analytics"
+        description="AI-powered sentiment analysis from your widget."
+      />
 
       {total === 0 ? (
         <div className="bg-white/5 border border-white/10 rounded-2xl p-10 text-center">

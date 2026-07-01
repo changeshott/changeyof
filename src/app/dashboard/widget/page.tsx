@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Code2, Copy, CheckCircle2, LayoutTemplate } from "lucide-react";
+import AnimatedHeader from "@/components/AnimatedHeader";
 import Link from "next/link";
 
 export default function WidgetSetupPage() {
@@ -38,14 +39,11 @@ export default function WidgetSetupPage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto px-8 py-12">
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight mb-2 flex items-center gap-3">
-          <LayoutTemplate className="w-8 h-8 text-indigo-400" />
-          Widget Installation
-        </h1>
-        <p className="text-slate-400">Copy the embed code and paste it into your website's HTML to show your changelog.</p>
-      </header>
+    <main className="max-w-4xl mx-auto">
+      <AnimatedHeader 
+        title="Widget Installation"
+        description="Copy the embed code and paste it into your website's HTML to show your changelog."
+      />
 
       {projects.length === 0 ? (
         <div className="bg-white/5 border border-white/10 rounded-2xl p-10 text-center">

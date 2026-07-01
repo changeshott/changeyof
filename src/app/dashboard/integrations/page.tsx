@@ -1,12 +1,14 @@
 import { GitPullRequest, Link as LinkIcon, GitBranch, ArrowRight } from "lucide-react";
 
+import AnimatedHeader from "@/components/AnimatedHeader";
+
 export default function IntegrationsPage() {
   return (
-    <main className="max-w-4xl mx-auto px-8 py-12">
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight mb-2">Integrations</h1>
-        <p className="text-slate-400">Connect Changeyof to your existing workflow.</p>
-      </header>
+    <main className="max-w-4xl mx-auto">
+      <AnimatedHeader 
+        title="Integrations"
+        description="Connect Changeyof to your existing workflow."
+      />
 
       <div className="bg-[#111] border border-white/10 rounded-2xl p-8 shadow-xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-3xl pointer-events-none rounded-full"></div>

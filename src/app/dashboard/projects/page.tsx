@@ -2,6 +2,7 @@ import { Globe } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import ProjectForm from "@/components/ProjectForm";
 import DeleteProjectButton from "@/components/DeleteProjectButton";
+import AnimatedHeader from "@/components/AnimatedHeader";
 
 export default async function ProjectsPage() {
   const supabase = await createClient();
@@ -17,14 +18,13 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <main className="max-w-6xl mx-auto px-8 py-12">
-      <header className="mb-10 flex justify-between items-end">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Projects</h1>
-          <p className="text-slate-400">Manage your applications and domains.</p>
-        </div>
+    <main className="max-w-6xl mx-auto">
+      <AnimatedHeader 
+        title="Projects"
+        description="Manage your applications and domains."
+      >
         <ProjectForm />
-      </header>
+      </AnimatedHeader>
 
       {projects && projects.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { createRelease } from "@/app/actions/dashboard";
 import { motion } from "framer-motion";
+import AnimatedHeader from "@/components/AnimatedHeader";
 
 export default function ReleaseEditorPage() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function ReleaseEditorPage() {
       alert("Title, content, and project are required.");
       return;
     }
-    
+
     setIsSaving(true);
     const formData = new FormData();
     formData.append("title", title);
@@ -66,32 +67,23 @@ export default function ReleaseEditorPage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto px-8 py-12">
-      <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div>
-          <Link href="/dashboard/releases" className="inline-flex items-center text-slate-400 hover:text-white transition-colors text-sm font-medium mb-4">
-            &larr; Back to Releases
-          </Link>
-          <h1 className="text-xl sm:text-xl md:text-2xl font-medium tracking-tight mb-2 leading-tight">
-            <motion.span 
-              animate={{ backgroundPosition: ["200% 0%", "-200% 0%"] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-              className="bg-[linear-gradient(90deg,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_20%,rgba(255,255,255,1)_40%,rgba(255,255,255,1)_100%)] bg-[length:200%_auto] text-transparent bg-clip-text"
-            >
-              Craft Release Note
-            </motion.span>
-          </h1>
-          <p className="text-base sm:text-sm md:text-sm text-white/50 leading-relaxed">Share your latest updates with the world.</p>
-        </div>
+    <main className="max-w-4xl mx-auto">
+      <Link href="/dashboard/releases" className="inline-flex items-center text-slate-400 hover:text-white transition-colors text-sm font-medium mb-4">
+        &larr; Back to Releases
+      </Link>
+      <AnimatedHeader
+        title="Craft Release Note"
+        description="Share your latest updates with the world."
+      >
         <div className="flex items-center gap-3">
-          <button 
+          <button
             onClick={() => handleSave("draft")}
             disabled={isSaving}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-slate-300 hover:bg-white/5 transition-colors border border-white/10 disabled:opacity-50"
           >
             <Save className="w-4 h-4" /> Save Draft
           </button>
-          <button 
+          <button
             onClick={() => handleSave("published")}
             disabled={isSaving || projects.length === 0}
             className="flex items-center gap-2 bg-indigo-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-indigo-600 transition-colors shadow-[0_0_15px_rgba(99,102,241,0.4)] disabled:opacity-50"
@@ -99,11 +91,11 @@ export default function ReleaseEditorPage() {
             <Send className="w-4 h-4" /> Publish Now
           </button>
         </div>
-      </header>
+      </AnimatedHeader>
 
       {projects.length === 0 && (
         <div className="mb-6 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 px-4 py-3 rounded-lg text-sm">
-          <strong>Wait!</strong> You need to create a project first before writing a release note. 
+          <strong>Wait!</strong> You need to create a project first before writing a release note.
           <Link href="/dashboard/projects" className="underline ml-2">Go to Projects &rarr;</Link>
         </div>
       )}
@@ -112,18 +104,18 @@ export default function ReleaseEditorPage() {
         <div className="mb-6 flex flex-col md:flex-row justify-between items-end gap-4">
           <div className="w-full md:flex-1">
             <label className="block text-sm font-medium text-slate-400 mb-2">Title</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               maxLength={150}
-              placeholder="E.g., Dark mode is finally here!" 
+              placeholder="E.g., Dark mode is finally here!"
               className="w-full bg-transparent border-b border-white/20 pb-2 text-2xl font-bold text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
           <div className="w-full md:w-48">
             <label className="block text-sm font-medium text-slate-400 mb-2">Type</label>
-            <select 
+            <select
               value={type}
               onChange={(e) => setType(e.target.value)}
               className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 appearance-none"
@@ -135,7 +127,7 @@ export default function ReleaseEditorPage() {
           </div>
           <div className="w-full md:w-48">
             <label className="block text-sm font-medium text-slate-400 mb-2">Project</label>
-            <select 
+            <select
               value={projectId}
               onChange={(e) => setProjectId(e.target.value)}
               disabled={projects.length === 0}
@@ -155,7 +147,7 @@ export default function ReleaseEditorPage() {
         <div className="mb-4">
           <div className="flex justify-between items-center mb-2">
             <label className="block text-sm font-medium text-slate-400">Content (Markdown supported)</label>
-            <button 
+            <button
               onClick={handleGenerateAI}
               disabled={isGenerating}
               className="flex items-center gap-2 text-xs font-semibold bg-gradient-to-r from-pink-500 to-indigo-500 text-white px-3 py-1.5 rounded-full hover:shadow-[0_0_15px_rgba(236,72,153,0.5)] transition-all disabled:opacity-50"
@@ -164,11 +156,11 @@ export default function ReleaseEditorPage() {
               {isGenerating ? "Generating..." : "Generate with AI"}
             </button>
           </div>
-          <textarea 
+          <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             maxLength={5000}
-            placeholder="Write your release notes here..." 
+            placeholder="Write your release notes here..."
             className="w-full h-96 bg-black/50 border border-white/10 rounded-xl p-4 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors font-mono text-sm leading-relaxed resize-none"
           ></textarea>
           <div className="text-right text-xs text-slate-500 mt-2">

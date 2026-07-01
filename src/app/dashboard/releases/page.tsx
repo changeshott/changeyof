@@ -3,6 +3,8 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import DeleteReleaseButton from "@/components/DeleteReleaseButton";
 
+import AnimatedHeader from "@/components/AnimatedHeader";
+
 export default async function ReleasesPage() {
   const supabase = await createClient();
   const { data: releases, error } = await supabase
@@ -15,19 +17,18 @@ export default async function ReleasesPage() {
   }
 
   return (
-    <main className="max-w-6xl mx-auto px-8 py-12">
-      <header className="mb-10 flex justify-between items-end">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Release Notes</h1>
-          <p className="text-slate-400">Broadcast your product updates to the world.</p>
-        </div>
+    <main className="max-w-6xl mx-auto">
+      <AnimatedHeader 
+        title="Release Notes"
+        description="Broadcast your product updates to the world."
+      >
         <Link 
           href="/dashboard/releases/new"
-          className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-slate-200 transition-colors"
+          className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-slate-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95"
         >
           <Plus className="w-4 h-4" /> New Release
         </Link>
-      </header>
+      </AnimatedHeader>
 
       {releases && releases.length > 0 ? (
         <div className="bg-[#111] border border-white/10 rounded-xl overflow-hidden">

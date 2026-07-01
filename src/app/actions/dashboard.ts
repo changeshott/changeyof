@@ -19,12 +19,20 @@ export async function completeOnboarding(formData: FormData) {
   // Project name is not required if they skipped
   // if (!projectName) return { error: "Project name is required" };
 
-  // Update user profile
+  // Update user profile (using upsert in case the trigger didn't run for older accounts)
   const { error: profileError } = await supabase
     .from("users")
-    .update({ role, usage_intent, username, date_of_birth })
-    .eq("id", user.id);
-    
+    .upsert({
+      id: user.id,
+      email: user.email,
+      full_name: user.user_metadata?.full_name || "",
+      avatar_url: user.user_metadata?.avatar_url || "",
+      role,
+      usage_intent,
+      username,
+      date_of_birth
+    }, { onConflict: "id" });
+
   if (profileError) {
     console.error("Error updating profile:", profileError);
   }
@@ -38,7 +46,7 @@ export async function completeOnboarding(formData: FormData) {
     const projectFormData = new FormData();
     projectFormData.append("name", projectName);
     if (projectDomain) projectFormData.append("domain", projectDomain);
-    
+
     const result = await createProject(projectFormData);
     if (result.error) return result;
   }
@@ -67,7 +75,6 @@ export async function createProject(formData: FormData) {
   }
 
   const { data: { user } } = await supabase.auth.getUser();
-
   if (!user) {
     return { error: "Not authenticated" };
   }
@@ -86,6 +93,8 @@ export async function createProject(formData: FormData) {
   if (count !== null && count >= 2) {
     return { error: "Limit Reached: Free tier allows maximum of 2 projects. Please upgrade to create more." };
   }
+
+
 
   const { data, error } = await supabase.from("projects").insert({
     user_id: user.id,
@@ -118,7 +127,6 @@ export async function createRelease(formData: FormData) {
   }
 
   const { data: { user } } = await supabase.auth.getUser();
-
   if (!user) {
     return { error: "Not authenticated" };
   }
@@ -221,7 +229,7 @@ export async function updateRelease(id: string, formData: FormData) {
 
   // Need to ensure the user owns the project this release belongs to
   const { data: project } = await supabase.from("projects").select("id").eq("id", project_id).eq("user_id", user.id).single();
-  
+
   if (!project) {
     return { error: "Unauthorized" };
   }

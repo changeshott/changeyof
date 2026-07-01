@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Rocket, User, Briefcase, Globe, ArrowRight, CheckCircle2 } from "lucide-react";
 import { completeOnboarding } from "@/app/actions/dashboard";
 import { useRouter } from "next/navigation";
+import GridSnakes from "@/components/GridSnakes";
+import Particles from "@/components/Particles";
 
 export default function OnboardingWizard() {
   const router = useRouter();
@@ -73,9 +75,34 @@ export default function OnboardingWizard() {
   };
 
   return (
-    <div className="fixed inset-0 w-full h-full bg-[#050505] z-[100] overflow-y-auto flex flex-col items-center justify-start sm:justify-center px-4 py-12 md:py-16">
+    <div className="fixed inset-0 w-full h-full bg-[#0a0a0a] z-[100] overflow-y-auto flex flex-col items-center justify-start sm:justify-center px-4 py-12 md:py-16">
+      
+      {/* Moving Black Curtain Background (From Hero) */}
+      <div className="absolute inset-0 z-0 bg-curtain pointer-events-none"></div>
+
+      {/* Grid Background (From Hero) */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
+
+      {/* Glowing Neon Snake Animation on Grid (From Hero) */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <GridSnakes />
+      </div>
+
+      {/* Subtle Dust Particles (From Hero) */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Particles />
+      </div>
+
+      {/* Radial fade for grid so it blends into the dark edges (From Hero) */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_800px_at_50%_50%,transparent,var(--background))] pointer-events-none"></div>
+
       <div className="max-w-lg w-full mx-auto relative z-10 my-auto">
-        <div className="text-center mb-5 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-5 relative z-10"
+        >
         <motion.h1 
           className="text-2xl md:text-3xl font-medium tracking-tight mb-2 leading-tight"
         >
@@ -97,9 +124,14 @@ export default function OnboardingWizard() {
             <div key={i} className={`h-1 rounded-full transition-all duration-500 ${step >= i ? 'w-10 bg-white' : 'w-3 bg-white/10'}`}></div>
           ))}
         </div>
-      </div>
+        </motion.div>
 
-      <div className="bg-[#111] border border-[#222] rounded-2xl shadow-xl relative z-10 min-h-[250px]">
+      <motion.div 
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+        className="bg-[#111] border border-[#222] rounded-2xl shadow-xl relative z-10 min-h-[250px]"
+      >
         <form onSubmit={handleSubmit} className="flex flex-col h-full">
           <div className="p-4 md:p-6 flex-1">
             <AnimatePresence mode="wait">
@@ -112,32 +144,40 @@ export default function OnboardingWizard() {
                   exit="exit"
                   className="space-y-3 md:space-y-4"
                 >
-                  <div className="flex items-center gap-2 mb-3 text-indigo-400">
+                  <div className="flex items-center gap-2 mb-3 text-white">
                     <User className="w-5 h-5 md:w-6 md:h-6" />
                     <h2 className="text-base md:text-lg font-semibold text-white">Tell us about yourself</h2>
                   </div>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-medium text-slate-300 mb-1">Username *</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={formData.username}
-                        onChange={(e) => updateForm('username', e.target.value)}
-                        placeholder="Choose a username"
-                        className="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors"
-                      />
+                      <label className="block text-xs font-medium text-slate-300 mb-1.5">Username *</label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <User className="h-4 w-4 text-white/90" />
+                        </div>
+                        <input 
+                          type="text" 
+                          required
+                          value={formData.username}
+                          onChange={(e) => updateForm('username', e.target.value)}
+                          placeholder="Choose a username"
+                          className="w-full bg-black border border-[#333] rounded-lg pl-10 pr-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                        />
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-slate-300 mb-1">Date of Birth *</label>
-                      <input 
-                        type="date" 
-                        required
-                        value={formData.date_of_birth}
-                        onChange={(e) => updateForm('date_of_birth', e.target.value)}
-                        className="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                      />
+                      <label className="block text-xs font-medium text-slate-300 mb-1.5">Date of Birth *</label>
+                      <div className="relative">
+                        <input 
+                          type="date" 
+                          required
+                          value={formData.date_of_birth}
+                          onChange={(e) => updateForm('date_of_birth', e.target.value)}
+                          style={{ colorScheme: 'dark' }}
+                          className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
+                        />
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -150,51 +190,60 @@ export default function OnboardingWizard() {
                   initial="initial"
                   animate="animate"
                   exit="exit"
-                  className="space-y-3 md:space-y-4"
+                  className="space-y-4"
                 >
-                  <div className="flex items-center gap-2 mb-3 text-emerald-400">
+                  <div className="flex items-center gap-2 mb-3 text-white">
                     <Briefcase className="w-5 h-5 md:w-6 md:h-6" />
                     <h2 className="text-base md:text-lg font-semibold text-white">How will you use Changeyof?</h2>
                   </div>
                   
                   <div>
                     <label className="block text-xs font-medium text-slate-300 mb-2">What is your role?</label>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-3 gap-1.5">
                       {["Developer", "Founder", "Product", "Designer", "Marketer", "Other"].map(role => (
                         <div 
                           key={role}
                           onClick={() => updateForm('role', role)}
-                          className={`cursor-pointer border rounded-xl p-2 text-center transition-all ${
-                            formData.role === role ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300' : 'bg-black border-white/10 text-slate-400 hover:border-white/30'
+                          className={`cursor-pointer border rounded-lg py-1.5 px-2 text-center transition-all ${
+                            formData.role === role ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300' : 'bg-black border-[#333] text-slate-400 hover:border-slate-500'
                           }`}
                         >
-                          <span className="text-xs font-medium">{role}</span>
+                          <span className="text-[11px] font-medium">{role}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-2">Primary Intent</label>
-                    <div className="grid grid-cols-1 gap-2">
-                      {[
-                        { id: 'personal', title: 'Personal Projects', desc: 'For side hustles and personal tools' },
-                        { id: 'startup', title: 'Startup / Small Team', desc: 'Growing a new product' },
-                        { id: 'enterprise', title: 'Enterprise / Large Scale', desc: 'Managing multiple products and teams' },
-                      ].map(intent => (
-                        <div 
-                          key={intent.id}
-                          onClick={() => updateForm('usage_intent', intent.id)}
-                          className={`cursor-pointer border rounded-xl p-2.5 flex flex-col transition-all ${
-                            formData.usage_intent === intent.id ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300' : 'bg-black border-white/10 text-slate-400 hover:border-white/30'
-                          }`}
-                        >
-                          <span className="text-sm font-semibold mb-0.5">{intent.title}</span>
-                          <span className="text-xs opacity-70">{intent.desc}</span>
+                  <AnimatePresence>
+                    {formData.role && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <label className="block text-xs font-medium text-slate-300 mb-2">Primary Intent</label>
+                        <div className="grid grid-cols-1 gap-1.5">
+                          {[
+                            { id: 'personal', title: 'Personal Projects', desc: 'Side hustles and personal tools' },
+                            { id: 'startup', title: 'Startup / Team', desc: 'Growing a new product' },
+                            { id: 'enterprise', title: 'Enterprise', desc: 'Managing multiple products' },
+                          ].map(intent => (
+                            <div 
+                              key={intent.id}
+                              onClick={() => updateForm('usage_intent', intent.id)}
+                              className={`cursor-pointer border rounded-lg py-2 px-3 flex items-center justify-between transition-all ${
+                                formData.usage_intent === intent.id ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300' : 'bg-black border-[#333] text-slate-400 hover:border-slate-500'
+                              }`}
+                            >
+                              <span className="text-[11px] font-semibold">{intent.title}</span>
+                              <span className="text-[10px] opacity-70">{intent.desc}</span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
 
@@ -207,7 +256,7 @@ export default function OnboardingWizard() {
                   exit="exit"
                   className="space-y-3 md:space-y-4"
                 >
-                  <div className="flex items-center gap-2 mb-3 text-pink-400">
+                  <div className="flex items-center gap-2 mb-3 text-white">
                     <Rocket className="w-5 h-5 md:w-6 md:h-6" />
                     <h2 className="text-base md:text-lg font-semibold text-white">Create your first project</h2>
                   </div>
@@ -269,6 +318,7 @@ export default function OnboardingWizard() {
                 type="submit"
                 disabled={isLoading || 
                   (step === 1 && (!formData.username || !formData.date_of_birth)) || 
+                  (step === 2 && (!formData.role || !formData.usage_intent)) ||
                   (step === 3 && !formData.projectName)}
                 className="flex items-center gap-1.5 bg-white text-black px-4 py-2 rounded-lg text-xs font-semibold hover:bg-slate-200 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
               >
@@ -278,7 +328,7 @@ export default function OnboardingWizard() {
             </div>
           </div>
         </form>
-      </div>
+      </motion.div>
       </div>
     </div>
   );
