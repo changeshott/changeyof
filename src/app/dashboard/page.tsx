@@ -5,6 +5,7 @@ import ActivityChart from "@/components/cards/ActivityChart";
 import RecentActivity from "@/components/cards/RecentActivity";
 import QuickDraft from "@/components/cards/QuickDraft";
 import OnboardingWizard from "@/components/OnboardingWizard";
+import SkipEmptyStateButton from "@/components/SkipEmptyStateButton";
 import { cookies } from "next/headers";
 
 export default async function DashboardOverviewPage() {
@@ -14,6 +15,7 @@ export default async function DashboardOverviewPage() {
   
   const cookieStore = await cookies();
   const hasCompletedOnboarding = cookieStore.get('onboarding_completed')?.value === 'true';
+  const hasSkippedEmptyState = cookieStore.get('skip_empty_state')?.value === 'true';
   
   if (!hasCompletedOnboarding && (!projects || projects.length === 0)) {
     return (
@@ -29,8 +31,8 @@ export default async function DashboardOverviewPage() {
   const hasReleases = recentReleases && recentReleases.length > 0;
 
   return (
-    <main className="max-w-6xl mx-auto px-8 py-12">
-      <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <main className="min-h-screen">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
           <h1 className="text-xl sm:text-xl md:text-2xl font-medium tracking-tight mb-2 leading-tight">
             <span className="bg-[linear-gradient(90deg,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_20%,rgba(255,255,255,1)_40%,rgba(255,255,255,1)_100%)] bg-[length:200%_auto] text-transparent bg-clip-text">
@@ -47,7 +49,7 @@ export default async function DashboardOverviewPage() {
         </Link>
       </header>
 
-      {!hasReleases ? (
+      {!hasReleases && !hasSkippedEmptyState ? (
         <div className="bg-gradient-to-r from-[#111] to-[#151515] border border-white/10 rounded-2xl p-10 md:p-14 shadow-2xl relative overflow-hidden flex flex-col items-center text-center">
           <div className="absolute -right-20 -top-20 w-64 h-64 bg-indigo-500/10 blur-[100px] pointer-events-none rounded-full"></div>
           <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-pink-500/10 blur-[100px] pointer-events-none rounded-full"></div>
@@ -90,6 +92,8 @@ export default async function DashboardOverviewPage() {
               </>
             )}
           </div>
+          
+          <SkipEmptyStateButton />
         </div>
       ) : (
         <>

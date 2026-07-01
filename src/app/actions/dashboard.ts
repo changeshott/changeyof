@@ -16,7 +16,8 @@ export async function completeOnboarding(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: "Not authenticated" };
 
-  if (!projectName) return { error: "Project name is required" };
+  // Project name is not required if they skipped
+  // if (!projectName) return { error: "Project name is required" };
 
   // Update user profile
   const { error: profileError } = await supabase
@@ -32,14 +33,23 @@ export async function completeOnboarding(formData: FormData) {
   const cookieStore = await cookies();
   cookieStore.set("onboarding_completed", "true", { path: "/" });
 
-  // Create first project
-  const projectFormData = new FormData();
-  projectFormData.append("name", projectName);
-  if (projectDomain) projectFormData.append("domain", projectDomain);
-  
-  const result = await createProject(projectFormData);
-  if (result.error) return result;
+  // Create first project only if name was provided
+  if (projectName) {
+    const projectFormData = new FormData();
+    projectFormData.append("name", projectName);
+    if (projectDomain) projectFormData.append("domain", projectDomain);
+    
+    const result = await createProject(projectFormData);
+    if (result.error) return result;
+  }
 
+  revalidatePath("/dashboard");
+  return { success: true };
+}
+
+export async function skipEmptyState() {
+  const cookieStore = await cookies();
+  cookieStore.set("skip_empty_state", "true", { path: "/" });
   revalidatePath("/dashboard");
   return { success: true };
 }

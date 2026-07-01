@@ -48,6 +48,24 @@ export default function OnboardingWizard() {
     }
   };
 
+  const handleSkip = async () => {
+    setIsLoading(true);
+    const data = new FormData();
+    data.append("username", formData.username);
+    data.append("date_of_birth", formData.date_of_birth);
+    data.append("role", formData.role);
+    data.append("usage_intent", formData.usage_intent);
+    
+    const res = await completeOnboarding(data);
+    setIsLoading(false);
+    
+    if (res?.error) {
+      alert(res.error);
+    } else {
+      window.location.href = "/dashboard";
+    }
+  };
+
   const variants = {
     initial: { opacity: 0, x: 20 },
     animate: { opacity: 1, x: 0 },
@@ -240,6 +258,16 @@ export default function OnboardingWizard() {
             ) : <div></div>}
 
             <div className="flex items-center gap-2">
+              {step === 3 && (
+                <button
+                  type="button"
+                  onClick={handleSkip}
+                  disabled={isLoading}
+                  className="px-3 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors"
+                >
+                  Skip for now
+                </button>
+              )}
               <button 
                 type="submit"
                 disabled={isLoading || 
