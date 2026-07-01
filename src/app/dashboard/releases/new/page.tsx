@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { createRelease } from "@/app/actions/dashboard";
+import { motion } from "framer-motion";
 
 export default function ReleaseEditorPage() {
   const router = useRouter();
@@ -66,12 +67,21 @@ export default function ReleaseEditorPage() {
 
   return (
     <main className="max-w-4xl mx-auto px-8 py-12">
-      <header className="mb-8 flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Link href="/dashboard/releases" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">
-            &larr; Back
+      <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <Link href="/dashboard/releases" className="inline-flex items-center text-slate-400 hover:text-white transition-colors text-sm font-medium mb-4">
+            &larr; Back to Releases
           </Link>
-          <h1 className="text-2xl font-bold tracking-tight">Craft Release Note</h1>
+          <h1 className="text-xl sm:text-xl md:text-2xl font-medium tracking-tight mb-2 leading-tight">
+            <motion.span 
+              animate={{ backgroundPosition: ["200% 0%", "-200% 0%"] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+              className="bg-[linear-gradient(90deg,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_20%,rgba(255,255,255,1)_40%,rgba(255,255,255,1)_100%)] bg-[length:200%_auto] text-transparent bg-clip-text"
+            >
+              Craft Release Note
+            </motion.span>
+          </h1>
+          <p className="text-base sm:text-sm md:text-sm text-white/50 leading-relaxed">Share your latest updates with the world.</p>
         </div>
         <div className="flex items-center gap-3">
           <button 

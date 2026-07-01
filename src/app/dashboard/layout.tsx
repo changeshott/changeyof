@@ -17,10 +17,15 @@ export default async function DashboardLayout({
   }
 
   // Check if user has any projects to determine if we should show the sidebar
-  const { count } = await supabase
-    .from('projects')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id);
+  // Using optional chaining and fallback for when auth is bypassed
+  let count = 0;
+  if (user) {
+    const { count: projectCount } = await supabase
+      .from('projects')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id);
+    count = projectCount || 0;
+  }
 
   if (count === 0) {
     return (
