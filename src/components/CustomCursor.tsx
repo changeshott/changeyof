@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 
 const getCardColor = (id: string | null) => {
   switch (id) {
@@ -15,14 +15,21 @@ const getCardColor = (id: string | null) => {
 };
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springConfig = { damping: 25, stiffness: 400, mass: 0.5 };
+  const cursorX = useSpring(mouseX, springConfig);
+  const cursorY = useSpring(mouseY, springConfig);
+
   const [isHovering, setIsHovering] = useState(false);
   const [hoverColor, setHoverColor] = useState("#ccff00");
   const [cursorText, setCursorText] = useState("Click Me!");
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      // Update motion values directly without triggering React state updates
+      mouseX.set(e.clientX - 30);
+      mouseY.set(e.clientY - 10);
 
       const target = e.target as HTMLElement;
       const cardWrapper = target?.closest('.float-card') as HTMLElement;
@@ -30,17 +37,21 @@ export default function CustomCursor() {
       if (cardWrapper) {
         const cardId = cardWrapper.getAttribute("data-card-id");
         const cText = cardWrapper.getAttribute("data-cursor-text");
-        setHoverColor(getCardColor(cardId));
-        setCursorText(cText || "Click Me!");
-        setIsHovering(true);
+        
+        setHoverColor(prev => {
+          const newColor = getCardColor(cardId);
+          return prev !== newColor ? newColor : prev;
+        });
+        setCursorText(prev => prev !== (cText || "Click Me!") ? (cText || "Click Me!") : prev);
+        setIsHovering(prev => prev !== true ? true : prev);
       } else {
-        setIsHovering(false);
+        setIsHovering(prev => prev !== false ? false : prev);
       }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [mouseX, mouseY]);
 
   return (
     <AnimatePresence>
@@ -52,8 +63,8 @@ export default function CustomCursor() {
           transition={{ duration: 0.15, type: "spring", stiffness: 400, damping: 25 }}
           className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center"
           style={{
-            x: position.x - 30, // Offset so the cursor points at the top-left of the pixel box
-            y: position.y - 10,
+            x: cursorX,
+            y: cursorY,
           }}
         >
           {/* Pixel Art Design */}

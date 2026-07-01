@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 
 const navLinks = [
   { name: "Features", href: "#features" },
@@ -12,12 +14,22 @@ const navLinks = [
 ];
 
 export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
+  const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [initialMountDelay, setInitialMountDelay] = useState(2.6);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const supabase = createClient();
 
   useEffect(() => {
+    // Check auth status
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+    checkUser();
+
     const timer = setTimeout(() => {
       setIsExpanded(true);
       setInitialMountDelay(0); // Remove delay for subsequent animations like hiding
@@ -102,10 +114,17 @@ export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
                 </div>
 
                 {/* CTA Button */}
-                <button className="px-5 py-2.5 text-sm font-semibold text-black bg-white rounded-full hover:bg-white/90 transition-all hover:scale-105 active:scale-95 flex-shrink-0 relative group overflow-hidden">
-                  <span className="relative z-10">Start Free</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out"></div>
-                </button>
+                {user ? (
+                  <button onClick={() => router.push('/dashboard')} className="px-5 py-2.5 text-sm font-semibold text-black bg-white rounded-full hover:bg-white/90 transition-all hover:scale-105 active:scale-95 flex-shrink-0 relative group overflow-hidden">
+                    <span className="relative z-10">Dashboard</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out"></div>
+                  </button>
+                ) : (
+                  <button onClick={() => router.push('/login')} className="px-5 py-2.5 text-sm font-semibold text-black bg-white rounded-full hover:bg-white/90 transition-all hover:scale-105 active:scale-95 flex-shrink-0 relative group overflow-hidden">
+                    <span className="relative z-10">Start Free</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out"></div>
+                  </button>
+                )}
 
                 {/* Mobile Hamburger Menu (Shows only on mobile) */}
                 <button 

@@ -51,15 +51,7 @@ export default function GridSnakes() {
   return (
     <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden z-0">
       <svg className="w-full h-full opacity-60">
-        <defs>
-          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
+        {/* SVG filter removed for performance, using CSS drop-shadow instead */}
 
         {paths.map((path, i) => (
           <motion.path
@@ -70,7 +62,6 @@ export default function GridSnakes() {
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
-            filter="url(#glow)"
             initial={{ pathLength: 0, pathOffset: 1 }}
             animate={{
               pathLength: 0.15, // Panjang ular (15% dari total jalur)

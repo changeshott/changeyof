@@ -59,12 +59,12 @@ export default function IntegrationSection() {
   };
 
   return (
-    <section ref={containerRef} className="w-full bg-[#fafafa] relative z-30 flex flex-col items-center min-h-[100dvh]">
+    <section id="integrations" ref={containerRef} className="w-full bg-transparent relative z-30 flex flex-col items-center min-h-[100dvh]">
 
       {/* Scroll-based Cone Transition overlapping the section above */}
-      <div className="absolute bottom-full left-0 w-full h-[100px] sm:h-[150px] overflow-hidden pointer-events-none flex items-end">
+      <div className="absolute bottom-full left-0 w-full h-[100px] sm:h-[150px] overflow-hidden pointer-events-none">
         <motion.svg
-          className="absolute bottom-[-1px] left-0 w-full h-full"
+          className="absolute bottom-[-1px] left-0 w-full h-full z-0"
           viewBox="0 0 1000 100"
           preserveAspectRatio="none"
         >
@@ -73,14 +73,14 @@ export default function IntegrationSection() {
             fill="#fafafa"
           />
         </motion.svg>
+
+        {/* Seamless Grid extension over the cone */}
+        <div className="absolute bottom-0 left-0 w-full h-[200px] z-10 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:4rem_4rem] mix-blend-multiply" style={{ backgroundPosition: 'bottom left', clipPath: 'inset(0 0 1px 0)' }}></div>
       </div>
 
-      {/* Grid Pattern (Light Mode) */}
-      <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,black_10%,transparent_90%)]">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-      </div>
 
-      <div className="w-full flex flex-col items-center justify-start pt-24 md:pt-32 px-4 relative z-10">
+
+      <div className="w-full flex flex-col items-center justify-start pt-16 pb-16 md:pt-32 md:pb-24 px-4 relative z-10">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -91,7 +91,7 @@ export default function IntegrationSection() {
           {/* Header */}
           <motion.h2
             variants={itemVariants}
-            className="text-xl sm:text-xl md:text-2xl font-medium tracking-tight mb-2 leading-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 leading-tight"
           >
             <motion.span
               animate={{ backgroundPosition: ["200% 0%", "-200% 0%"] }}

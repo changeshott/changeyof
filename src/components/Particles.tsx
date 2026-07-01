@@ -22,7 +22,7 @@ export default function Particles() {
       canvas.height = height;
       
       particles = [];
-      const numParticles = Math.floor((width * height) / 10000); // Density
+      const numParticles = Math.min(40, Math.floor((width * height) / 25000)); // Density capped for performance
       for (let i = 0; i < numParticles; i++) {
         particles.push({
           x: Math.random() * width,
@@ -60,13 +60,22 @@ export default function Particles() {
     init();
     animate();
 
+    let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
-      init();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (!canvasRef.current) return;
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvasRef.current.width = width;
+        canvasRef.current.height = height;
+      }, 200); // Debounce resize to avoid layout thrashing
     };
 
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

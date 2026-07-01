@@ -9,6 +9,11 @@ import CoreFeaturesSection from "@/components/CoreFeaturesSection";
 import IntegrationSection from "@/components/IntegrationSection";
 import Navbar from "@/components/Navbar";
 import CustomCursor from "@/components/CustomCursor";
+import InteractiveDemoSection from "@/components/InteractiveDemoSection";
+import PricingSection from "@/components/PricingSection";
+import FaqSection from "@/components/FaqSection";
+import FloatingWidget from "@/components/FloatingWidget";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const [activeCard, setActiveCard] = useState<string | null>(null);
@@ -31,6 +36,7 @@ export default function Home() {
     <main className="relative bg-[#0a0a0a]">
       {/* Global Elements */}
       <CustomCursor />
+      <FloatingWidget />
       <div className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[100] w-full flex justify-center pointer-events-none">
         <Navbar isHidden={isNavbarHidden} />
       </div>
@@ -88,7 +94,18 @@ export default function Home() {
         <div className="w-full relative">
           <LightAgitationSection />
           <CoreFeaturesSection />
-          <IntegrationSection />
+
+          {/* Continuous Light Theme Wrapper */}
+          <div className="relative w-full">
+            {/* Seamless Grid Pattern that spans across all these sections */}
+            <div className="absolute inset-0 z-0 pointer-events-none bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+
+            <IntegrationSection />
+            <InteractiveDemoSection />
+            <PricingSection />
+            <FaqSection />
+            <Footer />
+          </div>
         </div>
       </motion.div>
     </main>

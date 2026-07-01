@@ -102,8 +102,15 @@ export default function LightAgitationSection() {
     offset: ["start start", "end end"]
   });
 
-  // Track translates leftwards and finishes early (0.55) to give a very noticeable delay before the next section rises
-  const x = useTransform(scrollYProgress, [0, 0.55], ["0%", "-55%"]);
+  const x = useTransform(scrollYProgress, (v) => {
+    let maxScroll = 55;
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 640) maxScroll = 82;
+      else if (window.innerWidth < 1024) maxScroll = 68;
+    }
+    const val = Math.min(v / 0.55, 1) * maxScroll;
+    return `-${val}%`;
+  });
 
   return (
     <div id="changelog" className="w-full flex flex-col items-center justify-center text-[#111] relative bg-slate-50/30">

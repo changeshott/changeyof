@@ -74,21 +74,20 @@ function FeatureScrollCard({ feature, index, total, scrollYProgress }: { feature
 
   return (
     <motion.div
-      style={{ perspective: 1500, scale, opacity }}
-      className="relative w-[85vw] max-w-[340px] h-[320px] md:h-[360px] flex-shrink-0 cursor-none group float-card"
+      style={{ perspective: 1500, scale, opacity, willChange: "transform, opacity" }}
+      className="relative w-[85vw] max-w-[340px] h-[320px] md:h-[360px] flex-shrink-0 cursor-pointer group float-card"
       data-card-id={feature.id}
-      data-cursor-text={isFlipped ? "Flip Back" : "Swipe Me"}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
         className="w-full h-full relative"
-        style={{ transformStyle: "preserve-3d" }}
+        style={{ transformStyle: "preserve-3d", willChange: "transform" }}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ type: "spring", stiffness: 50, damping: 20 }}
       >
         {/* FRONT FACE */}
         <div
-          className="absolute inset-0 bg-[#111111]/80 backdrop-blur-md border border-white/5 rounded-[1.5rem] flex flex-col overflow-hidden shadow-xl"
+          className="absolute inset-0 bg-[#111111]/95 border border-white/5 rounded-[1.5rem] flex flex-col overflow-hidden shadow-xl"
           style={{ backfaceVisibility: "hidden" }}
         >
           <div className={`absolute top-4 right-4 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-lg z-30 ${feature.badgeColor} transition-transform duration-500 group-hover:scale-110`}>
@@ -104,13 +103,9 @@ function FeatureScrollCard({ feature, index, total, scrollYProgress }: { feature
           </div>
           <div className="absolute inset-x-0 bottom-0 top-[100px] z-10 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-[#111111]/90 via-[#111111]/20 to-transparent z-20 pointer-events-none"></div>
-            <motion.div
-              className="w-full h-full relative"
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4 + index * 0.5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Image src={feature.image} alt={feature.title} fill className="object-cover opacity-60 transition-opacity duration-500 mix-blend-screen" />
-            </motion.div>
+            <div className="w-full h-full relative">
+              <Image src={feature.image} alt={feature.title} fill sizes="(max-width: 768px) 85vw, 340px" className="object-cover opacity-60 transition-opacity duration-500" />
+            </div>
           </div>
         </div>
 
@@ -151,15 +146,22 @@ export default function CoreFeaturesSection() {
     offset: ["start start", "end end"]
   });
 
-  // Since we have 5 cards, translating by -55% usually centers the last cards effectively.
-  const x = useTransform(scrollYProgress, [0, 0.55], ["0%", "-55%"]);
+  const x = useTransform(scrollYProgress, (v) => {
+    let maxScroll = 55;
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 640) maxScroll = 82;
+      else if (window.innerWidth < 1024) maxScroll = 68;
+    }
+    const val = Math.min(v / 0.55, 1) * maxScroll;
+    return `-${val}%`;
+  });
 
   return (
     <motion.section
-      id="features-core"
+      id="features"
       ref={containerRef}
       style={{ borderTopLeftRadius: topRadius, borderTopRightRadius: topRadius }}
-      className="w-full relative bg-[#0a0a0a] shadow-[0_-20px_50px_rgba(0,0,0,0.15)] z-20 flex flex-col items-center -mt-[100vh]"
+      className="w-full relative bg-[#0a0a0a] z-20 flex flex-col items-center -mt-[100vh]"
     >
       {/* Background Components */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" style={{ borderTopLeftRadius: "inherit", borderTopRightRadius: "inherit" }}>
@@ -188,7 +190,7 @@ export default function CoreFeaturesSection() {
                 <span className="flex h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
                 The Changelog Engine
               </div>
-              <h2 className="text-xl sm:text-xl md:text-2xl font-medium tracking-tight text-white mb-2 leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-white mb-4 leading-tight">
                 Powerful tools, <br className="md:hidden" /> zero friction.
               </h2>
               <p className="text-base sm:text-sm md:text-sm text-slate-400 mb-5 max-w-lg leading-relaxed px-4 mx-auto">
@@ -199,7 +201,7 @@ export default function CoreFeaturesSection() {
             {/* Sliding Cards */}
             <div className="w-full mx-auto px-4 md:px-12 xl:px-24">
               <motion.div
-                style={{ x }}
+                style={{ x, willChange: "transform" }}
                 className="flex gap-6 md:gap-8 w-max items-center"
               >
                 {features.map((feature, index) => (

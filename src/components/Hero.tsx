@@ -1,8 +1,10 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
@@ -56,7 +58,7 @@ export default function Hero() {
         variants={itemVariants}
         className="flex flex-col sm:flex-row gap-2 items-center w-full justify-center"
       >
-        <button className="w-full sm:w-auto px-10 py-3.5 rounded-full bg-white text-black font-semibold hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+        <button onClick={() => router.push('/login')} className="w-full sm:w-auto px-10 py-3.5 rounded-full bg-white text-black font-semibold hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
           Get Started
         </button>
       </motion.div>
