@@ -12,6 +12,8 @@ export default function OnboardingWizard() {
   const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState({
+    username: "",
+    date_of_birth: "",
     role: "",
     usage_intent: "",
     projectName: "",
@@ -35,22 +37,6 @@ export default function OnboardingWizard() {
     setIsLoading(true);
     const data = new FormData();
     Object.entries(formData).forEach(([k, v]) => data.append(k, v));
-    
-    const res = await completeOnboarding(data);
-    setIsLoading(false);
-    
-    if (res?.error) {
-      alert(res.error);
-    } else {
-      window.location.href = "/dashboard";
-    }
-  };
-
-  const handleSkip = async () => {
-    setIsLoading(true);
-    const data = new FormData();
-    data.append("role", formData.role);
-    data.append("usage_intent", formData.usage_intent);
     
     const res = await completeOnboarding(data);
     setIsLoading(false);
@@ -116,20 +102,27 @@ export default function OnboardingWizard() {
                     <h2 className="text-base md:text-lg font-semibold text-white">Tell us about yourself</h2>
                   </div>
                   
-                  <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-2">What is your role?</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {["Developer", "Founder", "Product Manager", "Designer", "Marketer", "Other"].map(role => (
-                        <div 
-                          key={role}
-                          onClick={() => updateForm('role', role)}
-                          className={`cursor-pointer border rounded-xl p-2.5 md:p-3 text-center transition-all ${
-                            formData.role === role ? 'bg-indigo-500/10 border-indigo-500 text-indigo-300' : 'bg-black border-white/10 text-slate-400 hover:border-white/30'
-                          }`}
-                        >
-                          <span className="text-xs font-medium">{role}</span>
-                        </div>
-                      ))}
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-medium text-slate-300 mb-1">Username *</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.username}
+                        onChange={(e) => updateForm('username', e.target.value)}
+                        placeholder="Choose a username"
+                        className="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-300 mb-1">Date of Birth *</label>
+                      <input 
+                        type="date" 
+                        required
+                        value={formData.date_of_birth}
+                        onChange={(e) => updateForm('date_of_birth', e.target.value)}
+                        className="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                      />
                     </div>
                   </div>
                 </motion.div>
@@ -150,6 +143,23 @@ export default function OnboardingWizard() {
                   </div>
                   
                   <div>
+                    <label className="block text-xs font-medium text-slate-300 mb-2">What is your role?</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {["Developer", "Founder", "Product", "Designer", "Marketer", "Other"].map(role => (
+                        <div 
+                          key={role}
+                          onClick={() => updateForm('role', role)}
+                          className={`cursor-pointer border rounded-xl p-2 text-center transition-all ${
+                            formData.role === role ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300' : 'bg-black border-white/10 text-slate-400 hover:border-white/30'
+                          }`}
+                        >
+                          <span className="text-xs font-medium">{role}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
                     <label className="block text-xs font-medium text-slate-300 mb-2">Primary Intent</label>
                     <div className="grid grid-cols-1 gap-2">
                       {[
@@ -160,7 +170,7 @@ export default function OnboardingWizard() {
                         <div 
                           key={intent.id}
                           onClick={() => updateForm('usage_intent', intent.id)}
-                          className={`cursor-pointer border rounded-xl p-3 flex flex-col transition-all ${
+                          className={`cursor-pointer border rounded-xl p-2.5 flex flex-col transition-all ${
                             formData.usage_intent === intent.id ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300' : 'bg-black border-white/10 text-slate-400 hover:border-white/30'
                           }`}
                         >
@@ -230,19 +240,11 @@ export default function OnboardingWizard() {
             ) : <div></div>}
 
             <div className="flex items-center gap-2">
-              {step === 3 && (
-                <button
-                  type="button"
-                  onClick={handleSkip}
-                  disabled={isLoading}
-                  className="px-3 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors"
-                >
-                  Skip for now
-                </button>
-              )}
               <button 
                 type="submit"
-                disabled={isLoading || (step === 3 && !formData.projectName)}
+                disabled={isLoading || 
+                  (step === 1 && (!formData.username || !formData.date_of_birth)) || 
+                  (step === 3 && !formData.projectName)}
                 className="flex items-center gap-1.5 bg-white text-black px-4 py-2 rounded-lg text-xs font-semibold hover:bg-slate-200 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
               >
                 {isLoading ? "Saving..." : step < 3 ? "Continue" : "Complete Setup"}

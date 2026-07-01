@@ -8,19 +8,20 @@ export async function completeOnboarding(formData: FormData) {
   const supabase = await createClient();
   const role = (formData.get("role") as string)?.slice(0, 100);
   const usage_intent = (formData.get("usage_intent") as string)?.slice(0, 100);
+  const username = (formData.get("username") as string)?.slice(0, 100);
+  const date_of_birth = (formData.get("date_of_birth") as string);
   const projectName = (formData.get("projectName") as string)?.slice(0, 100);
   const projectDomain = (formData.get("projectDomain") as string)?.slice(0, 100);
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: "Not authenticated" };
 
-  // Project name is not required if they skipped
-  // if (!projectName) return { error: "Project name is required" };
+  if (!projectName) return { error: "Project name is required" };
 
   // Update user profile
   const { error: profileError } = await supabase
     .from("users")
-    .update({ role, usage_intent })
+    .update({ role, usage_intent, username, date_of_birth })
     .eq("id", user.id);
     
   if (profileError) {
@@ -31,15 +32,13 @@ export async function completeOnboarding(formData: FormData) {
   const cookieStore = await cookies();
   cookieStore.set("onboarding_completed", "true", { path: "/" });
 
-  // Create first project only if name was provided
-  if (projectName) {
-    const projectFormData = new FormData();
-    projectFormData.append("name", projectName);
-    if (projectDomain) projectFormData.append("domain", projectDomain);
-    
-    const result = await createProject(projectFormData);
-    if (result.error) return result;
-  }
+  // Create first project
+  const projectFormData = new FormData();
+  projectFormData.append("name", projectName);
+  if (projectDomain) projectFormData.append("domain", projectDomain);
+  
+  const result = await createProject(projectFormData);
+  if (result.error) return result;
 
   revalidatePath("/dashboard");
   return { success: true };
