@@ -12,10 +12,10 @@ import { createClient } from "@supabase/supabase-js";
 
 export async function GET(
   request: Request,
-  { params }: { params: { projectId: string } }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const projectId = params.projectId;
+    const { projectId } = await params;
 
     if (!projectId) {
       return NextResponse.json({ error: "Project ID is required" }, { status: 400 });

@@ -34,8 +34,8 @@ export async function signup(formData: FormData) {
     return { error: error.message };
   }
 
-  // With enable_confirmations = false, we can directly redirect
-  redirect("/dashboard");
+  // Return a success message to display a nice UI notification
+  return { success: "Registration successful! Please check your email to confirm your account." };
 }
 
 export async function loginWithGithub() {
@@ -55,22 +55,4 @@ export async function loginWithGithub() {
   if (data.url) {
     redirect(data.url);
   }
-}
-
-export async function loginWithMagicLink(formData: FormData) {
-  const supabase = await createClient();
-  const email = formData.get("email") as string;
-
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback`,
-    },
-  });
-
-  if (error) {
-    return { error: error.message };
-  }
-
-  return { success: "Magic Link sent! Please check your email." };
 }

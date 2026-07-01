@@ -163,7 +163,7 @@ export default function FloatingWidget() {
   };
 
   // Match the hero transition easing
-  const customEase = [0.16, 1, 0.3, 1];
+  const customEase = [0.16, 1, 0.3, 1] as const;
 
   return (
     <div className="fixed bottom-6 right-6 z-[999] flex flex-col items-end" ref={widgetRef}>
