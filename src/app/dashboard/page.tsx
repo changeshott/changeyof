@@ -1,23 +1,41 @@
 import { Plus, Activity, Eye, MessageSquare, ThumbsUp } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
+import ActivityChart from "@/components/cards/ActivityChart";
+import RecentActivity from "@/components/cards/RecentActivity";
+import QuickDraft from "@/components/cards/QuickDraft";
+import OnboardingWizard from "@/components/OnboardingWizard";
 
 export default async function DashboardOverviewPage() {
   const supabase = await createClient();
   
-  // Note: Once schema is applied, we could fetch actual stats here
-  // const { count: projectCount } = await supabase.from('projects').select('*', { count: 'exact', head: true });
+  const { data: projects } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+  
+  if (!projects || projects.length === 0) {
+    return (
+      <main className="min-h-screen">
+        <OnboardingWizard />
+      </main>
+    );
+  }
+
+  const { data: recentReleases } = await supabase.from('release_notes').select('id, title, created_at, status, projects(name)').order('created_at', { ascending: false }).limit(5);
+  const { data: recentFeedbacks } = await supabase.from('feedbacks').select('id, sentiment, comment, created_at, release_notes(title)').order('created_at', { ascending: false }).limit(5);
   
   return (
     <main className="max-w-6xl mx-auto px-8 py-12">
       <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Engagement Overview</h1>
-          <p className="text-slate-400">Track how users interact with your release notes.</p>
+          <h1 className="text-xl sm:text-xl md:text-2xl font-medium tracking-tight mb-2 leading-tight">
+            <span className="bg-[linear-gradient(90deg,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_20%,rgba(255,255,255,1)_40%,rgba(255,255,255,1)_100%)] bg-[length:200%_auto] text-transparent bg-clip-text">
+              Engagement Overview
+            </span>
+          </h1>
+          <p className="text-base sm:text-sm md:text-sm text-white/50 mb-5 leading-relaxed">Track how users interact with your release notes.</p>
         </div>
         <Link 
           href="/dashboard/releases/new"
-          className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-lg font-semibold hover:bg-slate-200 transition-colors active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+          className="flex items-center gap-2 px-10 py-3.5 rounded-full bg-white text-black font-semibold hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)]"
         >
           <Plus className="w-4 h-4" /> New Release
         </Link>
@@ -74,27 +92,14 @@ export default async function DashboardOverviewPage() {
         </div>
       </div>
 
-      {/* Quick Start / Onboarding */}
-      <div className="bg-gradient-to-r from-[#111] to-[#151515] border border-white/10 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/5 blur-3xl pointer-events-none rounded-full"></div>
-        <h2 className="text-2xl font-bold mb-3">Welcome to your new HQ</h2>
-        <p className="text-slate-400 max-w-2xl mb-8 leading-relaxed">
-          You're just a few steps away from an automated, beautiful changelog. Let's get your first project set up so you can start broadcasting updates to your users.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Link 
-            href="/dashboard/projects"
-            className="px-6 py-3 bg-white text-black font-semibold rounded-xl text-center hover:bg-slate-200 transition-colors"
-          >
-            Create Your First Project
-          </Link>
-          <Link 
-            href="/dashboard/widget"
-            className="px-6 py-3 bg-white/5 border border-white/10 text-white font-semibold rounded-xl text-center hover:bg-white/10 transition-colors"
-          >
-            Get Widget Code
-          </Link>
+      {/* Interactive Features */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+        <div className="lg:col-span-2 space-y-6">
+          <ActivityChart />
+          <QuickDraft projects={projects || []} />
+        </div>
+        <div>
+          <RecentActivity releases={recentReleases || []} feedbacks={recentFeedbacks || []} className="h-full" />
         </div>
       </div>
     </main>

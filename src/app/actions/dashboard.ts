@@ -3,6 +3,40 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
+export async function completeOnboarding(formData: FormData) {
+  const supabase = await createClient();
+  const role = (formData.get("role") as string)?.slice(0, 100);
+  const usage_intent = (formData.get("usage_intent") as string)?.slice(0, 100);
+  const projectName = (formData.get("projectName") as string)?.slice(0, 100);
+  const projectDomain = (formData.get("projectDomain") as string)?.slice(0, 100);
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated" };
+
+  if (!projectName) return { error: "Project name is required" };
+
+  // Update user profile
+  const { error: profileError } = await supabase
+    .from("users")
+    .update({ role, usage_intent })
+    .eq("id", user.id);
+    
+  if (profileError) {
+    console.error("Error updating profile:", profileError);
+  }
+
+  // Create first project
+  const projectFormData = new FormData();
+  projectFormData.append("name", projectName);
+  if (projectDomain) projectFormData.append("domain", projectDomain);
+  
+  const result = await createProject(projectFormData);
+  if (result.error) return result;
+
+  revalidatePath("/dashboard");
+  return { success: true };
+}
+
 export async function createProject(formData: FormData) {
   const supabase = await createClient();
   const name = (formData.get("name") as string)?.slice(0, 100); // Max 100 chars
