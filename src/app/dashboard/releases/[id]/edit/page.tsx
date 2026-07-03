@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles, Save, Send, Clock, Tag, GitBranch, Image as ImageIcon, X, Plus, LayoutDashboard, ChevronDown, Globe, Hash, MessageSquare, Share2, FileText } from "lucide-react";
+import { Sparkles, Save, Send, Clock, Tag, GitBranch, Image as ImageIcon, X, Plus, LayoutDashboard, ChevronDown, Globe, Hash, MessageSquare, Share2, FileText, ExternalLink, HelpCircle } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
@@ -8,6 +8,7 @@ import { createClient } from "@/utils/supabase/client";
 import { updateRelease } from "@/app/actions/dashboard";
 import { motion, AnimatePresence } from "framer-motion";
 import MarkdownPreview from "@/components/MarkdownPreview";
+import ShareReleaseModal from "@/components/ShareReleaseModal";
 
 const PREDEFINED_TAGS = [
   { id: "New", label: "New Feature", color: "bg-white/5 text-slate-300 border-white/10" },
@@ -15,6 +16,31 @@ const PREDEFINED_TAGS = [
   { id: "Fix", label: "Bug Fix", color: "bg-white/5 text-slate-300 border-white/10" },
   { id: "Security", label: "Security", color: "bg-white/5 text-slate-300 border-white/10" },
 ];
+
+const InfoTooltip = ({ text }: { text: string }) => (
+  <div className="group relative inline-block ml-1.5 align-middle">
+    <HelpCircle className="w-3.5 h-3.5 text-slate-500 hover:text-slate-300 cursor-help" />
+    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-48 p-2 bg-slate-800 text-[10px] text-white rounded shadow-xl border border-slate-700 z-50 text-center font-normal leading-relaxed pointer-events-none">
+      {text}
+    </div>
+  </div>
+);
+
+const GithubIcon = ({ className }: { className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
 
 export default function EditReleasePage() {
   const router = useRouter();
@@ -41,14 +67,22 @@ export default function EditReleasePage() {
   const [viewMode, setViewMode] = useState<"write" | "preview">("write");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [publishedRelease, setPublishedRelease] = useState<any>(null);
+
   // New SEO & Metadata States
   const [slug, setSlug] = useState("");
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   
+  // CTA States
+  const [ctaText, setCtaText] = useState("");
+  const [ctaLink, setCtaLink] = useState("");
+  
   // New Webhook States
   const [notifySlack, setNotifySlack] = useState(false);
   const [notifyTwitter, setNotifyTwitter] = useState(false);
+  const [notifyGithub, setNotifyGithub] = useState(false);
   
   const [targetSegment, setTargetSegment] = useState("all");
   
@@ -59,11 +93,20 @@ export default function EditReleasePage() {
   useEffect(() => {
     const fetchData = async () => {
       // Fetch projects
-      const { data: projectsData } = await supabase.from("projects").select("id, name");
-      if (projectsData) {
-        setProjects(projectsData);
+      const { data: projectsData } = await supabase.from("projects").select("id, name, github_repo");
+      
+      if (projectsData && projectsData.length > 0) {
+        // Fetch settings separately
+        const { data: settingsData } = await supabase.from("project_settings").select("project_id, twitter_integration_id, github_token");
+        
+        const combined = projectsData.map(p => ({
+          ...p,
+          project_settings: settingsData?.find(s => s.project_id === p.id) || null
+        }));
+        
+        setProjects(combined);
       }
-
+      
       // Fetch existing release
       if (releaseId) {
         const { data: releaseData } = await supabase.from("release_notes").select("*").eq("id", releaseId).single();
@@ -73,14 +116,18 @@ export default function EditReleasePage() {
           setProjectId(releaseData.project_id || "");
           
           if (releaseData.tags && releaseData.tags.length > 0) {
-            setTags(releaseData.tags);
+            try {
+              const parsedTags = typeof releaseData.tags === 'string' ? JSON.parse(releaseData.tags) : releaseData.tags;
+              setTags(Array.isArray(parsedTags) ? parsedTags : [releaseData.type || "New"]);
+            } catch(e) {
+              setTags([releaseData.type || "New"]);
+            }
           } else {
             setTags([releaseData.type || "New"]);
           }
           
           setVersion(releaseData.version || "");
           if (releaseData.scheduled_for) {
-            // format datetime-local
             const date = new Date(releaseData.scheduled_for);
             const formatted = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
             setScheduledFor(formatted);
@@ -91,13 +138,25 @@ export default function EditReleasePage() {
           setMetaDescription(releaseData.meta_description || "");
           setNotifySlack(releaseData.notify_slack || false);
           setNotifyTwitter(releaseData.notify_twitter || false);
+          setNotifyGithub(releaseData.notify_github || false);
           setTargetSegment(releaseData.target_segment || "all");
+          setCtaText(releaseData.cta_text || "");
+          setCtaLink(releaseData.cta_link || "");
+          
+          if (releaseData.slug || releaseData.meta_title || releaseData.meta_description) {
+            setShowSEO(true);
+          }
         }
       }
+      
       setIsLoadingProjects(false);
     };
+    
     fetchData();
   }, [releaseId, supabase]);
+
+  // Fetching logic remains
+  const selectedProject = projects.find(p => p.id === projectId);
 
   const handleGenerateAI = () => {
     setIsGenerating(true);
@@ -160,9 +219,12 @@ export default function EditReleasePage() {
     if (slug) formData.append("slug", slug);
     if (metaTitle) formData.append("meta_title", metaTitle);
     if (metaDescription) formData.append("meta_description", metaDescription);
+    // Don't send notify_twitter to backend, handle it on frontend
     if (notifySlack) formData.append("notify_slack", "true");
-    if (notifyTwitter) formData.append("notify_twitter", "true");
+    if (notifyGithub) formData.append("notify_github", "true");
     if (targetSegment) formData.append("target_segment", targetSegment);
+    if (ctaText) formData.append("cta_text", ctaText);
+    if (ctaLink) formData.append("cta_link", ctaLink);
 
     const result = await updateRelease(releaseId, formData);
     setIsSaving(false);
@@ -170,7 +232,12 @@ export default function EditReleasePage() {
     if (result.error) {
       alert(result.error);
     } else {
-      router.push("/dashboard/releases");
+      if (status === "published") {
+        setPublishedRelease(result.release);
+        setShowShareModal(true);
+      } else {
+        router.push("/dashboard/releases");
+      }
     }
   };
 
@@ -271,6 +338,7 @@ export default function EditReleasePage() {
           <div className="px-3">
             <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center gap-1.5">
               <Tag className="w-3.5 h-3.5" /> Tags
+              <InfoTooltip text="Label your release (e.g., New Feature, Bug Fix). Users can filter by these tags." />
             </label>
             <div className="flex flex-wrap gap-1.5">
               {PREDEFINED_TAGS.map(tag => (
@@ -313,6 +381,7 @@ export default function EditReleasePage() {
           <div className="px-3">
             <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5" /> Scheduled
+              <InfoTooltip text="Leave empty to publish immediately, or set a future date to auto-publish." />
             </label>
             <input 
               type="datetime-local" 
@@ -325,7 +394,8 @@ export default function EditReleasePage() {
 
           <div className="px-3">
             <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center gap-1.5">
-              <GitBranch className="w-3.5 h-3.5" /> Version Link
+              <GitBranch className="w-3.5 h-3.5" /> Version Tag
+              <InfoTooltip text="Optional version number (e.g., v2.0) that users can track." />
             </label>
             <input 
               type="text" 
@@ -339,6 +409,7 @@ export default function EditReleasePage() {
           <div className="px-3">
             <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center gap-1.5">
               <Globe className="w-3.5 h-3.5" /> Target Segment
+              <InfoTooltip text="Show this release only to specific users (e.g., 'premium'). Use 'all' for everyone." />
             </label>
             <input 
               type="text" 
@@ -351,6 +422,32 @@ export default function EditReleasePage() {
 
           <div className="h-px bg-white/10 mx-3 my-2" />
 
+          {/* Call To Action */}
+          <div className="px-3">
+            <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center gap-1.5">
+              <ExternalLink className="w-3.5 h-3.5" /> Action Link (CTA)
+              <InfoTooltip text="Add a button at the bottom of your release note to drive user action (e.g. Upgrade)." />
+            </label>
+            <div className="flex flex-col gap-2">
+              <input 
+                type="text" 
+                value={ctaText}
+                onChange={(e) => setCtaText(e.target.value)}
+                placeholder="Button Text (e.g., Update Now)"
+                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+              />
+              <input 
+                type="text" 
+                value={ctaLink}
+                onChange={(e) => setCtaLink(e.target.value)}
+                placeholder="URL (e.g., https://myapp.com/download)"
+                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono"
+              />
+            </div>
+          </div>
+
+          <div className="h-px bg-white/10 mx-3 my-2" />
+
           {/* SEO & Meta */}
           <div className="px-3">
             <button 
@@ -359,6 +456,7 @@ export default function EditReleasePage() {
             >
               <div className="flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5" /> SEO & Meta
+                <InfoTooltip text="Optimize how this release looks on Google and social media sharing." />
               </div>
               <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showSEO ? 'rotate-180' : ''}`} />
             </button>
@@ -402,7 +500,10 @@ export default function EditReleasePage() {
 
           {/* Webhooks / Auto-Publish */}
           <div className="px-3">
-            <label className="block text-xs font-medium text-slate-400 mb-3">Auto-Announce (On Publish)</label>
+            <label className="block text-xs font-medium text-slate-400 mb-3 flex items-center gap-1.5">
+              Auto-Announce
+              <InfoTooltip text="Automatically post this release to your connected channels when published." />
+            </label>
             <div className="flex flex-col gap-2">
               <label className="flex items-center gap-2 cursor-pointer group">
                 <input type="checkbox" className="hidden" checked={notifySlack} onChange={(e) => setNotifySlack(e.target.checked)} />
@@ -413,15 +514,52 @@ export default function EditReleasePage() {
                   <MessageSquare className="w-3.5 h-3.5" /> Post to Slack
                 </div>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input type="checkbox" className="hidden" checked={notifyTwitter} onChange={(e) => setNotifyTwitter(e.target.checked)} />
-                <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifyTwitter ? 'bg-sky-500 border-sky-500' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
-                  {notifyTwitter && <div className="w-2 h-2 bg-white rounded-sm" />}
-                </div>
-                <div className="flex items-center gap-1.5 text-xs text-slate-300 group-hover:text-white transition-colors">
-                  <Hash className="w-3.5 h-3.5" /> Post to X (Twitter)
-                </div>
-              </label>
+
+              {/* GitHub Checkbox */}
+              {(() => {
+                const isGithubConfigured = selectedProject?.github_repo && selectedProject?.project_settings?.github_token;
+                return (
+                  <div className="flex flex-col gap-1">
+                    <label className={`flex items-center gap-2 group ${!isGithubConfigured ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+                      <input 
+                        type="checkbox" 
+                        className="hidden" 
+                        checked={notifyGithub && !!isGithubConfigured} 
+                        onChange={(e) => {
+                          if (isGithubConfigured) setNotifyGithub(e.target.checked);
+                        }} 
+                        disabled={!isGithubConfigured}
+                      />
+                      <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifyGithub && isGithubConfigured ? 'bg-emerald-500 border-emerald-500' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
+                        {notifyGithub && isGithubConfigured && <div className="w-2 h-2 bg-white rounded-sm" />}
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-slate-300 group-hover:text-white transition-colors">
+                        <GithubIcon className="w-3.5 h-3.5" /> Post to GitHub Releases
+                      </div>
+                    </label>
+                    {!isGithubConfigured && (
+                      <Link href={`/dashboard/projects/${projectId}/settings`} className="text-[10px] text-emerald-500 hover:underline ml-6">
+                        Configure in Settings
+                      </Link>
+                    )}
+                  </div>
+                );
+              })()}
+
+              <div className="flex flex-col gap-1">
+                <label className={`flex items-center gap-2 cursor-pointer group`}>
+                  <input type="checkbox" className="hidden" checked={notifyTwitter} onChange={(e) => setNotifyTwitter(e.target.checked)} />
+                  <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifyTwitter ? 'bg-sky-500 border-sky-500' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
+                    {notifyTwitter && <div className="w-2 h-2 bg-white rounded-sm" />}
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-300 group-hover:text-white transition-colors">
+                    <Hash className="w-3.5 h-3.5" /> Share to X (Twitter)
+                  </div>
+                </label>
+                <span className="text-[10px] text-slate-500 ml-6">
+                  Opens a new tab to post manually.
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -474,13 +612,19 @@ export default function EditReleasePage() {
             >
               <Save className="w-3.5 h-3.5" /> Save Draft
             </button>
-            <button
-              onClick={() => handleSave("published")}
-              disabled={isSaving || projects.length === 0}
-              className="flex items-center gap-2 bg-white text-black px-4 py-1.5 rounded-md font-semibold hover:bg-slate-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 text-xs"
-            >
-              <Send className="w-3.5 h-3.5" /> Publish Now
-            </button>
+            {(() => {
+              const isScheduledForFuture = scheduledFor && new Date(scheduledFor) > new Date();
+              return (
+                <button
+                  onClick={() => handleSave("published")}
+                  disabled={isSaving || projects.length === 0}
+                  className="flex items-center gap-2 bg-white text-black px-4 py-1.5 rounded-md font-semibold hover:bg-slate-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 text-xs"
+                >
+                  {isScheduledForFuture ? <Clock className="w-3.5 h-3.5" /> : <Send className="w-3.5 h-3.5" />}
+                  {isScheduledForFuture ? "Schedule Release" : "Publish Now"}
+                </button>
+              );
+            })()}
           </div>
         </div>
 
@@ -495,15 +639,18 @@ export default function EditReleasePage() {
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
-                <div className="px-6 pt-6 pb-4 border-b border-white/5 flex items-center justify-between shrink-0 relative">
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Release Note Title..."
-                    className="w-full bg-transparent text-2xl font-bold text-white placeholder-slate-600 focus:outline-none"
-                  />
-                  <div className="flex items-center gap-2">
+                <div className="px-6 pt-6 pb-4 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between shrink-0 relative gap-2">
+                  <div className="flex-1 flex items-center pr-4">
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      placeholder="Release Note Title..."
+                      className="w-full bg-transparent text-2xl font-bold text-white placeholder-slate-600 focus:outline-none"
+                    />
+                    <InfoTooltip text="Make it catchy! E.g., 'The Dark Mode Update' or 'v2.0.1 Performance Fixes'." />
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
                     {/* Templates Button */}
                     <div className="relative">
                       <button
@@ -589,6 +736,16 @@ export default function EditReleasePage() {
         </div>
 
       </div>
+      
+      <ShareReleaseModal 
+        isOpen={showShareModal}
+        onClose={() => {
+          setShowShareModal(false);
+          router.push("/dashboard/releases");
+        }}
+        release={publishedRelease}
+        projectDomain={selectedProject?.domain}
+      />
     </main>
   );
 }

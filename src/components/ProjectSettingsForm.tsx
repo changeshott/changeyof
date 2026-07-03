@@ -5,7 +5,7 @@ import { updateProjectSettings, updateProject } from "@/app/actions/dashboard";
 import { Save, LayoutTemplate, Palette, Globe, Search, Monitor, Sun, Moon, Webhook, Mail, Terminal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function ProjectSettingsForm({ project, initialSettings }: { project: any, initialSettings: any }) {
+export default function ProjectSettingsForm({ project, initialSettings, twitterIntegrations = [] }: { project: any, initialSettings: any, twitterIntegrations?: any[] }) {
   const [activeTab, setActiveTab] = useState("general");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
@@ -27,7 +27,9 @@ export default function ProjectSettingsForm({ project, initialSettings }: { proj
     vercel_webhook_secret: initialSettings?.vercel_webhook_secret || "",
     gitlab_webhook_secret: initialSettings?.gitlab_webhook_secret || "",
     enable_email_newsletter: initialSettings?.enable_email_newsletter ? "true" : "false",
-    public_api_key: initialSettings?.public_api_key || ""
+    public_api_key: initialSettings?.public_api_key || "",
+    twitter_integration_id: initialSettings?.twitter_integration_id || "",
+    github_token: initialSettings?.github_token || ""
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -234,6 +236,56 @@ export default function ProjectSettingsForm({ project, initialSettings }: { proj
                   <h3 className="text-lg font-semibold text-white mb-2">Broadcasting</h3>
                   <p className="text-sm text-slate-400 mb-4">Automatically post published release notes to your community.</p>
                   <div className="space-y-4">
+                    
+                    {/* GitHub Integration */}
+                    <div className="bg-[#161616] border border-white/5 p-4 rounded-xl">
+                      <label className="block text-sm font-semibold text-white mb-1.5 flex items-center gap-2">
+                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        GitHub Release Token
+                      </label>
+                      <p className="text-xs text-slate-400 mb-3">
+                        Provide a Personal Access Token (PAT) with `repo` scope to automatically publish notes to your GitHub repository (configured in General settings).
+                      </p>
+                      <input 
+                        type="password" 
+                        name="github_token" 
+                        value={formDataState.github_token}
+                        onChange={handleChange}
+                        placeholder="ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                      />
+                    </div>
+                    
+                    {/* X (Twitter) Connection */}
+                    <div className="bg-[#161616] border border-white/5 p-4 rounded-xl flex items-center justify-between">
+                      <div className="flex-1 mr-4">
+                        <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+                           X (Twitter)
+                        </h4>
+                        <p className="text-xs text-slate-400 mt-1 mb-3">
+                          Select a connected X account from your Global Settings to auto-post release notes.
+                        </p>
+                        <select 
+                          name="twitter_integration_id"
+                          value={formDataState.twitter_integration_id}
+                          onChange={handleChange}
+                          className="w-full bg-black border border-[#333] rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 transition-all outline-none"
+                        >
+                          <option value="">-- No Account Selected --</option>
+                          {twitterIntegrations.map(acc => (
+                            <option key={acc.id} value={acc.id}>
+                              @{acc.account_username}
+                            </option>
+                          ))}
+                        </select>
+                        {twitterIntegrations.length === 0 && (
+                          <p className="text-[10px] text-yellow-500 mt-2">
+                            No X accounts connected. Connect one in <a href="/dashboard/settings" className="underline hover:text-yellow-400">Settings</a>.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">Slack Webhook URL</label>
                       <input 

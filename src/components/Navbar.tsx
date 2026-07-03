@@ -5,9 +5,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import { ChevronDown } from "lucide-react";
 
 const navLinks = [
-  { name: "Features", href: "#features" },
+  { 
+    name: "Product", 
+    dropdown: [
+      {
+        title: "COMMUNICATE",
+        items: [
+          { name: "Changelog & News Feed", desc: "Your branded updates hub - on your domain", href: "/product/changelog" },
+          { name: "In-App Widgets", desc: "10+ widget types to reach users inside your app", href: "#widgets" },
+          { name: "In-App Notifications", desc: "Reach users inside your product with widgets and toasts", href: "#notifications" },
+          { name: "Multi-Channel Updates", desc: "In-app, email, Slack, RSS - one message, every channel", href: "#multi-channel" },
+          { name: "Mobile Announcements", desc: "Native SDKs for iOS, Android, and Flutter", href: "#mobile" },
+        ]
+      }
+    ]
+  },
   { name: "Integrations", href: "#integrations" },
   { name: "Pricing", href: "#pricing" },
   { name: "FAQ", href: "#faq" }
@@ -56,7 +71,7 @@ export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
           height: { type: "spring", stiffness: 150, damping: 20 },
           borderRadius: { duration: 0.2 }
         }}
-        className="relative flex flex-col bg-white/[0.04] backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.6)] overflow-hidden pointer-events-auto"
+        className={`relative flex flex-col bg-white/[0.04] backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.6)] pointer-events-auto ${isMobileMenuOpen ? 'overflow-hidden' : ''}`}
       >
         {/* Animated Laser Border */}
         <div className="absolute inset-0 z-0 pointer-events-none rounded-[inherit] p-[1px] overflow-hidden" style={{ WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude" }}>
@@ -106,9 +121,40 @@ export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
                           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                         />
                       )}
-                      <Link href={link.href} className={`relative z-10 transition-colors duration-300 ${hoveredLink === link.name ? 'text-white' : ''}`}>
-                        {link.name}
-                      </Link>
+                      {link.href ? (
+                        <Link href={link.href} className={`relative z-10 transition-colors duration-300 flex items-center gap-1 ${hoveredLink === link.name ? 'text-white' : ''}`}>
+                          {link.name}
+                        </Link>
+                      ) : (
+                        <button className={`relative z-10 transition-colors duration-300 flex items-center gap-1 ${hoveredLink === link.name ? 'text-white' : ''}`}>
+                          {link.name} <ChevronDown className="w-3.5 h-3.5 opacity-50" />
+                        </button>
+                      )}
+
+                      {/* Dropdown Menu */}
+                      {link.dropdown && hoveredLink === link.name && (
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[400px]">
+                          <motion.div 
+                            initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                            className="bg-[#111]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col gap-6"
+                          >
+                            {link.dropdown.map((section, idx) => (
+                              <div key={idx} className="flex flex-col gap-3">
+                                <h4 className="text-[10px] font-bold text-white/40 tracking-widest uppercase">{section.title}</h4>
+                                <div className="flex flex-col gap-1">
+                                  {section.items.map((item, i) => (
+                                    <Link key={i} href={item.href} className="group/item flex flex-col p-3 -mx-3 rounded-xl hover:bg-white/5 transition-colors">
+                                      <span className="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">{item.name}</span>
+                                      <span className="text-xs text-white/50 mt-0.5 whitespace-normal leading-relaxed">{item.desc}</span>
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </motion.div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -156,7 +202,32 @@ export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
               className="flex flex-col gap-5 px-6 pb-6 pt-2 md:hidden w-full border-t border-white/5 mt-1 relative z-10"
             >
               {navLinks.map((link) => (
-                <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="text-white/60 hover:text-white text-sm font-medium transition-colors">{link.name}</Link>
+                <div key={link.name} className="flex flex-col gap-3">
+                  {link.href ? (
+                    <Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="text-white/60 hover:text-white text-sm font-medium transition-colors">{link.name}</Link>
+                  ) : (
+                    <>
+                      <div className="text-white/60 text-sm font-medium">{link.name}</div>
+                      {link.dropdown && (
+                        <div className="flex flex-col gap-4 pl-4 border-l border-white/10 mt-1">
+                          {link.dropdown.map((section, idx) => (
+                            <div key={idx} className="flex flex-col gap-3">
+                              <h4 className="text-[10px] font-bold text-white/40 tracking-widest uppercase">{section.title}</h4>
+                              <div className="flex flex-col gap-3">
+                                {section.items.map((item, i) => (
+                                  <Link key={i} href={item.href} onClick={() => setIsMobileMenuOpen(false)} className="flex flex-col gap-0.5">
+                                    <span className="text-sm font-semibold text-white">{item.name}</span>
+                                    <span className="text-xs text-white/40 leading-relaxed whitespace-normal">{item.desc}</span>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
               ))}
             </motion.div>
           )}

@@ -60,6 +60,9 @@ export default async function ProjectsPage() {
                   
                   {/* Context Actions (Visible on Hover) */}
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Link href={`/dashboard/projects/${project.id}/settings`} className="p-2 bg-[#161616] hover:bg-[#222] border border-[#333] hover:border-slate-500 rounded-md text-slate-400 hover:text-white transition-all shadow-sm" title="Project Settings">
+                      <Settings className="w-4 h-4" />
+                    </Link>
                     <ProjectForm project={project} />
                     <DeleteProjectButton id={project.id} projectName={project.name} />
                   </div>

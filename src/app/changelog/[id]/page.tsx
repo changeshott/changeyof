@@ -4,6 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Bell, Zap, Bug, Sparkles } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
 import { Metadata } from 'next';
+import ViewTracker from "@/components/ViewTracker";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -50,6 +51,7 @@ export default async function ChangelogPage({ params }: { params: Promise<{ id: 
     .select("*")
     .eq("project_id", id)
     .eq("status", "published")
+    .or(`scheduled_for.is.null,scheduled_for.lte.${new Date().toISOString()}`)
     .order("published_at", { ascending: false });
 
   const getTypeIcon = (type: string) => {
@@ -116,7 +118,8 @@ export default async function ChangelogPage({ params }: { params: Promise<{ id: 
           ) : (
             <div className="space-y-12">
               {releases.map((release) => (
-                <article key={release.id} className="bg-white dark:bg-[#111] p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-white/10 relative">
+                <article id={`release-article-${release.id}`} key={release.id} className="bg-white dark:bg-[#111] p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-white/10 relative">
+                  <ViewTracker releaseId={release.id} />
                   
                   <div className="flex items-center gap-3 mb-6">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${getTypeColor(release.type).split(' ')[2]} bg-slate-50 dark:bg-black`}>

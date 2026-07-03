@@ -46,6 +46,15 @@ export default async function ProjectSettingsPage({
     hide_branding: false,
   };
 
+  // Fetch user integrations
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: integrations } = await supabase
+    .from("user_integrations")
+    .select("*")
+    .eq("user_id", user?.id);
+
+  const twitterIntegrations = integrations?.filter(i => i.provider === 'twitter') || [];
+
   return (
     <main className="max-w-4xl mx-auto">
       <div className="mb-6">
@@ -63,7 +72,11 @@ export default async function ProjectSettingsPage({
       />
 
       <div className="mt-8">
-        <ProjectSettingsForm project={project} initialSettings={settings} />
+        <ProjectSettingsForm 
+          project={project} 
+          initialSettings={settings} 
+          twitterIntegrations={twitterIntegrations}
+        />
       </div>
     </main>
   );

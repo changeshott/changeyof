@@ -4,7 +4,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useSearchParams } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import { Bell, Zap, Bug, Sparkles, ThumbsUp, ThumbsDown, MessageSquare, Loader2, Send, Megaphone, Heart, Rocket, PartyPopper } from "lucide-react";
+import { Bell, Zap, Bug, Sparkles, ThumbsUp, ThumbsDown, MessageSquare, Loader2, Send, Megaphone, Heart, Rocket, PartyPopper, ExternalLink } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
 
 // Extracted ReleaseCard to handle individual feedback states
@@ -90,6 +90,21 @@ function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectI
         <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-a:text-indigo-500 prose-img:rounded-xl">
           <ReactMarkdown>{release.content}</ReactMarkdown>
         </div>
+
+        {/* CTA Button */}
+        {release.cta_link && (
+          <div className="mt-4">
+            <a 
+              href={release.cta_link} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            >
+              {release.cta_text || "Learn More"}
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        )}
 
         {/* Emoji Reactions */}
         <div className="mt-6 flex items-center gap-2">

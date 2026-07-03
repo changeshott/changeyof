@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { TwitterApi } from "twitter-api-v2";
 
 async function broadcastToSlack(url: string, release: any, projectName: string) {
   try {
@@ -31,6 +32,35 @@ async function broadcastToDiscord(url: string, release: any, projectName: string
     console.error("Discord broadcast failed", e);
   }
 }
+
+async function broadcastToGithub(token: string, repo: string, release: any) {
+  try {
+    const tagName = release.version || `v-${release.slug || release.id.substring(0, 8)}`;
+    const response = await fetch(`https://api.github.com/repos/${repo}/releases`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "Authorization": `Bearer ${token}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tag_name: tagName,
+        name: release.title,
+        body: release.content,
+        draft: false,
+        prerelease: false
+      })
+    });
+    if (!response.ok) {
+        console.error("GitHub API Error", await response.text());
+    }
+  } catch (e) {
+    console.error("GitHub broadcast failed", e);
+  }
+}
+
+// X Web Intent is now handled on the frontend
 
 export async function completeOnboarding(formData: FormData) {
   const supabase = await createClient();
@@ -160,7 +190,10 @@ export async function createRelease(formData: FormData) {
   const meta_description = formData.get("meta_description") as string || null;
   const notify_slack = formData.get("notify_slack") === "true";
   const notify_twitter = formData.get("notify_twitter") === "true";
+  const notify_github = formData.get("notify_github") === "true";
   const target_segment = formData.get("target_segment") as string || "all";
+  const cta_text = formData.get("cta_text") as string || null;
+  const cta_link = formData.get("cta_link") as string || null;
   
   const tagsString = formData.get("tags") as string;
   let tags: string[] = [];
@@ -180,7 +213,7 @@ export async function createRelease(formData: FormData) {
   }
 
   // SECURITY FIX: Verify the user owns the project (IDOR protection)
-  const { data: project } = await supabase.from("projects").select("id, name").eq("id", project_id).eq("user_id", user.id).single();
+  const { data: project } = await supabase.from("projects").select("id, name, github_repo").eq("id", project_id).eq("user_id", user.id).single();
   if (!project) {
     return { error: "Unauthorized: You do not own this project" };
   }
@@ -200,7 +233,10 @@ export async function createRelease(formData: FormData) {
     meta_description,
     notify_slack,
     notify_twitter,
-    target_segment
+    notify_github,
+    target_segment,
+    cta_text,
+    cta_link
   }).select().single();
 
   if (error) {
@@ -209,11 +245,13 @@ export async function createRelease(formData: FormData) {
   }
 
   // Handle broadcasting
-  if (status === "published") {
-    const { data: settings } = await supabase.from("project_settings").select("slack_webhook_url, discord_webhook_url").eq("project_id", project_id).single();
+  const isScheduledForFuture = scheduled_for && new Date(scheduled_for) > new Date();
+  if (status === "published" && !isScheduledForFuture) {
+    const { data: settings } = await supabase.from("project_settings").select("slack_webhook_url, discord_webhook_url, github_token, project_id").eq("project_id", project_id).single();
     if (settings) {
       if (settings.slack_webhook_url) await broadcastToSlack(settings.slack_webhook_url, data, project.name);
       if (settings.discord_webhook_url) await broadcastToDiscord(settings.discord_webhook_url, data, project.name);
+      if (notify_github && settings.github_token && project.github_repo) await broadcastToGithub(settings.github_token, project.github_repo, data);
     }
   }
 
@@ -293,7 +331,10 @@ export async function updateRelease(id: string, formData: FormData) {
   const meta_description = formData.get("meta_description") as string || null;
   const notify_slack = formData.get("notify_slack") === "true";
   const notify_twitter = formData.get("notify_twitter") === "true";
+  const notify_github = formData.get("notify_github") === "true";
   const target_segment = formData.get("target_segment") as string || "all";
+  const cta_text = formData.get("cta_text") as string || null;
+  const cta_link = formData.get("cta_link") as string || null;
 
   const tagsString = formData.get("tags") as string;
   let tags: string[] = [];
@@ -314,7 +355,7 @@ export async function updateRelease(id: string, formData: FormData) {
   }
 
   // Need to ensure the user owns the project this release belongs to
-  const { data: project } = await supabase.from("projects").select("id, name").eq("id", project_id).eq("user_id", user.id).single();
+  const { data: project } = await supabase.from("projects").select("id, name, github_repo").eq("id", project_id).eq("user_id", user.id).single();
 
   if (!project) {
     return { error: "Unauthorized" };
@@ -335,7 +376,10 @@ export async function updateRelease(id: string, formData: FormData) {
     meta_description,
     notify_slack,
     notify_twitter,
-    target_segment
+    notify_github,
+    target_segment,
+    cta_text,
+    cta_link
   }).eq("id", id).select().single();
 
   if (error) {
@@ -344,11 +388,13 @@ export async function updateRelease(id: string, formData: FormData) {
   }
 
   // Handle broadcasting if status changes to published
-  if (status === "published") {
-    const { data: settings } = await supabase.from("project_settings").select("slack_webhook_url, discord_webhook_url").eq("project_id", project_id).single();
+  const isScheduledForFuture = scheduled_for && new Date(scheduled_for) > new Date();
+  if (status === "published" && !isScheduledForFuture) {
+    const { data: settings } = await supabase.from("project_settings").select("slack_webhook_url, discord_webhook_url, github_token, project_id").eq("project_id", project_id).single();
     if (settings) {
       if (settings.slack_webhook_url) await broadcastToSlack(settings.slack_webhook_url, data, project.name);
       if (settings.discord_webhook_url) await broadcastToDiscord(settings.discord_webhook_url, data, project.name);
+      if (notify_github && settings.github_token && project.github_repo) await broadcastToGithub(settings.github_token, project.github_repo, data);
     }
   }
 
@@ -428,6 +474,8 @@ export async function updateProjectSettings(projectId: string, formData: FormDat
   const gitlab_webhook_secret = formData.has("gitlab_webhook_secret") ? formData.get("gitlab_webhook_secret") as string || null : existingSettings?.gitlab_webhook_secret;
   const enable_email_newsletter = formData.has("enable_email_newsletter") ? formData.get("enable_email_newsletter") === "true" : existingSettings?.enable_email_newsletter ?? false;
   const public_api_key = formData.has("public_api_key") ? formData.get("public_api_key") as string || null : existingSettings?.public_api_key;
+  
+  const twitter_integration_id = formData.has("twitter_integration_id") ? formData.get("twitter_integration_id") as string || null : existingSettings?.twitter_integration_id;
 
   const { data, error } = await supabase.from("project_settings").upsert({
     project_id: projectId,
@@ -452,6 +500,7 @@ export async function updateProjectSettings(projectId: string, formData: FormDat
     gitlab_webhook_secret,
     enable_email_newsletter,
     public_api_key,
+    twitter_integration_id,
     updated_at: new Date().toISOString()
   }).select().single();
 

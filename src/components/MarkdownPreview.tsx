@@ -86,18 +86,18 @@ export default function MarkdownPreview({ title, content, date, tags }: Markdown
                     if (href.includes("youtube.com/watch?v=") || href.includes("youtu.be/")) {
                       const videoId = href.includes("v=") ? href.split("v=")[1].split("&")[0] : href.split("youtu.be/")[1]?.split("?")[0];
                       return (
-                        <div className="my-4 aspect-video rounded-lg overflow-hidden border border-neutral-200">
+                        <span className="block my-4 aspect-video rounded-lg overflow-hidden border border-neutral-200">
                           <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${videoId}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                        </div>
+                        </span>
                       );
                     }
                     // Loom Embed
                     if (href.includes("loom.com/share/")) {
                       const videoId = href.split("share/")[1]?.split("?")[0];
                       return (
-                        <div className="my-4 aspect-video rounded-lg overflow-hidden border border-neutral-200">
+                        <span className="block my-4 aspect-video rounded-lg overflow-hidden border border-neutral-200">
                           <iframe width="100%" height="100%" src={`https://www.loom.com/embed/${videoId}`} frameBorder="0" allowFullScreen></iframe>
-                        </div>
+                        </span>
                       );
                     }
                     return <a {...props} target="_blank" rel="noopener noreferrer">{props.children}</a>;

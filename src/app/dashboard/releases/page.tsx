@@ -1,16 +1,43 @@
-import { Plus, Megaphone, CheckCircle2, Clock, Pencil } from "lucide-react";
+import { Plus, Megaphone, CheckCircle2, Clock, Pencil, Eye, CalendarClock } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import DeleteReleaseButton from "@/components/DeleteReleaseButton";
+import ReleasesFilterBar from "@/components/ReleasesFilterBar";
 
 import AnimatedHeader from "@/components/AnimatedHeader";
 
-export default async function ReleasesPage() {
+export default async function ReleasesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const supabase = await createClient();
-  const { data: releases, error } = await supabase
+  const params = await searchParams;
+  const q = params.q as string | undefined;
+  const type = params.type as string | undefined;
+  const status = params.status as string | undefined;
+
+  let query = supabase
     .from('release_notes')
-    .select('*, projects(name)')
+    .select('*, projects(name), metrics(views_count)')
     .order('created_at', { ascending: false });
+
+  if (q) query = query.ilike('title', `%${q}%`);
+  if (type && type !== 'all') query = query.eq('type', type);
+  
+  if (status && status !== 'all') {
+    if (status === 'scheduled') {
+      // It's scheduled if status is published AND scheduled_for is in the future
+      query = query.eq('status', 'published').gt('scheduled_for', new Date().toISOString());
+    } else if (status === 'published') {
+      // It's published if status is published AND (scheduled_for is null OR scheduled_for <= now)
+      query = query.eq('status', 'published').or(`scheduled_for.is.null,scheduled_for.lte.${new Date().toISOString()}`);
+    } else {
+      query = query.eq('status', status);
+    }
+  }
+
+  const { data: releases, error } = await query;
 
   if (error) {
     console.error("Failed to fetch releases:", error);
@@ -30,6 +57,8 @@ export default async function ReleasesPage() {
         </Link>
       </AnimatedHeader>
 
+      <ReleasesFilterBar />
+
       {releases && releases.length > 0 ? (
         <div className="bg-[#111] border border-white/10 rounded-xl overflow-hidden">
           <table className="w-full text-left border-collapse">
@@ -38,6 +67,7 @@ export default async function ReleasesPage() {
                 <th className="p-4">Title</th>
                 <th className="p-4">Status</th>
                 <th className="p-4">Type</th>
+                <th className="p-4 text-center">Views</th>
                 <th className="p-4 text-right">Date</th>
                 <th className="p-4 text-right">Actions</th>
               </tr>
@@ -50,15 +80,37 @@ export default async function ReleasesPage() {
                     <div className="text-xs text-slate-500 font-normal mt-1">{release.projects?.name}</div>
                   </td>
                   <td className="p-4">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${release.status === 'published' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-500/10 text-slate-400'}`}>
-                      {release.status === 'published' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
-                      {release.status}
-                    </span>
+                    {(() => {
+                      const isScheduled = release.status === 'published' && release.scheduled_for && new Date(release.scheduled_for) > new Date();
+                      
+                      if (isScheduled) {
+                        return (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400">
+                            <CalendarClock className="w-3 h-3" /> Scheduled
+                          </span>
+                        );
+                      }
+                      
+                      return (
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${release.status === 'published' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-500/10 text-slate-400'}`}>
+                          {release.status === 'published' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                          {release.status}
+                        </span>
+                      );
+                    })()}
                   </td>
                   <td className="p-4">
                     <span className="inline-block px-2.5 py-1 bg-white/10 rounded text-xs font-medium text-slate-300">
                       {release.type}
                     </span>
+                  </td>
+                  <td className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-1.5 text-slate-400 text-sm">
+                      <Eye className="w-3.5 h-3.5" />
+                      {Array.isArray(release.metrics) && release.metrics.length > 0 
+                        ? release.metrics[0].views_count || 0 
+                        : (release.metrics?.views_count || 0)}
+                    </div>
                   </td>
                   <td className="p-4 text-right text-sm text-slate-400">
                     {new Date(release.created_at).toLocaleDateString()}

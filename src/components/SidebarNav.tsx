@@ -9,7 +9,8 @@ import {
   Code, 
   GitBranch, 
   Globe,
-  BarChart3
+  BarChart3,
+  Settings
 } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 
@@ -43,7 +44,7 @@ export default function SidebarNav({ userEmail }: { userEmail: string }) {
         </Link>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1 mt-4">
+      <nav className="flex-1 px-4 space-y-1 mt-4 overflow-y-auto custom-scrollbar">
         <Link href="/dashboard" className={getLinkClass("/dashboard")}>
           <LayoutDashboard className="w-4 h-4" />
           Overview
@@ -75,6 +76,14 @@ export default function SidebarNav({ userEmail }: { userEmail: string }) {
         </Link>
         
         <div className="pt-6 pb-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          Account
+        </div>
+        <Link href="/dashboard/settings" className={getLinkClass("/dashboard/settings")}>
+          <Settings className="w-4 h-4" />
+          Settings
+        </Link>
+
+        <div className="pt-6 pb-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
           External
         </div>
         <Link href="/" target="_blank" className="flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
@@ -88,7 +97,7 @@ export default function SidebarNav({ userEmail }: { userEmail: string }) {
         </Link>
       </nav>
 
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-white/10 shrink-0">
         <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg border border-white/10 mb-4">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
           <span className="text-xs text-slate-300 font-medium truncate">{userEmail}</span>
