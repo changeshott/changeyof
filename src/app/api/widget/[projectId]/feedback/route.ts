@@ -12,7 +12,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    let { releaseId, sentiment, comment } = body;
+    let { releaseId, sentiment, comment, userIdExt } = body;
 
     if (!releaseId) {
       return NextResponse.json({ error: "Release ID is required" }, { status: 400 });
@@ -42,22 +42,21 @@ export async function POST(
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("feedbacks")
       .insert({
         release_id: releaseId,
         sentiment,
         comment: comment ? comment.slice(0, 1000) : null, // Limit comment length
-      })
-      .select()
-      .single();
+        user_id_ext: userIdExt || null,
+      });
 
     if (error) {
       console.error("API Error inserting feedback:", error);
       return NextResponse.json({ error: "Failed to submit feedback" }, { status: 500 });
     }
 
-    const response = NextResponse.json({ success: true, data });
+    const response = NextResponse.json({ success: true });
     response.headers.set("Access-Control-Allow-Origin", "*");
     return response;
   } catch (err) {

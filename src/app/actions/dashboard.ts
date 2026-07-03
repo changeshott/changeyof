@@ -4,6 +4,34 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
+async function broadcastToSlack(url: string, release: any, projectName: string) {
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: `🚀 *New Release Published: ${projectName}*\n*${release.title}*\n\n${release.content.substring(0, 200)}...`
+      })
+    });
+  } catch (e) {
+    console.error("Slack broadcast failed", e);
+  }
+}
+
+async function broadcastToDiscord(url: string, release: any, projectName: string) {
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: `🚀 **New Release Published: ${projectName}**\n**${release.title}**\n\n${release.content.substring(0, 200)}...`
+      })
+    });
+  } catch (e) {
+    console.error("Discord broadcast failed", e);
+  }
+}
+
 export async function completeOnboarding(formData: FormData) {
   const supabase = await createClient();
   const role = (formData.get("role") as string)?.slice(0, 100);
@@ -118,9 +146,29 @@ export async function createRelease(formData: FormData) {
   const supabase = await createClient();
   const title = (formData.get("title") as string)?.slice(0, 150);
   const content = (formData.get("content") as string)?.slice(0, 5000);
-  const type = formData.get("type") as string;
+  let type = formData.get("type") as string;
+  if (!['New', 'Fix', 'Improvement'].includes(type)) {
+    type = 'New';
+  }
   const status = formData.get("status") as string || "published";
   const project_id = formData.get("project_id") as string;
+  
+  const scheduled_for = formData.get("scheduled_for") as string || null;
+  const version = formData.get("version") as string || null;
+  const slug = formData.get("slug") as string || null;
+  const meta_title = formData.get("meta_title") as string || null;
+  const meta_description = formData.get("meta_description") as string || null;
+  const notify_slack = formData.get("notify_slack") === "true";
+  const notify_twitter = formData.get("notify_twitter") === "true";
+  const target_segment = formData.get("target_segment") as string || "all";
+  
+  const tagsString = formData.get("tags") as string;
+  let tags: string[] = [];
+  try {
+    if (tagsString) tags = JSON.parse(tagsString);
+  } catch (e) {
+    // Ignore JSON parse error
+  }
 
   if (!title || !content || !project_id) {
     return { error: "Missing required fields" };
@@ -132,7 +180,7 @@ export async function createRelease(formData: FormData) {
   }
 
   // SECURITY FIX: Verify the user owns the project (IDOR protection)
-  const { data: project } = await supabase.from("projects").select("id").eq("id", project_id).eq("user_id", user.id).single();
+  const { data: project } = await supabase.from("projects").select("id, name").eq("id", project_id).eq("user_id", user.id).single();
   if (!project) {
     return { error: "Unauthorized: You do not own this project" };
   }
@@ -144,11 +192,29 @@ export async function createRelease(formData: FormData) {
     type,
     status,
     published_at: status === "published" ? new Date().toISOString() : null,
+    scheduled_for,
+    version,
+    tags,
+    slug,
+    meta_title,
+    meta_description,
+    notify_slack,
+    notify_twitter,
+    target_segment
   }).select().single();
 
   if (error) {
     console.error("Error creating release:", error);
     return { error: error.message };
+  }
+
+  // Handle broadcasting
+  if (status === "published") {
+    const { data: settings } = await supabase.from("project_settings").select("slack_webhook_url, discord_webhook_url").eq("project_id", project_id).single();
+    if (settings) {
+      if (settings.slack_webhook_url) await broadcastToSlack(settings.slack_webhook_url, data, project.name);
+      if (settings.discord_webhook_url) await broadcastToDiscord(settings.discord_webhook_url, data, project.name);
+    }
   }
 
   revalidatePath("/dashboard/releases");
@@ -213,9 +279,29 @@ export async function updateRelease(id: string, formData: FormData) {
   const supabase = await createClient();
   const title = (formData.get("title") as string)?.slice(0, 150);
   const content = (formData.get("content") as string)?.slice(0, 5000);
-  const type = formData.get("type") as string;
+  let type = formData.get("type") as string;
+  if (!['New', 'Fix', 'Improvement'].includes(type)) {
+    type = 'New';
+  }
   const status = formData.get("status") as string || "published";
   const project_id = formData.get("project_id") as string;
+
+  const scheduled_for = formData.get("scheduled_for") as string || null;
+  const version = formData.get("version") as string || null;
+  const slug = formData.get("slug") as string || null;
+  const meta_title = formData.get("meta_title") as string || null;
+  const meta_description = formData.get("meta_description") as string || null;
+  const notify_slack = formData.get("notify_slack") === "true";
+  const notify_twitter = formData.get("notify_twitter") === "true";
+  const target_segment = formData.get("target_segment") as string || "all";
+
+  const tagsString = formData.get("tags") as string;
+  let tags: string[] = [];
+  try {
+    if (tagsString) tags = JSON.parse(tagsString);
+  } catch (e) {
+    // Ignore parse error
+  }
 
   if (!title || !content || !project_id) {
     return { error: "Missing required fields" };
@@ -228,7 +314,7 @@ export async function updateRelease(id: string, formData: FormData) {
   }
 
   // Need to ensure the user owns the project this release belongs to
-  const { data: project } = await supabase.from("projects").select("id").eq("id", project_id).eq("user_id", user.id).single();
+  const { data: project } = await supabase.from("projects").select("id, name").eq("id", project_id).eq("user_id", user.id).single();
 
   if (!project) {
     return { error: "Unauthorized" };
@@ -241,11 +327,29 @@ export async function updateRelease(id: string, formData: FormData) {
     type,
     status,
     published_at: status === "published" ? new Date().toISOString() : null,
+    scheduled_for,
+    version,
+    tags,
+    slug,
+    meta_title,
+    meta_description,
+    notify_slack,
+    notify_twitter,
+    target_segment
   }).eq("id", id).select().single();
 
   if (error) {
     console.error("Error updating release:", error);
     return { error: error.message };
+  }
+
+  // Handle broadcasting if status changes to published
+  if (status === "published") {
+    const { data: settings } = await supabase.from("project_settings").select("slack_webhook_url, discord_webhook_url").eq("project_id", project_id).single();
+    if (settings) {
+      if (settings.slack_webhook_url) await broadcastToSlack(settings.slack_webhook_url, data, project.name);
+      if (settings.discord_webhook_url) await broadcastToDiscord(settings.discord_webhook_url, data, project.name);
+    }
   }
 
   revalidatePath("/dashboard/releases");
@@ -278,4 +382,126 @@ export async function deleteRelease(id: string) {
   revalidatePath("/dashboard/releases");
   revalidatePath("/dashboard");
   return { success: true };
+}
+
+export async function updateProjectSettings(projectId: string, formData: FormData) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not authenticated" };
+  }
+
+  // Verify ownership
+  const { data: project } = await supabase.from("projects").select("id").eq("id", projectId).eq("user_id", user.id).single();
+  if (!project) return { error: "Unauthorized" };
+
+  // Fetch existing settings to merge them and allow partial updates
+  const { data: existingSettings } = await supabase
+    .from("project_settings")
+    .select("*")
+    .eq("project_id", projectId)
+    .single();
+
+  const theme_mode = formData.has("theme_mode") ? formData.get("theme_mode") as string : existingSettings?.theme_mode || "auto";
+  const accent_color = formData.has("accent_color") ? formData.get("accent_color") as string : existingSettings?.accent_color || "indigo";
+  const font_family = formData.has("font_family") ? formData.get("font_family") as string : existingSettings?.font_family || "inter";
+  const button_style = formData.has("button_style") ? formData.get("button_style") as string : existingSettings?.button_style || "solid";
+  
+  const trigger_type = formData.has("trigger_type") ? formData.get("trigger_type") as string : existingSettings?.trigger_type || "floating";
+  const unseen_badge = formData.has("unseen_badge") ? formData.get("unseen_badge") === "true" : existingSettings?.unseen_badge ?? true;
+  
+  const header_title = formData.has("header_title") ? formData.get("header_title") as string : existingSettings?.header_title || "Latest Updates";
+  const header_description = formData.has("header_description") ? formData.get("header_description") as string : existingSettings?.header_description || "What's new in our product";
+  const trigger_icon = formData.has("trigger_icon") ? formData.get("trigger_icon") as string : existingSettings?.trigger_icon || "bell";
+  const widget_position = formData.has("widget_position") ? formData.get("widget_position") as string : existingSettings?.widget_position || "bottom-right";
+  const hide_branding = formData.has("hide_branding") ? formData.get("hide_branding") === "true" : existingSettings?.hide_branding ?? false;
+  
+  const custom_domain = formData.has("custom_domain") ? formData.get("custom_domain") as string || null : existingSettings?.custom_domain;
+  const seo_title = formData.has("seo_title") ? formData.get("seo_title") as string || null : existingSettings?.seo_title;
+  const seo_description = formData.has("seo_description") ? formData.get("seo_description") as string || null : existingSettings?.seo_description;
+  const seo_og_image = formData.has("seo_og_image") ? formData.get("seo_og_image") as string || null : existingSettings?.seo_og_image;
+
+  const slack_webhook_url = formData.has("slack_webhook_url") ? formData.get("slack_webhook_url") as string || null : existingSettings?.slack_webhook_url;
+  const discord_webhook_url = formData.has("discord_webhook_url") ? formData.get("discord_webhook_url") as string || null : existingSettings?.discord_webhook_url;
+  const vercel_webhook_secret = formData.has("vercel_webhook_secret") ? formData.get("vercel_webhook_secret") as string || null : existingSettings?.vercel_webhook_secret;
+  const gitlab_webhook_secret = formData.has("gitlab_webhook_secret") ? formData.get("gitlab_webhook_secret") as string || null : existingSettings?.gitlab_webhook_secret;
+  const enable_email_newsletter = formData.has("enable_email_newsletter") ? formData.get("enable_email_newsletter") === "true" : existingSettings?.enable_email_newsletter ?? false;
+  const public_api_key = formData.has("public_api_key") ? formData.get("public_api_key") as string || null : existingSettings?.public_api_key;
+
+  const { data, error } = await supabase.from("project_settings").upsert({
+    project_id: projectId,
+    theme_mode,
+    accent_color,
+    font_family,
+    button_style,
+    trigger_type,
+    unseen_badge,
+    header_title,
+    header_description,
+    trigger_icon,
+    widget_position,
+    hide_branding,
+    custom_domain,
+    seo_title,
+    seo_description,
+    seo_og_image,
+    slack_webhook_url,
+    discord_webhook_url,
+    vercel_webhook_secret,
+    gitlab_webhook_secret,
+    enable_email_newsletter,
+    public_api_key,
+    updated_at: new Date().toISOString()
+  }).select().single();
+
+  if (error) {
+    console.error("Error updating settings:", error);
+    return { error: error.message };
+  }
+
+  revalidatePath(`/dashboard/projects/${projectId}/settings`);
+  revalidatePath("/dashboard/widget");
+  return { success: true, settings: data };
+}
+
+export async function sendMonthlyNewsletter(projectId: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not authenticated" };
+  }
+
+  // Verify ownership
+  const { data: project } = await supabase.from("projects").select("id, name").eq("id", projectId).eq("user_id", user.id).single();
+  if (!project) return { error: "Unauthorized" };
+
+  const { data: settings } = await supabase.from("project_settings").select("enable_email_newsletter").eq("project_id", projectId).single();
+  if (!settings?.enable_email_newsletter) {
+    return { error: "Newsletter feature is not enabled for this project." };
+  }
+
+  // Fetch published releases from the last 30 days
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  const { data: releases } = await supabase
+    .from("release_notes")
+    .select("title, content, published_at")
+    .eq("project_id", projectId)
+    .eq("status", "published")
+    .gte("published_at", thirtyDaysAgo.toISOString())
+    .order("published_at", { ascending: false });
+
+  if (!releases || releases.length === 0) {
+    return { success: true, message: "No releases in the past 30 days to send." };
+  }
+
+  // Mock sending email
+  console.log(`[Mock Mailer] Sending Newsletter for ${project.name}...`);
+  console.log(`[Mock Mailer] Found ${releases.length} releases.`);
+  console.log(`[Mock Mailer] Content: \n`, releases.map(r => `- ${r.title}`).join('\n'));
+  
+  return { success: true, message: "Newsletter successfully sent (mock simulation)." };
 }

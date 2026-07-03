@@ -16,6 +16,11 @@ import LogoutButton from "@/components/LogoutButton";
 export default function SidebarNav({ userEmail }: { userEmail: string }) {
   const pathname = usePathname();
 
+  // Hide the global sidebar when in the Figma-like editor mode
+  if (pathname.includes('/releases/new') || pathname.includes('/edit')) {
+    return null;
+  }
+
   const getLinkClass = (path: string) => {
     // For overview, we need exact match since all other paths start with /dashboard
     const isActive = path === "/dashboard" 

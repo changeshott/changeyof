@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PenTool, CheckCircle2 } from "lucide-react";
+import { PenTool, CheckCircle2, ChevronDown, Rocket } from "lucide-react";
 import { createRelease } from "@/app/actions/dashboard";
 
 interface QuickDraftProps {
@@ -19,7 +19,6 @@ export default function QuickDraft({ projects = [], className = "" }: QuickDraft
     
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
-    // Force status to draft
     formData.append("status", "draft");
     
     const result = await createRelease(formData);
@@ -35,53 +34,60 @@ export default function QuickDraft({ projects = [], className = "" }: QuickDraft
   };
 
   return (
-    <div className={`bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group ${className}`}>
-      <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 blur-3xl pointer-events-none rounded-full transition-opacity group-hover:bg-pink-500/10"></div>
+    <div className={`bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-white/20 transition-colors ${className}`}>
       
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 bg-pink-500/20 text-pink-400 rounded-lg flex items-center justify-center">
+      <div className="flex items-center gap-3 mb-6 relative z-10">
+        <div className="w-10 h-10 bg-white/5 border border-white/10 text-slate-300 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
           <PenTool className="w-5 h-5" />
         </div>
         <div>
-          <h3 className="font-semibold text-slate-300">Quick Draft</h3>
-          <p className="text-xs text-slate-500">Jot down an idea for a release note</p>
+          <h3 className="font-semibold text-white tracking-tight">Quick Draft</h3>
+          <p className="text-xs text-slate-400">Jot down an idea for a release note</p>
         </div>
       </div>
 
       {projects.length === 0 ? (
-        <div className="text-center py-6 text-slate-500 text-sm border border-dashed border-white/10 rounded-xl">
-          Create a project first to use Quick Draft.
+        <div className="flex flex-col items-center justify-center py-8 text-center bg-black/50 border border-dashed border-white/10 rounded-xl relative z-10">
+          <Rocket className="w-6 h-6 text-slate-600 mb-2" />
+          <p className="text-slate-400 font-medium text-xs">Create a project first to use Quick Draft.</p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+        <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+          <div className="relative">
             <select 
               name="project_id" 
               required
-              className="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-pink-500 transition-colors"
+              defaultValue=""
+              className="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm font-medium text-white appearance-none focus:outline-none focus:border-slate-500 transition-colors hover:bg-white/5 cursor-pointer"
             >
+              <option value="" disabled>Select a Project...</option>
               {projects.map((p) => (
-                <option key={p.id} value={p.id}>{p.name}</option>
+                <option key={p.id} value={p.id} className="bg-[#111]">{p.name}</option>
               ))}
             </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
           </div>
           
           <div className="flex gap-2">
-            <select 
-              name="type" 
-              required
-              className="w-1/3 bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-pink-500 transition-colors"
-            >
-              <option value="New">New</option>
-              <option value="Improvement">Improvement</option>
-              <option value="Fix">Fix</option>
-            </select>
+            <div className="relative w-1/3">
+              <select 
+                name="type" 
+                required
+                className="w-full h-full bg-black border border-white/10 rounded-lg pl-3 pr-7 py-2.5 text-sm font-medium text-white appearance-none focus:outline-none focus:border-slate-500 transition-colors hover:bg-white/5 cursor-pointer"
+              >
+                <option value="New">New</option>
+                <option value="Improvement">Improvement</option>
+                <option value="Fix">Fix</option>
+              </select>
+              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+            </div>
+            
             <input 
               type="text" 
               name="title" 
               required 
-              placeholder="Draft title..."
-              className="flex-1 bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-pink-500 transition-colors"
+              placeholder="Give it a catchy title..."
+              className="flex-1 bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm font-medium text-white placeholder-slate-600 focus:outline-none focus:border-slate-500 transition-colors hover:bg-white/5"
             />
           </div>
           
@@ -91,18 +97,18 @@ export default function QuickDraft({ projects = [], className = "" }: QuickDraft
               required
               rows={3}
               placeholder="What's this update about?"
-              className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-pink-500 transition-colors resize-none"
+              className="w-full bg-black border border-white/10 rounded-lg px-3 py-2.5 text-sm font-medium text-white placeholder-slate-600 focus:outline-none focus:border-slate-500 transition-colors hover:bg-white/5 resize-none"
             ></textarea>
           </div>
           
           <button 
             type="submit" 
             disabled={isLoading || isSuccess}
-            className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium py-2.5 rounded-lg transition-colors text-sm disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-200 text-black font-semibold py-2.5 rounded-lg transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none text-sm"
           >
-            {isLoading ? "Saving..." : isSuccess ? (
-              <><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Saved as Draft</>
-            ) : "Save Draft"}
+            {isLoading ? "Saving Draft..." : isSuccess ? (
+              <><CheckCircle2 className="w-4 h-4" /> Saved</>
+            ) : "Save to Drafts"}
           </button>
         </form>
       )}
