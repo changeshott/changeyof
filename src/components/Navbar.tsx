@@ -46,6 +46,28 @@ const navLinks = [
       }
     ]
   },
+  {
+    name: "Use Cases",
+    dropdown: [
+      {
+        title: "SCENARIOS",
+        items: [
+          { name: "Company Updates", desc: "Leadership, ops, and founders updates", href: "/use-cases/company-updates" },
+          { name: "Community Updates", desc: "Keep your community in the loop", href: "/use-cases/community-updates" },
+          { name: "Internal Communication", desc: "Company updates hub", href: "/use-cases/internal-communication" },
+          { name: "Incident & Status Updates", desc: "Maintenance and downtime notices", href: "/use-cases/incident-updates" },
+        ]
+      },
+      {
+        title: "GROWTH",
+        items: [
+          { name: "Feature Adoption", desc: "Drive usage with onboarding nudges", href: "/use-cases/feature-adoption" },
+          { name: "Targeted Communication", desc: "Show the right update to the right user", href: "/use-cases/targeted-communication" },
+          { name: "Mobile App Announcements", desc: "Updates inside iOS & Android apps", href: "/use-cases/mobile-announcements" },
+        ]
+      }
+    ]
+  },
   { name: "Integrations", href: "#integrations" },
   { name: "Pricing", href: "#pricing" },
   { name: "FAQ", href: "#faq" }
