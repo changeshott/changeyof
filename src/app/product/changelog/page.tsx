@@ -50,14 +50,14 @@ function SectionHeading({ children, className = "" }: { children: React.ReactNod
   );
 }
 
-function SectionDescription({ children }: { children: React.ReactNode }) {
+function SectionDescription({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <motion.p
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.2 }}
-      className="text-base md:text-lg text-white/50 max-w-2xl leading-relaxed mt-5"
+      className={`text-base md:text-lg text-white/50 max-w-2xl leading-relaxed mt-5 ${className}`}
     >
       {children}
     </motion.p>
