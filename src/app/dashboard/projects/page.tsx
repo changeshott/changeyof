@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Globe, Plus, MessageSquare, Code, Settings } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import ProjectForm from "@/components/ProjectForm";

@@ -3,7 +3,7 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Search, Filter, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useDebounce } from "@/hooks/useDebounce"; // Need to check if this exists or implement a simple one inside
+
 
 export default function ReleasesFilterBar() {
   const router = useRouter();

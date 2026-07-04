@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     let data;
     try {
       data = JSON.parse(payload);
-    } catch (e) {
+    } catch {
       return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
     }
 
@@ -51,12 +51,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "No commits found in push" }, { status: 200 });
     }
 
-    const commitMessages = commits.map((c: any) => c.message).join("\n");
+    const commitMessages = commits.map((c: { message: string }) => c.message).join("\n");
 
     const aiGeneratedTitle = `Update: ${commits.length} new changes from GitLab`;
     let aiGeneratedContent = `We've just pushed some new updates.\n\n### What's New:\n`;
     
-    commits.forEach((c: any) => {
+    commits.forEach((c: { message: string }) => {
       aiGeneratedContent += `- ${c.message.split("\n")[0]}\n`;
     });
     

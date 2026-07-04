@@ -18,13 +18,17 @@ export default function Footer() {
           </div>
 
           {/* Links Container */}
-          <div className="flex gap-16 md:gap-24">
+          <div className="flex flex-col sm:flex-row gap-12 md:gap-24 w-full sm:w-auto items-center sm:items-start text-center sm:text-left">
             
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-black mb-2 uppercase tracking-widest text-[10px]">Platform</span>
               <Link href="/" className="hover:text-black transition-colors">Home</Link>
+              <Link href="/product/changelog" className="hover:text-black transition-colors">Changelog & News Feed</Link>
+              <Link href="/product/in-widget" className="hover:text-black transition-colors">In-App Widgets</Link>
+              <Link href="/product/in-app-notifications" className="hover:text-black transition-colors">In-App Notifications</Link>
+              <Link href="/product/multi-channel-updates" className="hover:text-black transition-colors">Multi-Channel Updates</Link>
+              <Link href="/product/mobile-announcements" className="hover:text-black transition-colors">Mobile Announcements</Link>
               <Link href="#pricing" className="hover:text-black transition-colors">Pricing</Link>
-              <Link href="/login" className="hover:text-black transition-colors">Login</Link>
             </div>
 
             <div className="flex flex-col gap-4">

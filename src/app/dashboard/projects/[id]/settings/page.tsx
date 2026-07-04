@@ -28,7 +28,7 @@ export default async function ProjectSettingsPage({
     ? project.project_settings[0] 
     : project.project_settings;
 
-  let settings = settingsData || {
+  const settings = settingsData || {
     theme_mode: "auto",
     accent_color: "indigo",
     font_family: "inter",

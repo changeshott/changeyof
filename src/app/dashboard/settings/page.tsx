@@ -86,7 +86,7 @@ export default async function GlobalSettingsPage() {
             {twitterIntegrations && twitterIntegrations.length > 0 && (
               <div className="mt-4 space-y-2">
                 <h5 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Connected Accounts</h5>
-                {twitterIntegrations.map((integration: any) => (
+                {twitterIntegrations.map((integration: { id: string, account_username: string }) => (
                   <div key={integration.id} className="flex items-center justify-between bg-sky-500/5 border border-sky-500/20 px-4 py-2.5 rounded-lg">
                     <span className="text-sm font-medium text-sky-400">@{integration.account_username}</span>
                     <span className="text-[10px] text-sky-500/70 uppercase font-semibold">Active</span>

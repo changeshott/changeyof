@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import GridSnakes from "@/components/GridSnakes";
 import InteractiveScene from "@/components/InteractiveScene";
@@ -19,7 +19,22 @@ export default function Home() {
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
+
   const { scrollY, scrollYProgress } = useScroll();
+
+  // Handle scroll lock delay on initial load
+  useEffect(() => {
+    // Lock scroll
+    document.body.style.overflow = "hidden";
+    const timer = setTimeout(() => {
+      document.body.style.overflow = "";
+    }, 2500); // 2.5s delay
+
+    return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 100); // Sembunyikan navbar setelah scroll 100px ke bawah

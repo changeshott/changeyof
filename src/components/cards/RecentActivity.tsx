@@ -1,7 +1,9 @@
 import { Megaphone, MessageSquare, ThumbsUp, ThumbsDown } from "lucide-react";
 
 interface RecentActivityProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   releases: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   feedbacks: any[];
   className?: string;
 }
@@ -75,7 +77,7 @@ export default function RecentActivity({ releases = [], feedbacks = [], classNam
                   {activity.type === 'release' ? (
                     <>
                       <p className="text-sm text-white font-medium truncate">
-                        Published <span className="text-indigo-400">"{activity.data.title}"</span>
+                        Published <span className="text-indigo-400">&quot;{activity.data.title}&quot;</span>
                       </p>
                       <p className="text-xs text-slate-400 mt-1">
                         {activity.data.projects?.name} • {timeAgo(activity.date)}
@@ -88,13 +90,13 @@ export default function RecentActivity({ releases = [], feedbacks = [], classNam
                       </p>
                       {activity.data.comment ? (
                         <p className="text-sm text-slate-300 italic mt-1 truncate">
-                          "{activity.data.comment}"
+                          &quot;{activity.data.comment}&quot;
                         </p>
                       ) : (
                         <p className="text-xs text-slate-500 mt-1">Reaction only</p>
                       )}
                       <p className="text-xs text-slate-400 mt-1">
-                        on "{activity.data.release_notes?.title}" • {timeAgo(activity.date)}
+                        on &quot;{activity.data.release_notes?.title}&quot; • {timeAgo(activity.date)}
                       </p>
                     </>
                   )}

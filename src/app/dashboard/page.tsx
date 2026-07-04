@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Plus, Activity, Eye, MessageSquare, ThumbsUp, TrendingUp, BarChart3, Star, Frown, Meh, Smile } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
@@ -46,7 +47,7 @@ export default async function DashboardOverviewPage() {
       
       let rCount = 0;
       if (m.reactions && typeof m.reactions === 'object') {
-        const reacts = m.reactions as any;
+        const reacts = m.reactions as Record<string, number>;
         rCount = (reacts.likes || 0) + (reacts.love || 0) + (reacts.hooray || 0);
         totalReactions += rCount;
       }

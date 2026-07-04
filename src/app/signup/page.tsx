@@ -78,7 +78,7 @@ export default function SignupPage() {
     setLoading(true);
     try {
       await loginWithGithub();
-    } catch (err) {
+    } catch {
       // Next.js redirects throw an error that we must catch and ignore
     }
   };
@@ -97,7 +97,7 @@ export default function SignupPage() {
         setSuccess(response.success);
         setLoading(false);
       }
-    } catch (err) {
+    } catch {
       // Next.js redirect catch
     }
   };

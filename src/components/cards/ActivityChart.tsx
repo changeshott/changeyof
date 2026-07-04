@@ -1,56 +1,62 @@
 "use client";
 
-import { useMemo } from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 interface ActivityChartProps {
   className?: string;
 }
 
+const generateMockData = () => {
+  const today = new Date();
+  const result = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    
+    const baseViews = 50 + (6 - i) * 20;
+    const views = Math.floor(baseViews + Math.random() * 40);
+    const reactions = Math.floor(views * 0.3 + Math.random() * 10);
+    
+    result.push({
+      date: dateStr,
+      views,
+      reactions,
+    });
+  }
+  return result;
+};
+
+const mockData = generateMockData();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: any[]; label?: string }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-[#1a1a1a] border border-white/10 rounded-lg p-3 shadow-xl text-sm">
+        <p className="text-slate-400 mb-2 font-medium">{label}</p>
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {payload.map((entry: any, index: number) => (
+          <div key={index} className="flex items-center gap-2 mt-1">
+            <div 
+              className="w-2 h-2 rounded-full" 
+              style={{ backgroundColor: entry.color }}
+            />
+            <span className="text-white capitalize">{entry.name}:</span>
+            <span className="font-bold ml-auto">{entry.value}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function ActivityChart({ className = "" }: ActivityChartProps) {
   // Generate mock data for the last 7 days
-  const data = useMemo(() => {
-    const today = new Date();
-    const result = [];
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(today.getDate() - i);
-      const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      
-      // Mock values with some random fluctuation but generally going up
-      const baseViews = 50 + (6 - i) * 20;
-      const views = Math.floor(baseViews + Math.random() * 40);
-      const reactions = Math.floor(views * 0.3 + Math.random() * 10);
-      
-      result.push({
-        date: dateStr,
-        views,
-        reactions,
-      });
-    }
-    return result;
-  }, []);
+  const data = mockData;
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-[#1a1a1a] border border-white/10 rounded-lg p-3 shadow-xl text-sm">
-          <p className="text-slate-400 mb-2 font-medium">{label}</p>
-          {payload.map((entry: any, index: number) => (
-            <div key={index} className="flex items-center gap-2 mt-1">
-              <div 
-                className="w-2 h-2 rounded-full" 
-                style={{ backgroundColor: entry.color }}
-              />
-              <span className="text-white capitalize">{entry.name}:</span>
-              <span className="font-bold ml-auto">{entry.value}</span>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
+
 
   return (
     <div className={`bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group ${className}`}>

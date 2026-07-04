@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #6366f1;
-  /* Indigo */
-  --color-brand-light: #818cf8;
+  --color-brand: #fafafa;
+  --color-brand-light: #ffffff;
   --color-surface: rgba(5, 5, 5, 0.90); /* Hampir solid hitam agar cahaya ular terblokir */
   --color-surface-border: rgba(255, 255, 255, 0.08);
 }

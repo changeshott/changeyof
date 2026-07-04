@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Sparkles, Save, Send, Clock, Tag, GitBranch, Image as ImageIcon, X, Plus, LayoutDashboard, ChevronDown, Globe, Hash, MessageSquare, Share2, FileText, ExternalLink, HelpCircle } from "lucide-react";
@@ -6,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { createRelease } from "@/app/actions/dashboard";
-import { motion, AnimatePresence } from "framer-motion";
+
 import MarkdownPreview from "@/components/MarkdownPreview";
 import ShareReleaseModal from "@/components/ShareReleaseModal";
 
@@ -57,7 +58,7 @@ export default function ReleaseEditorPage() {
   const [version, setVersion] = useState("");
   const [scheduledFor, setScheduledFor] = useState("");
   
-  const [isGenerating, setIsGenerating] = useState(false);
+
   const [isSaving, setIsSaving] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
   
@@ -88,7 +89,7 @@ export default function ReleaseEditorPage() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const { data: projectsData, error } = await supabase.from("projects").select("id, name, github_repo");
+      const { data: projectsData } = await supabase.from("projects").select("id, name, github_repo");
       
       if (projectsData && projectsData.length > 0) {
         // Fetch settings separately to avoid PostgREST relationship cache issues
@@ -107,20 +108,12 @@ export default function ReleaseEditorPage() {
       setIsLoadingProjects(false);
     };
     fetchProjects();
-  }, []);
+  }, [supabase]);
 
   // Fetching projects logic remains
   const selectedProject = projects.find(p => p.id === projectId);
 
-  const handleGenerateAI = () => {
-    setIsGenerating(true);
-    setTimeout(() => {
-      setTitle("Introducing AI-Powered Release Notes");
-      setContent("We are thrilled to announce that Changeyof now supports AI-generated release notes! Simply paste your technical git commits, and our AI will translate them into beautiful, user-friendly announcements in seconds.\n\n### What's included:\n- One-click summaries\n- Automatic categorization (New, Fix, Improvement)\n- Tone adjustment for your brand");
-      setTags(["New", "Improvement"]);
-      setIsGenerating(false);
-    }, 1500);
-  };
+
 
   const loadTemplate = (templateType: string) => {
     if (templateType === "weekly") {

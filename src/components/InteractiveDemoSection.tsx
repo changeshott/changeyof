@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { ArrowDownRight, Rocket, CheckCircle2, Loader2, MousePointer2 } from "lucide-react";
+import { ArrowDownRight, Rocket, CheckCircle2, Loader2 } from "lucide-react";
 
 export default function InteractiveDemoSection() {
   const [isDeploying, setIsDeploying] = useState(false);

@@ -4,7 +4,18 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, X, Sparkles, Zap, Bug, ThumbsUp, Heart, Send } from "lucide-react";
 
-const ChangelogItem = ({ item }: { item: any }) => {
+type ChangelogItemType = {
+  id: number;
+  type: string;
+  icon: React.ReactNode;
+  title: string;
+  date: string;
+  description: string;
+  likes: number;
+  loves: number;
+};
+
+const ChangelogItem = ({ item }: { item: ChangelogItemType }) => {
   const [liked, setLiked] = useState(false);
   const [loved, setLoved] = useState(false);
 

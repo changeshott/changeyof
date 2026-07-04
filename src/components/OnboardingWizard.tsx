@@ -4,12 +4,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Rocket, User, Briefcase, Globe, ArrowRight, CheckCircle2 } from "lucide-react";
 import { completeOnboarding } from "@/app/actions/dashboard";
-import { useRouter } from "next/navigation";
 import GridSnakes from "@/components/GridSnakes";
 import Particles from "@/components/Particles";
 
 export default function OnboardingWizard() {
-  const router = useRouter();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -115,7 +113,7 @@ export default function OnboardingWizard() {
           </motion.span>
         </motion.h1>
         <p className="text-xs md:text-sm text-white/50 max-w-sm mx-auto leading-relaxed">
-          You're just a few steps away from an automated, beautiful changelog. Let's get your workspace set up.
+          You&apos;re just a few steps away from an automated, beautiful changelog. Let&apos;s get your workspace set up.
         </p>
         
         {/* Progress Bar */}

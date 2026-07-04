@@ -51,15 +51,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "No commits found in push" }, { status: 200 });
     }
 
-    const commitMessages = commits.map((c: any) => c.message).join("\n");
+    const commitMessages = commits.map((c: { message: string }) => c.message).join("\n");
 
     // --- MOCK AI DRAFTING ---
     // In reality, we would send `commitMessages` to OpenAI/Gemini
     // Prompt: "Translate these technical commit messages into a user-friendly release note."
-    let aiGeneratedTitle = `Update: ${commits.length} new changes`;
+    const aiGeneratedTitle = `Update: ${commits.length} new changes`;
     let aiGeneratedContent = `We've just pushed some new updates to improve your experience.\n\n### What's New:\n`;
     
-    commits.forEach((c: any) => {
+    commits.forEach((c: { message: string }) => {
       aiGeneratedContent += `- ${c.message.split("\n")[0]}\n`;
     });
     

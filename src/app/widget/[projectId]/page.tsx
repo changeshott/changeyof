@@ -4,10 +4,11 @@ import React, { useEffect, useState, Suspense } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useSearchParams } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import { Bell, Zap, Bug, Sparkles, ThumbsUp, ThumbsDown, MessageSquare, Loader2, Send, Megaphone, Heart, Rocket, PartyPopper, ExternalLink } from "lucide-react";
+import { Bell, Zap, Bug, Sparkles, ThumbsUp, Loader2, Send, Megaphone, Heart, Rocket, PartyPopper, ExternalLink } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
 
 // Extracted ReleaseCard to handle individual feedback states
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectId: string, userIdExt: string | null }) {
   const [reactedWith, setReactedWith] = useState<string | null>(null);
   const [feedbackState, setFeedbackState] = useState<'idle' | 'submitting' | 'done'>('idle');
@@ -169,11 +170,12 @@ function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectI
 
 function WidgetContent({ projectId }: { projectId: string }) {
   const searchParams = useSearchParams();
-  const fontParam = searchParams.get('font') || 'inter';
   const userId = searchParams.get('userId');
   const segment = searchParams.get('segment');
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [releases, setReleases] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [settings, setSettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
@@ -219,7 +221,7 @@ function WidgetContent({ projectId }: { projectId: string }) {
         query = query.eq("target_segment", "all");
       }
 
-      const { data, error } = await query;
+      const { data } = await query;
 
       if (data) {
         setReleases(data);
@@ -244,6 +246,7 @@ function WidgetContent({ projectId }: { projectId: string }) {
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === 'WIDGET_SETTINGS_UPDATE') {
         const newStgs = event.data.settings;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setSettings((prev: any) => ({ ...prev, ...newStgs }));
         
         // Apply theme mode dynamically
@@ -263,7 +266,7 @@ function WidgetContent({ projectId }: { projectId: string }) {
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [projectId, supabase]);
+  }, [projectId, supabase, segment, userId]);
 
   if (loading) {
     return (
@@ -289,7 +292,7 @@ function WidgetContent({ projectId }: { projectId: string }) {
   }
 
   // Dynamic accent colors based on settings
-  let bgClass = "bg-white dark:bg-[#0a0a0a]";
+  const bgClass = "bg-white dark:bg-[#0a0a0a]";
   
   const headerTitle = settings?.header_title || "Latest Updates";
   const headerDesc = settings?.header_description || "What's new in our product";

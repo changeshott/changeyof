@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Plus, X, Pencil } from "lucide-react";
 import { createProject, updateProject } from "@/app/actions/dashboard";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ProjectForm({ project }: { project?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

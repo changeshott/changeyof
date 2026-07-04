@@ -47,7 +47,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await loginWithGithub();
-    } catch (err) {
+    } catch {
       // Next.js redirects throw an error that we must catch and ignore
     }
   };
@@ -61,7 +61,7 @@ export default function LoginPage() {
         setError(response.error);
         setLoading(false);
       }
-    } catch (err) {
+    } catch {
       // Next.js redirect catch
     }
   };
@@ -111,7 +111,7 @@ export default function LoginPage() {
             Welcome back
           </h2>
           <p className="text-sm text-slate-400">
-            Don't have an account? <Link href="/signup" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-indigo-400/30 hover:after:bg-indigo-300">Sign up</Link>
+            Don&apos;t have an account? <Link href="/signup" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-indigo-400/30 hover:after:bg-indigo-300">Sign up</Link>
           </p>
         </div>
 

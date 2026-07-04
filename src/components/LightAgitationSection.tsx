@@ -55,7 +55,7 @@ const cards = [
   }
 ];
 
-function ScrollCard({ item, index, total, scrollYProgress }: { item: any, index: number, total: number, scrollYProgress: MotionValue<number> }) {
+function ScrollCard({ item, index, total, scrollYProgress }: { item: typeof cards[0], index: number, total: number, scrollYProgress: MotionValue<number> }) {
   // Estimate the scroll progress point where this card reaches the center.
   // Since x goes from 0% to -55% between scroll progress 0 and 0.55, we distribute the 5 cards evenly over 0.55.
   const cardCenter = index * (0.55 / (total - 1));

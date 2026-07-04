@@ -80,6 +80,7 @@ export default function MarkdownPreview({ title, content, date, tags }: Markdown
             {content ? (
               <ReactMarkdown
                 components={{
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   a: ({ node, ...props }) => {
                     const href = props.href || "";
                     // YouTube Embed

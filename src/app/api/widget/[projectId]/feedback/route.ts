@@ -12,7 +12,10 @@ export async function POST(
     }
 
     const body = await request.json();
-    let { releaseId, sentiment, comment, userIdExt } = body;
+    const releaseId = body.releaseId;
+    let sentiment = body.sentiment;
+    const comment = body.comment;
+    const userIdExt = body.userIdExt;
 
     if (!releaseId) {
       return NextResponse.json({ error: "Release ID is required" }, { status: 400 });

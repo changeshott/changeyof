@@ -3,7 +3,7 @@ import { TwitterApi } from "twitter-api-v2";
 import { cookies } from "next/headers";
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
+
 
   const clientId = process.env.TWITTER_CLIENT_ID;
   const clientSecret = process.env.TWITTER_CLIENT_SECRET;
@@ -34,8 +34,8 @@ export async function GET(request: NextRequest) {
     cookieStore.set("twitter_oauth_verifier", codeVerifier, { httpOnly: true, maxAge: 600, path: '/' });
 
     return NextResponse.redirect(url);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Twitter Auth Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unknown error" }, { status: 500 });
   }
 }

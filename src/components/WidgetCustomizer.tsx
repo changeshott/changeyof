@@ -10,6 +10,7 @@ export default function WidgetCustomizer({
   onChange 
 }: { 
   projectId: string, 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?: (state: any) => void 
 }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -67,6 +68,7 @@ export default function WidgetCustomizer({
       fetchSettings();
     }
     return () => { isMounted = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, supabase]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -261,7 +263,7 @@ export default function WidgetCustomizer({
               onChange={handleChange}
               className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
             >
-              <option value="false">Show "Powered by Changeyof"</option>
+              <option value="false">Show &quot;Powered by Changeyof&quot;</option>
               <option value="true">Hide Branding (Pro)</option>
             </select>
           </div>

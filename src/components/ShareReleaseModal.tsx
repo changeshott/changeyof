@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface ShareReleaseModalProps {
   isOpen: boolean;
   onClose: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   release: any;
   projectDomain?: string;
 }

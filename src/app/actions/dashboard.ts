@@ -3,9 +3,9 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { TwitterApi } from "twitter-api-v2";
 
-async function broadcastToSlack(url: string, release: any, projectName: string) {
+
+async function broadcastToSlack(url: string, release: { title: string, content: string }, projectName: string) {
   try {
     await fetch(url, {
       method: "POST",
@@ -19,7 +19,7 @@ async function broadcastToSlack(url: string, release: any, projectName: string) 
   }
 }
 
-async function broadcastToDiscord(url: string, release: any, projectName: string) {
+async function broadcastToDiscord(url: string, release: { title: string, content: string }, projectName: string) {
   try {
     await fetch(url, {
       method: "POST",
@@ -33,7 +33,7 @@ async function broadcastToDiscord(url: string, release: any, projectName: string
   }
 }
 
-async function broadcastToGithub(token: string, repo: string, release: any) {
+async function broadcastToGithub(token: string, repo: string, release: { title: string, content: string, version?: string, slug?: string, id: string }) {
   try {
     const tagName = release.version || `v-${release.slug || release.id.substring(0, 8)}`;
     const response = await fetch(`https://api.github.com/repos/${repo}/releases`, {
@@ -199,7 +199,7 @@ export async function createRelease(formData: FormData) {
   let tags: string[] = [];
   try {
     if (tagsString) tags = JSON.parse(tagsString);
-  } catch (e) {
+  } catch {
     // Ignore JSON parse error
   }
 
@@ -340,7 +340,7 @@ export async function updateRelease(id: string, formData: FormData) {
   let tags: string[] = [];
   try {
     if (tagsString) tags = JSON.parse(tagsString);
-  } catch (e) {
+  } catch {
     // Ignore parse error
   }
 

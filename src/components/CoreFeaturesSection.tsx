@@ -54,7 +54,9 @@ const features = [
   }
 ];
 
-function FeatureScrollCard({ feature, index, total, scrollYProgress }: { feature: any, index: number, total: number, scrollYProgress: MotionValue<number> }) {
+type FeatureType = typeof features[0];
+
+function FeatureScrollCard({ feature, index, total, scrollYProgress }: { feature: FeatureType, index: number, total: number, scrollYProgress: MotionValue<number> }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   // Estimate the scroll progress point where this card reaches the center.
@@ -176,8 +178,7 @@ export default function CoreFeaturesSection() {
 
         {/* Scroll-Linked Horizontal Section */}
         <section ref={scrollTargetRef} className="relative h-[400vh] w-full">
-          {/* Sticky container stays on screen */}
-          <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center max-w-7xl mx-auto py-16 md:py-20 px-4 overflow-hidden">
+          <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-start pt-16 md:pt-20 max-w-7xl mx-auto px-4 overflow-hidden">
 
             {/* Header */}
             <motion.div

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { BarChart3, ThumbsUp, ThumbsDown, MessageSquare, Quote } from "lucide-react";
+import { ThumbsUp, ThumbsDown, MessageSquare, Quote } from "lucide-react";
 
 import AnimatedHeader from "@/components/AnimatedHeader";
 
@@ -89,7 +90,7 @@ export default async function AnalyticsPage() {
                           {fb.release_notes?.projects?.name || "Unknown Project"}
                         </span>
                         <span className="text-xs text-slate-400">
-                          on "{fb.release_notes?.title || "Unknown Release"}"
+                          on &quot;{fb.release_notes?.title || "Unknown Release"}&quot;
                         </span>
                       </div>
                       <div className="flex gap-3 text-slate-300">

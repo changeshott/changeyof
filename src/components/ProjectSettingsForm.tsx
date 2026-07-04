@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { updateProjectSettings, updateProject } from "@/app/actions/dashboard";
-import { Save, LayoutTemplate, Palette, Globe, Search, Monitor, Sun, Moon, Webhook, Mail, Terminal } from "lucide-react";
+import { Save, Globe, Search, Webhook, Terminal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ProjectSettingsForm({ project, initialSettings, twitterIntegrations = [] }: { project: any, initialSettings: any, twitterIntegrations?: any[] }) {
   const [activeTab, setActiveTab] = useState("general");
   const [isLoading, setIsLoading] = useState(false);
@@ -365,7 +366,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                       <p className="text-[11px] text-slate-500 mt-2">Example usage:</p>
                       <div className="bg-black border border-[#333] rounded-lg p-3 mt-1 overflow-x-auto">
                         <code className="text-xs text-indigo-300 whitespace-nowrap">
-                          curl -X GET "https://your-domain.com/api/v1/changelog?apiKey={formDataState.public_api_key || 'YOUR_KEY'}"
+                          curl -X GET &quot;https://your-domain.com/api/v1/changelog?apiKey={formDataState.public_api_key || 'YOUR_KEY'}&quot;
                         </code>
                       </div>
                     </div>

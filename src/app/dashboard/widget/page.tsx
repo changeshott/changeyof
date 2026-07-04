@@ -9,7 +9,7 @@ import WidgetCustomizer from "@/components/WidgetCustomizer";
 
 export default function WidgetSetupPage() {
   const supabase = createClient();
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<{id: string, name: string}[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   const [isLoadingProjects, setIsLoadingProjects] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
@@ -22,7 +22,7 @@ export default function WidgetSetupPage() {
 
   useEffect(() => {
     // Only set on mount once
-    setBaseUrl(window.location.origin);
+    setTimeout(() => setBaseUrl(window.location.origin), 0);
     const fetchProjects = async () => {
       const { data } = await supabase.from("projects").select("id, name");
       if (data) {
@@ -73,7 +73,7 @@ export default function WidgetSetupPage() {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
-  const handleSettingsChange = (newSettings: any) => {
+  const handleSettingsChange = (newSettings: Record<string, unknown>) => {
     const iframe = document.getElementById('widget-preview-iframe') as HTMLIFrameElement;
     if (iframe && iframe.contentWindow) {
       iframe.contentWindow.postMessage({ type: 'WIDGET_SETTINGS_UPDATE', settings: newSettings }, '*');

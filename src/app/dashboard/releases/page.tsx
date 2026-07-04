@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Plus, Megaphone, CheckCircle2, Clock, Pencil, Eye, CalendarClock } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
@@ -136,7 +137,7 @@ export default async function ReleasesPage({
         <div className="text-center py-24 border border-dashed border-white/20 rounded-2xl bg-white/5">
           <Megaphone className="w-12 h-12 text-slate-500 mx-auto mb-4" />
           <h3 className="text-xl font-semibold mb-2">No releases yet</h3>
-          <p className="text-slate-400 mb-6 max-w-md mx-auto">You haven't shipped anything recently? Let your users know what you've been building!</p>
+          <p className="text-slate-400 mb-6 max-w-md mx-auto">You haven&apos;t shipped anything recently? Let your users know what you&apos;ve been building!</p>
           <Link 
             href="/dashboard/releases/new"
             className="inline-flex items-center gap-2 bg-white text-black px-6 py-2.5 rounded-lg font-semibold hover:bg-slate-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)]"

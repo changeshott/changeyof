@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     const client = new TwitterApi({ clientId, clientSecret });
     
     // Exchange the code for an access token
-    const { client: loggedClient, accessToken, refreshToken, expiresIn } = await client.loginWithOAuth2({
+    const { client: loggedClient, accessToken, refreshToken } = await client.loginWithOAuth2({
       code,
       codeVerifier: storedVerifier,
       redirectUri: callbackUrl,
@@ -74,8 +74,8 @@ export async function GET(request: NextRequest) {
 
     // Redirect back to global settings
     return NextResponse.redirect(`${origin}/dashboard/settings`);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Twitter Callback Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unknown error" }, { status: 500 });
   }
 }

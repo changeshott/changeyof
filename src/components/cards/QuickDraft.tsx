@@ -5,7 +5,7 @@ import { PenTool, CheckCircle2, ChevronDown, Rocket } from "lucide-react";
 import { createRelease } from "@/app/actions/dashboard";
 
 interface QuickDraftProps {
-  projects: any[];
+  projects: { id: string; name: string }[];
   className?: string;
 }
 
