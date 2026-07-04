@@ -217,7 +217,7 @@ export default function ChangelogProductPage() {
   return (
     <main className="relative bg-[#0a0a0a] text-white overflow-x-hidden">
       {/* Navbar */}
-      <div className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[100] w-full flex justify-center pointer-events-none">
+      <div className="fixed top-2 md:top-4 left-1/2 -translate-x-1/2 z-[100] w-full flex justify-center pointer-events-none">
         <Navbar isHidden={isScrolled} />
       </div>
 
@@ -238,20 +238,24 @@ export default function ChangelogProductPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]"
+            className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-tight"
           >
             Keep a changelog{" "}
             <br className="hidden md:block" />
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <motion.span 
+              animate={{ backgroundPosition: ["200% 0%", "-200% 0%"] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+              className="bg-[linear-gradient(90deg,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_20%,rgba(255,255,255,1)_40%,rgba(255,255,255,1)_100%)] bg-[length:200%_auto] text-transparent bg-clip-text"
+            >
               users actually check
-            </span>
+            </motion.span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25 }}
-            className="text-base md:text-lg text-white/50 max-w-2xl mx-auto mt-6 leading-relaxed"
+            className="text-base sm:text-sm md:text-sm text-white/50 max-w-lg mx-auto mt-6 leading-relaxed"
           >
             A beautifully branded changelog page on your domain. Announce every release, keep users informed, and make every update count.
           </motion.p>
@@ -264,7 +268,7 @@ export default function ChangelogProductPage() {
           >
             <button
               onClick={() => router.push("/login")}
-              className="px-8 py-3.5 rounded-full bg-white text-black font-semibold hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.15)] flex items-center gap-2"
+              className="px-10 py-3.5 rounded-full bg-white text-black font-semibold hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)] flex items-center gap-2"
             >
               Get Started Free <ArrowRight className="w-4 h-4" />
             </button>

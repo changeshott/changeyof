@@ -37,7 +37,7 @@ export default function Home() {
       {/* Global Elements */}
       <CustomCursor />
       <FloatingWidget />
-      <div className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[100] w-full flex justify-center pointer-events-none">
+      <div className="fixed top-2 md:top-4 left-1/2 -translate-x-1/2 z-[100] w-full flex justify-center pointer-events-none">
         <Navbar isHidden={isNavbarHidden} />
       </div>
 

@@ -54,7 +54,7 @@ export default function Navbar({ isHidden = false }: { isHidden?: boolean }) {
 
   return (
     // 'items-start' agar ekspansi height ke arah bawah
-    <div className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-50 flex justify-center items-start w-full pointer-events-none">
+    <div className="fixed top-2 md:top-4 left-1/2 -translate-x-1/2 z-50 flex justify-center items-start w-full pointer-events-none">
       <motion.nav
         initial={{ y: -100, opacity: 0, width: 56, height: 56, borderRadius: 56 }}
         animate={{ 
