@@ -112,7 +112,7 @@ export default function MultiChannelUpdatesPage() {
 
               <div className="flex justify-between items-start mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500 font-bold text-xl">
+                  <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-slate-400 font-bold text-xl">
                     M
                   </div>
                   <div>
@@ -210,8 +210,8 @@ export default function MultiChannelUpdatesPage() {
              {/* Fake Browser Chrome */}
              <div className="flex items-center gap-4 px-4 py-3 bg-white rounded-t-xl border-b border-slate-100">
                 <div className="flex gap-1.5">
-                   <div className="w-3 h-3 rounded-full bg-red-400" />
-                   <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                   <div className="w-3 h-3 rounded-full bg-slate-300" />
+                   <div className="w-3 h-3 rounded-full bg-slate-300" />
                    <div className="w-3 h-3 rounded-full bg-green-400" />
                 </div>
                 <div className="flex-1 bg-slate-50 rounded-md py-1.5 px-4 text-center text-xs text-slate-400 font-mono">

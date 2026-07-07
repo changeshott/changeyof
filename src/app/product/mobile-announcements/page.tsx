@@ -125,7 +125,7 @@ export default function MobileAnnouncementsPage() {
                   <div className="flex items-center gap-1 text-xs font-bold text-slate-700">Product Hunt</div>
                </div>
                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-slate-300 text-slate-300" />)}
                   <span className="text-xs text-slate-500 font-medium ml-2">4.8/5 based on 100+ <span className="underline">reviews</span></span>
                </div>
             </div>
@@ -204,7 +204,7 @@ export default function MobileAnnouncementsPage() {
                   <div className="flex flex-col items-center gap-1 relative opacity-40">
                      <Bell className="w-6 h-6" />
                      <span className="text-[10px] font-medium text-slate-600">What&apos;s New</span>
-                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[9px] text-white flex items-center justify-center font-bold">5</div>
+                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-slate-400 rounded-full text-[9px] text-white flex items-center justify-center font-bold">5</div>
                   </div>
                </div>
             </div>

@@ -24,7 +24,7 @@ export default async function GlobalSettingsPage() {
         {/* Profile Section */}
         <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-indigo-500/10 text-indigo-400 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-white/5 text-white rounded-xl flex items-center justify-center">
               <User className="w-5 h-5" />
             </div>
             <h2 className="text-lg font-semibold text-white">Profile Information</h2>
@@ -36,7 +36,7 @@ export default async function GlobalSettingsPage() {
               <div className="flex items-center gap-3 bg-[#161616] border border-white/5 px-4 py-3 rounded-lg text-slate-300">
                 <Mail className="w-4 h-4 text-slate-500" />
                 <span className="flex-1">{user?.email}</span>
-                <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-md font-medium">Verified</span>
+                <span className="text-[10px] bg-white/5 text-white px-2 py-1 rounded-md font-medium">Verified</span>
               </div>
             </div>
             

@@ -51,7 +51,7 @@ export default async function ProjectsPage() {
                     <div>
                       <h3 className="text-[15px] font-semibold text-white leading-tight">{project.name}</h3>
                       <div className="flex items-center gap-1.5 mt-1">
-                        <span className={`w-1.5 h-1.5 rounded-full ${project.domain ? 'bg-emerald-500' : 'bg-yellow-500'}`}></span>
+                        <span className={`w-1.5 h-1.5 rounded-full ${project.domain ? 'bg-white' : 'bg-slate-400'}`}></span>
                         <p className="text-xs text-slate-400 font-mono">
                           {project.domain || "No domain"}
                         </p>

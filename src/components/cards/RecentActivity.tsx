@@ -57,13 +57,13 @@ export default function RecentActivity({ releases = [], feedbacks = [], classNam
               <div className="flex gap-4">
                 <div className="mt-0.5 shrink-0">
                   {activity.type === 'release' ? (
-                    <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center">
                       <Megaphone className="w-4 h-4" />
                     </div>
                   ) : (
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      activity.data.sentiment === 'positive' ? 'bg-emerald-500/20 text-emerald-400' :
-                      activity.data.sentiment === 'negative' ? 'bg-rose-500/20 text-rose-400' :
+                      activity.data.sentiment === 'positive' ? 'bg-white/10 text-white' :
+                      activity.data.sentiment === 'negative' ? 'bg-slate-400/20 text-rose-400' :
                       'bg-slate-500/20 text-slate-400'
                     }`}>
                       {activity.data.sentiment === 'positive' && <ThumbsUp className="w-4 h-4" />}
@@ -77,7 +77,7 @@ export default function RecentActivity({ releases = [], feedbacks = [], classNam
                   {activity.type === 'release' ? (
                     <>
                       <p className="text-sm text-white font-medium truncate">
-                        Published <span className="text-indigo-400">&quot;{activity.data.title}&quot;</span>
+                        Published <span className="text-white">&quot;{activity.data.title}&quot;</span>
                       </p>
                       <p className="text-xs text-slate-400 mt-1">
                         {activity.data.projects?.name} • {timeAgo(activity.date)}

@@ -16,18 +16,18 @@ function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectI
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "New": return <Zap className="w-4 h-4 text-emerald-400" />;
+      case "New": return <Zap className="w-4 h-4 text-white" />;
       case "Fix": return <Bug className="w-4 h-4 text-rose-400" />;
-      case "Improvement": return <Sparkles className="w-4 h-4 text-blue-400" />;
+      case "Improvement": return <Sparkles className="w-4 h-4 text-slate-200" />;
       default: return <Bell className="w-4 h-4 text-slate-400" />;
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "New": return "bg-emerald-400/10 text-emerald-400 border-emerald-400/20";
+      case "New": return "bg-white/5 text-white border-white/10";
       case "Fix": return "bg-rose-400/10 text-rose-400 border-rose-400/20";
-      case "Improvement": return "bg-blue-400/10 text-blue-400 border-blue-400/20";
+      case "Improvement": return "bg-slate-200/10 text-slate-200 border-slate-200/20";
       default: return "bg-slate-400/10 text-slate-400 border-slate-400/20";
     }
   };
@@ -88,7 +88,7 @@ function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectI
         
         <h3 className="text-base font-bold mb-2 tracking-tight">{release.title}</h3>
         
-        <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-a:text-indigo-500 prose-img:rounded-xl">
+        <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-a:text-white/20 prose-img:rounded-xl">
           <ReactMarkdown>{release.content}</ReactMarkdown>
         </div>
 
@@ -99,7 +99,7 @@ function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectI
               href={release.cta_link} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               {release.cta_text || "Learn More"}
               <ExternalLink className="w-4 h-4" />
@@ -119,7 +119,7 @@ function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectI
                 disabled={!!reactedWith && reactedWith !== emoji}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                   isSelected 
-                    ? 'bg-indigo-500 text-white shadow-md' 
+                    ? 'bg-white/20 text-white shadow-md' 
                     : 'bg-slate-100 dark:bg-white/5 text-slate-500 hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300'
                 } ${!!reactedWith && reactedWith !== emoji ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
@@ -137,13 +137,13 @@ function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectI
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="What do you think of this update?"
-                className="w-full bg-slate-50 dark:bg-black/50 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-sm focus:outline-none focus:border-indigo-500 resize-none h-16 mb-2 placeholder:text-slate-400"
+                className="w-full bg-slate-50 dark:bg-black/50 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-sm focus:outline-none focus:border-white/20 resize-none h-16 mb-2 placeholder:text-slate-400"
               />
               <div className="flex justify-end">
                 <button 
                   onClick={submitFeedback} 
                   disabled={!comment.trim()}
-                  className="px-4 py-1.5 bg-indigo-500 text-white rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-1.5 bg-white/20 text-white rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-3 h-3" /> Submit Feedback
                 </button>
@@ -158,7 +158,7 @@ function ReleaseCard({ release, projectId, userIdExt }: { release: any, projectI
           )}
 
           {feedbackState === 'done' && (
-            <div className="text-xs font-medium text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 text-center py-2 animate-in fade-in">
+            <div className="text-xs font-medium text-white bg-white/5 border border-white/10 rounded-lg p-3 text-center py-2 animate-in fade-in">
               Thanks for your feedback! 🎉
             </div>
           )}
@@ -271,7 +271,7 @@ function WidgetContent({ projectId }: { projectId: string }) {
   if (loading) {
     return (
       <div className="min-h-screen bg-transparent p-4 flex justify-center items-center">
-        <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-2 border-white/20 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -313,7 +313,7 @@ function WidgetContent({ projectId }: { projectId: string }) {
       {/* Widget Header */}
       <div className="sticky top-0 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md border-b border-slate-200 dark:border-white/10 p-4 flex items-center justify-between z-10">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-white">
+          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-white">
             {renderHeaderIcon()}
           </div>
           <div>
@@ -348,7 +348,7 @@ function WidgetContent({ projectId }: { projectId: string }) {
 export default function WidgetPage({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = React.use(params);
   return (
-    <Suspense fallback={<div className="min-h-screen p-4 flex justify-center items-center"><div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+    <Suspense fallback={<div className="min-h-screen p-4 flex justify-center items-center"><div className="w-8 h-8 border-2 border-white/20 border-t-transparent rounded-full animate-spin"></div></div>}>
       <WidgetContent projectId={projectId} />
     </Suspense>
   );

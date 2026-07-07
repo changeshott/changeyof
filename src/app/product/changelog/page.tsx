@@ -495,7 +495,7 @@ export default function ChangelogProductPage() {
                   {/* Preview area */}
                   <div className="max-w-lg mx-auto w-full rounded-2xl border border-white/10 bg-[#0a0a0a] p-6 shadow-inner relative overflow-hidden mt-2">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-500/20 shrink-0">Ya</div>
+                      <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white font-bold shadow-md shadow-white/10 shrink-0">Ya</div>
                       <div className="text-base font-bold text-white whitespace-nowrap">YourApp Changelog</div>
                     </div>
                     <div className="space-y-3 w-[250px] md:w-auto">
@@ -503,7 +503,7 @@ export default function ChangelogProductPage() {
                       <div className="h-4 bg-white/5 rounded-md w-[60%] md:w-1/2" />
                       <div className="h-4 bg-white/5 rounded-md w-[90%] md:w-5/6" />
                     </div>
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl -z-10"></div>
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -z-10"></div>
                   </div>
                 </motion.div>
 
@@ -525,7 +525,7 @@ export default function ChangelogProductPage() {
                           <p className="text-xs md:text-sm text-white/50 truncate">{ch.desc}</p>
                         </div>
                         <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center scale-90">
-                          <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-indigo-400" />
+                          <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
                         </div>
                       </div>
                     ))}

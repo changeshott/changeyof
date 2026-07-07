@@ -16,7 +16,7 @@ export function ChangelogCard({ onClick }: { onClick?: () => void }) {
       className="group relative glass p-1 rounded-2xl w-64 shadow-[0_20px_40px_rgba(0,0,0,0.5)] flex flex-col cursor-none bg-gradient-to-br from-white/[0.08] to-transparent border border-white/10 hover:border-white/20 hover:bg-white/[0.1] transition-all duration-300"
     >
       {/* Dynamic Glow Effect behind the card */}
-      <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[24px] blur-xl opacity-0 group-hover:opacity-25 transition-opacity duration-500 -z-10"></div>
+      <div className="absolute -inset-2 bg-gradient-to-r from-slate-300 to-purple-500 rounded-[24px] blur-xl opacity-0 group-hover:opacity-25 transition-opacity duration-500 -z-10"></div>
 
       {/* Header/Hero of the Card */}
       <div className="h-32 w-full bg-gradient-to-br from-blue-900/50 via-indigo-900/40 to-purple-900/50 relative rounded-t-xl overflow-hidden flex flex-col justify-between p-3 border border-white/5">
@@ -27,15 +27,15 @@ export function ChangelogCard({ onClick }: { onClick?: () => void }) {
          
          {/* Top Section in Header */}
          <div className="relative z-10 flex justify-between items-start w-full">
-           <div className="p-2 rounded-xl bg-blue-500/20 text-blue-300 backdrop-blur-md border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.3)] group-hover:shadow-[0_0_35px_rgba(59,130,246,0.7)] transition-all duration-300">
+           <div className="p-2 rounded-xl bg-slate-300/20 text-blue-300 backdrop-blur-md border border-slate-300/30 shadow-[0_0_20px_rgba(59,130,246,0.3)] group-hover:shadow-[0_0_35px_rgba(59,130,246,0.7)] transition-all duration-300">
               <FileText size={18} className="group-hover:rotate-12 transition-transform duration-300" />
            </div>
            {/* 'Live' Status indicator */}
            <div className="flex flex-col items-end">
              <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10">
                <span className="relative flex h-2 w-2">
-                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-200 opacity-75"></span>
+                 <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-300"></span>
                </span>
                <span className="text-blue-200 text-[8px] font-bold uppercase tracking-widest leading-none mt-px">Live</span>
              </div>
@@ -56,9 +56,9 @@ export function ChangelogCard({ onClick }: { onClick?: () => void }) {
         <div className="flex items-center justify-between mb-2 gap-2">
           <div className="flex items-center gap-1.5">
             <h3 className="text-white/95 font-semibold text-sm tracking-tight group-hover:text-blue-300 transition-colors">Changelog</h3>
-            <Sparkles size={12} className="text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <Sparkles size={12} className="text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          <span className="text-[10px] font-mono font-medium text-blue-200 bg-blue-500/20 px-2 py-0.5 rounded-full border border-blue-400/30 shadow-[0_0_10px_rgba(59,130,246,0.2)]">v2.4.0</span>
+          <span className="text-[10px] font-mono font-medium text-blue-200 bg-slate-300/20 px-2 py-0.5 rounded-full border border-slate-200/30 shadow-[0_0_10px_rgba(59,130,246,0.2)]">v2.4.0</span>
         </div>
         
         <p className="text-white/50 text-xs leading-relaxed mb-4">
@@ -68,15 +68,15 @@ export function ChangelogCard({ onClick }: { onClick?: () => void }) {
         {/* Footer info: Date & Avatars */}
         <div className="flex items-center justify-between mt-auto pt-2 border-t border-white/5">
           <span className="text-white/30 text-[11px] font-medium flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
             Just now
           </span>
           <div className="flex items-center gap-2">
              <div className="flex -space-x-2">
-               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 border-[1.5px] border-[#0a0a0a] shadow-sm z-20"></div>
-               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 border-[1.5px] border-[#0a0a0a] shadow-sm z-10"></div>
+               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-slate-300 border-[1.5px] border-[#0a0a0a] shadow-sm z-20"></div>
+               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-white to-teal-500 border-[1.5px] border-[#0a0a0a] shadow-sm z-10"></div>
              </div>
-             <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 transition-colors">
+             <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-slate-300/20 group-hover:border-slate-300/30 transition-colors">
                 <ArrowRight size={12} className="text-white/40 group-hover:text-blue-300 transition-colors group-hover:translate-x-0.5" />
              </div>
           </div>

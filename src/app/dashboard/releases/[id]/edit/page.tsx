@@ -365,7 +365,7 @@ export default function EditReleasePage() {
                 onChange={(e) => setCustomTagInput(e.target.value)}
                 onKeyDown={addCustomTag}
                 placeholder="Add custom tag (Enter)"
-                className="w-full bg-[#161616] border border-white/10 rounded-lg pl-7 pr-3 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#161616] border border-white/10 rounded-lg pl-7 pr-3 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20"
               />
             </div>
           </div>
@@ -381,7 +381,7 @@ export default function EditReleasePage() {
               value={scheduledFor}
               onChange={(e) => setScheduledFor(e.target.value)}
               style={{ colorScheme: 'dark' }}
-              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 [&::-webkit-calendar-picker-indicator]:opacity-50 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
+              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-white/20 [&::-webkit-calendar-picker-indicator]:opacity-50 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
             />
           </div>
 
@@ -395,7 +395,7 @@ export default function EditReleasePage() {
               value={version}
               onChange={(e) => setVersion(e.target.value)}
               placeholder="e.g. v2.4.1"
-              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono"
+              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-white/20 font-mono"
             />
           </div>
 
@@ -409,7 +409,7 @@ export default function EditReleasePage() {
               value={targetSegment}
               onChange={(e) => setTargetSegment(e.target.value.toLowerCase())}
               placeholder="e.g. all, premium, pro"
-              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-white/20"
             />
           </div>
 
@@ -427,14 +427,14 @@ export default function EditReleasePage() {
                 value={ctaText}
                 onChange={(e) => setCtaText(e.target.value)}
                 placeholder="Button Text (e.g., Update Now)"
-                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20"
               />
               <input 
                 type="text" 
                 value={ctaLink}
                 onChange={(e) => setCtaLink(e.target.value)}
                 placeholder="URL (e.g., https://myapp.com/download)"
-                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono"
+                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20 font-mono"
               />
             </div>
           </div>
@@ -463,7 +463,7 @@ export default function EditReleasePage() {
                     value={slug}
                     onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))}
                     placeholder="my-awesome-release"
-                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20 font-mono"
                   />
                 </div>
                 <div>
@@ -473,7 +473,7 @@ export default function EditReleasePage() {
                     value={metaTitle}
                     onChange={(e) => setMetaTitle(e.target.value)}
                     placeholder="Optional title tag"
-                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20"
                   />
                 </div>
                 <div>
@@ -482,7 +482,7 @@ export default function EditReleasePage() {
                     value={metaDescription}
                     onChange={(e) => setMetaDescription(e.target.value)}
                     placeholder="Brief description for search engines..."
-                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none h-16"
+                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20 resize-none h-16"
                   ></textarea>
                 </div>
               </div>
@@ -500,7 +500,7 @@ export default function EditReleasePage() {
             <div className="flex flex-col gap-2">
               <label className="flex items-center gap-2 cursor-pointer group">
                 <input type="checkbox" className="hidden" checked={notifySlack} onChange={(e) => setNotifySlack(e.target.checked)} />
-                <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifySlack ? 'bg-indigo-500 border-indigo-500' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
+                <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifySlack ? 'bg-white/20 border-white/20' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
                   {notifySlack && <div className="w-2 h-2 bg-white rounded-sm" />}
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-slate-300 group-hover:text-white transition-colors">
@@ -523,7 +523,7 @@ export default function EditReleasePage() {
                         }} 
                         disabled={!isGithubConfigured}
                       />
-                      <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifyGithub && isGithubConfigured ? 'bg-emerald-500 border-emerald-500' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
+                      <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifyGithub && isGithubConfigured ? 'bg-white border-white' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
                         {notifyGithub && isGithubConfigured && <div className="w-2 h-2 bg-white rounded-sm" />}
                       </div>
                       <div className="flex items-center gap-1.5 text-xs text-slate-300 group-hover:text-white transition-colors">
@@ -531,7 +531,7 @@ export default function EditReleasePage() {
                       </div>
                     </label>
                     {!isGithubConfigured && (
-                      <Link href={`/dashboard/projects/${projectId}/settings`} className="text-[10px] text-emerald-500 hover:underline ml-6">
+                      <Link href={`/dashboard/projects/${projectId}/settings`} className="text-[10px] text-white hover:underline ml-6">
                         Configure in Settings
                       </Link>
                     )}

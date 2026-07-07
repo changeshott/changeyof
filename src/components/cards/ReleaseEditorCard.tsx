@@ -15,9 +15,9 @@ export function ReleaseEditorCard({ onClick }: { onClick?: () => void }) {
       transition={{ type: "spring", stiffness: 350, damping: 20 }}
       className="group relative glass p-4 rounded-2xl w-64 shadow-[0_20px_40px_rgba(0,0,0,0.5)] flex flex-col gap-3 cursor-none bg-gradient-to-br from-white/[0.02] to-white/[0.05] border border-white/10 hover:border-white/20 hover:bg-white/[0.08] transition-all duration-300"
     >
-      <div className="absolute -inset-2 bg-gradient-to-r from-pink-500 to-rose-500 rounded-[24px] blur-xl opacity-0 group-hover:opacity-25 transition-opacity duration-500 -z-10"></div>
+      <div className="absolute -inset-2 bg-gradient-to-r from-pink-500 to-slate-400 rounded-[24px] blur-xl opacity-0 group-hover:opacity-25 transition-opacity duration-500 -z-10"></div>
 
-      <div className="h-20 w-full bg-gradient-to-r from-pink-500/10 to-rose-500/10 relative rounded-t-xl p-3 flex flex-col justify-end overflow-hidden border border-white/5">
+      <div className="h-20 w-full bg-gradient-to-r from-pink-500/10 to-slate-400/10 relative rounded-t-xl p-3 flex flex-col justify-end overflow-hidden border border-white/5">
          <div className="absolute top-3 right-3 text-pink-400/50 group-hover:text-pink-300 transition-colors group-hover:rotate-12 duration-300">
            <PenTool size={16} />
          </div>

@@ -84,7 +84,7 @@ export default function InternalCommunicationPage() {
           <div className="flex-1 w-full">
             <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-xl text-white">
                <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
-                 <h4 className="font-bold flex items-center gap-2"><Zap className="w-5 h-5 text-yellow-500" /> Internal Feed</h4>
+                 <h4 className="font-bold flex items-center gap-2"><Zap className="w-5 h-5 text-slate-400" /> Internal Feed</h4>
                  <div className="px-3 py-1 bg-white/10 rounded-full text-xs font-medium">SSO Enabled</div>
                </div>
                <div className="space-y-4">

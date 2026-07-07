@@ -15,12 +15,12 @@ export function UpdateBroadcastedCard({ onClick }: { onClick?: () => void }) {
       transition={{ type: "spring", stiffness: 350, damping: 20 }}
       className="group relative glass p-1 rounded-2xl w-64 shadow-[0_20px_40px_rgba(0,0,0,0.5)] flex flex-col cursor-none bg-gradient-to-br from-white/[0.05] to-transparent border border-white/10 hover:border-white/20 hover:bg-white/[0.1] transition-all duration-300"
     >
-      <div className="absolute -inset-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-[24px] blur-xl opacity-0 group-hover:opacity-25 transition-opacity duration-500 -z-10"></div>
+      <div className="absolute -inset-2 bg-gradient-to-r from-white/20 to-purple-500 rounded-[24px] blur-xl opacity-0 group-hover:opacity-25 transition-opacity duration-500 -z-10"></div>
 
       <div className="h-28 w-full bg-indigo-950/30 relative rounded-t-xl overflow-hidden flex items-center justify-center border border-white/5">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=600&auto=format&fit=crop')] bg-cover bg-center opacity-40 mix-blend-overlay group-hover:scale-125 transition-transform duration-1000 ease-out"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050505]/80"></div>
-        <div className="relative z-10 w-14 h-14 rounded-full bg-indigo-500/30 flex items-center justify-center text-indigo-300 border border-indigo-400/40 shadow-[0_0_20px_rgba(99,102,241,0.5)] backdrop-blur-sm group-hover:shadow-[0_0_35px_rgba(99,102,241,0.8)] transition-all duration-300">
+        <div className="relative z-10 w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-slate-200 border border-white/40 shadow-[0_0_20px_rgba(99,102,241,0.5)] backdrop-blur-sm group-hover:shadow-[0_0_35px_rgba(99,102,241,0.8)] transition-all duration-300">
           <div className="group-hover:scale-110 transition-transform duration-300">
              <Radio size={26} className="animate-pulse" />
           </div>
@@ -29,19 +29,19 @@ export function UpdateBroadcastedCard({ onClick }: { onClick?: () => void }) {
       <div className="p-4 pt-3 relative">
         <div className="flex items-center justify-between mb-1 gap-2">
           <div className="flex items-center gap-1.5">
-            <h3 className="text-white/90 font-semibold text-sm tracking-tight group-hover:text-indigo-300 transition-colors">Broadcast Sent</h3>
-            <Sparkles size={12} className="text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <h3 className="text-white/90 font-semibold text-sm tracking-tight group-hover:text-slate-200 transition-colors">Broadcast Sent</h3>
+            <Sparkles size={12} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          <Bell size={14} className="text-white/40 group-hover:text-indigo-300 transition-colors" />
+          <Bell size={14} className="text-white/40 group-hover:text-slate-200 transition-colors" />
         </div>
-        <p className="text-indigo-300/80 text-xs font-mono mb-3">12,409 Users Reached</p>
+        <p className="text-slate-200/80 text-xs font-mono mb-3">12,409 Users Reached</p>
         <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden relative">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite] opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
           <motion.div 
             initial={{ width: 0 }}
             animate={{ width: "100%" }}
             transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
-            className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full relative z-0"
+            className="h-full bg-gradient-to-r from-white/20 to-purple-500 rounded-full relative z-0"
           />
         </div>
       </div>

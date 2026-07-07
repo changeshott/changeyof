@@ -29,19 +29,19 @@ export default function InteractiveScene({
     switch (activeCard) {
       case "whatsnew":
         return {
-          position: "right", colorClasses: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+          position: "right", colorClasses: "bg-slate-400/20 text-yellow-300 border-slate-400/30",
           badge: "Spotlight", title: "In-App Widget",
           desc: "Keep your community engaged without leaving your product. Sync release notes and gather feedback in real-time.",
         };
       case "updatebroadcast":
         return {
-          position: "right", colorClasses: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
+          position: "right", colorClasses: "bg-white/10 text-slate-200 border-white/10",
           badge: "Network", title: "Instant Broadcast",
           desc: "Push updates to thousands of users instantly. Our edge network ensures everyone is on the same page, zero latency.",
         };
       case "engagement":
         return {
-          position: "right", colorClasses: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+          position: "right", colorClasses: "bg-white/10 text-emerald-300 border-white/30",
           badge: "Analytics", title: "Engagement Metrics",
           desc: "Track exactly how users interact with updates. Measure open rates and sentiment to understand your audience.",
         };

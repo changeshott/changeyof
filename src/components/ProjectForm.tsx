@@ -67,7 +67,7 @@ export default function ProjectForm({ project }: { project?: any }) {
                   required 
                   maxLength={100}
                   placeholder="E.g., Tokopedia"
-                  className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all"
                 />
               </div>
               <div>
@@ -78,7 +78,7 @@ export default function ProjectForm({ project }: { project?: any }) {
                   defaultValue={project?.domain}
                   maxLength={100}
                   placeholder="E.g., tokopedia.com"
-                  className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all"
                 />
               </div>
               <div>
@@ -89,7 +89,7 @@ export default function ProjectForm({ project }: { project?: any }) {
                   defaultValue={project?.github_repo}
                   maxLength={100}
                   placeholder="owner/repo (e.g. vercel/next.js)"
-                  className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all"
                 />
                 <p className="text-[11px] text-slate-500 mt-1.5">Link your repo for AI-powered auto-drafts.</p>
               </div>

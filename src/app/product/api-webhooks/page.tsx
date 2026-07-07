@@ -100,7 +100,7 @@ export default function ApiWebhooksPage() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-300 text-[10px] md:text-xs font-medium mb-5 backdrop-blur-sm"
         >
-          <span className="flex h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" />
+          <span className="flex h-1.5 w-1.5 rounded-full bg-white/20 animate-pulse" />
           GRAPHQL API & WEBHOOKS
         </motion.div>
         

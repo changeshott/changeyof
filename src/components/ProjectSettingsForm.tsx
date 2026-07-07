@@ -123,7 +123,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.name}
                         onChange={handleChange}
                         required 
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all"
                       />
                     </div>
                     <div>
@@ -134,7 +134,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.custom_domain}
                         onChange={handleChange}
                         placeholder="updates.yourdomain.com"
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all"
                       />
                       <p className="text-[11px] text-slate-500 mt-1.5">Map a custom domain to your changelog page.</p>
                     </div>
@@ -164,7 +164,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.seo_title}
                         onChange={handleChange}
                         placeholder={`What's New in ${project.name}`}
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all"
                       />
                     </div>
                     <div>
@@ -175,7 +175,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         onChange={handleChange}
                         placeholder="Check out our latest updates, features, and fixes."
                         rows={3}
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all resize-none"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all resize-none"
                       />
                     </div>
                     <div>
@@ -186,7 +186,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.seo_og_image}
                         onChange={handleChange}
                         placeholder="https://yourdomain.com/og-image.png"
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all"
                       />
                     </div>
                   </div>
@@ -214,7 +214,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.vercel_webhook_secret}
                         onChange={handleChange}
                         placeholder="Your Vercel Secret"
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all"
                       />
                       <p className="text-[11px] text-slate-500 mt-1.5">Endpoint: <code>/api/webhooks/vercel?projectId={project.id}</code></p>
                     </div>
@@ -226,7 +226,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.gitlab_webhook_secret}
                         onChange={handleChange}
                         placeholder="Your GitLab Token"
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all"
                       />
                       <p className="text-[11px] text-slate-500 mt-1.5">Endpoint: <code>/api/webhooks/gitlab?projectId={project.id}</code></p>
                     </div>
@@ -253,7 +253,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.github_token}
                         onChange={handleChange}
                         placeholder="ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all"
                       />
                     </div>
                     
@@ -270,7 +270,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                           name="twitter_integration_id"
                           value={formDataState.twitter_integration_id}
                           onChange={handleChange}
-                          className="w-full bg-black border border-[#333] rounded-lg px-3 py-2 text-sm text-white focus:border-indigo-500 transition-all outline-none"
+                          className="w-full bg-black border border-[#333] rounded-lg px-3 py-2 text-sm text-white focus:border-white/20 transition-all outline-none"
                         >
                           <option value="">-- No Account Selected --</option>
                           {twitterIntegrations.map(acc => (
@@ -280,8 +280,8 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                           ))}
                         </select>
                         {twitterIntegrations.length === 0 && (
-                          <p className="text-[10px] text-yellow-500 mt-2">
-                            No X accounts connected. Connect one in <a href="/dashboard/settings" className="underline hover:text-yellow-400">Settings</a>.
+                          <p className="text-[10px] text-slate-400 mt-2">
+                            No X accounts connected. Connect one in <a href="/dashboard/settings" className="underline hover:text-slate-300">Settings</a>.
                           </p>
                         )}
                       </div>
@@ -295,7 +295,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.slack_webhook_url}
                         onChange={handleChange}
                         placeholder="https://hooks.slack.com/services/..."
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all"
                       />
                     </div>
                     <div>
@@ -306,7 +306,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                         value={formDataState.discord_webhook_url}
                         onChange={handleChange}
                         placeholder="https://discord.com/api/webhooks/..."
-                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                        className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all"
                       />
                     </div>
                   </div>
@@ -321,7 +321,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                       name="enable_email_newsletter" 
                       checked={formDataState.enable_email_newsletter === "true"}
                       onChange={(e) => setFormDataState(prev => ({ ...prev, enable_email_newsletter: e.target.checked ? "true" : "false" }))}
-                      className="w-4 h-4 rounded border-[#333] bg-black text-indigo-500 focus:ring-indigo-500"
+                      className="w-4 h-4 rounded border-[#333] bg-black text-white/20 focus:ring-white/20"
                     />
                     <label htmlFor="enable_email_newsletter" className="text-sm font-medium text-slate-300">
                       Enable automated monthly email newsletter (Mock)
@@ -353,7 +353,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                           value={formDataState.public_api_key}
                           onChange={handleChange}
                           placeholder="Your API Key"
-                          className="flex-1 bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 transition-all"
+                          className="flex-1 bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20 transition-all"
                         />
                         <button
                           type="button"
@@ -365,7 +365,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
                       </div>
                       <p className="text-[11px] text-slate-500 mt-2">Example usage:</p>
                       <div className="bg-black border border-[#333] rounded-lg p-3 mt-1 overflow-x-auto">
-                        <code className="text-xs text-indigo-300 whitespace-nowrap">
+                        <code className="text-xs text-slate-200 whitespace-nowrap">
                           curl -X GET &quot;https://your-domain.com/api/v1/changelog?apiKey={formDataState.public_api_key || 'YOUR_KEY'}&quot;
                         </code>
                       </div>
@@ -379,7 +379,7 @@ export default function ProjectSettingsForm({ project, initialSettings, twitterI
           <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
             <div>
               {message.text && (
-                <span className={`text-sm ${message.type === 'error' ? 'text-red-400' : 'text-emerald-400'}`}>
+                <span className={`text-sm ${message.type === 'error' ? 'text-slate-300' : 'text-white'}`}>
                   {message.text}
                 </span>
               )}

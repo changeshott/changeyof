@@ -160,7 +160,7 @@ export default function OnboardingWizard() {
                           value={formData.username}
                           onChange={(e) => updateForm('username', e.target.value)}
                           placeholder="Choose a username"
-                          className="w-full bg-black border border-[#333] rounded-lg pl-10 pr-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                          className="w-full bg-black border border-[#333] rounded-lg pl-10 pr-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all"
                         />
                       </div>
                     </div>
@@ -173,7 +173,7 @@ export default function OnboardingWizard() {
                           value={formData.date_of_birth}
                           onChange={(e) => updateForm('date_of_birth', e.target.value)}
                           style={{ colorScheme: 'dark' }}
-                          className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
+                          className="w-full bg-black border border-[#333] rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
                         />
                       </div>
                     </div>
@@ -203,7 +203,7 @@ export default function OnboardingWizard() {
                           key={role}
                           onClick={() => updateForm('role', role)}
                           className={`cursor-pointer border rounded-lg py-1.5 px-2 text-center transition-all ${
-                            formData.role === role ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300' : 'bg-black border-[#333] text-slate-400 hover:border-slate-500'
+                            formData.role === role ? 'bg-white/5 border-white text-emerald-300' : 'bg-black border-[#333] text-slate-400 hover:border-slate-500'
                           }`}
                         >
                           <span className="text-[11px] font-medium">{role}</span>
@@ -231,7 +231,7 @@ export default function OnboardingWizard() {
                               key={intent.id}
                               onClick={() => updateForm('usage_intent', intent.id)}
                               className={`cursor-pointer border rounded-lg py-2 px-3 flex items-center justify-between transition-all ${
-                                formData.usage_intent === intent.id ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300' : 'bg-black border-[#333] text-slate-400 hover:border-slate-500'
+                                formData.usage_intent === intent.id ? 'bg-white/5 border-white text-emerald-300' : 'bg-black border-[#333] text-slate-400 hover:border-slate-500'
                               }`}
                             >
                               <span className="text-[11px] font-semibold">{intent.title}</span>

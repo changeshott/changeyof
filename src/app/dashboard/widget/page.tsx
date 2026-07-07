@@ -119,7 +119,7 @@ export default function WidgetSetupPage() {
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
                 disabled={projects.length === 0}
-                className="w-full bg-black border border-[#333] text-sm font-medium text-white focus:outline-none focus:border-indigo-500 rounded-lg px-4 py-2.5"
+                className="w-full bg-black border border-[#333] text-sm font-medium text-white focus:outline-none focus:border-white/20 rounded-lg px-4 py-2.5"
               >
                 {projects.map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
@@ -142,7 +142,7 @@ export default function WidgetSetupPage() {
                   value={userId}
                   onChange={(e) => setUserId(e.target.value)}
                   placeholder="e.g. user_123"
-                  className="w-full bg-black border border-[#333] text-sm text-white focus:outline-none focus:border-indigo-500 rounded-lg px-3 py-2"
+                  className="w-full bg-black border border-[#333] text-sm text-white focus:outline-none focus:border-white/20 rounded-lg px-3 py-2"
                 />
               </div>
               <div>
@@ -152,7 +152,7 @@ export default function WidgetSetupPage() {
                   value={segment}
                   onChange={(e) => setSegment(e.target.value)}
                   placeholder="e.g. premium"
-                  className="w-full bg-black border border-[#333] text-sm text-white focus:outline-none focus:border-indigo-500 rounded-lg px-3 py-2"
+                  className="w-full bg-black border border-[#333] text-sm text-white focus:outline-none focus:border-white/20 rounded-lg px-3 py-2"
                 />
               </div>
             </div>
@@ -165,7 +165,7 @@ export default function WidgetSetupPage() {
               className="w-full bg-[#111] border border-white/10 rounded-2xl p-6 flex items-center justify-between hover:bg-white/5 transition-colors"
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400">
+                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-white">
                   <Palette className="w-5 h-5" />
                 </div>
                 <div className="text-left">
@@ -183,22 +183,22 @@ export default function WidgetSetupPage() {
               <div className="flex">
                 <button onClick={() => setCodeTab('html')} className={`px-4 py-3 text-[12px] font-semibold transition-colors relative ${codeTab === 'html' ? 'text-white' : 'text-slate-500 hover:text-slate-300'}`}>
                   HTML
-                  {codeTab === 'html' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />}
+                  {codeTab === 'html' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20" />}
                 </button>
                 <button onClick={() => setCodeTab('react')} className={`px-4 py-3 text-[12px] font-semibold transition-colors relative ${codeTab === 'react' ? 'text-white' : 'text-slate-500 hover:text-slate-300'}`}>
                   React
-                  {codeTab === 'react' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />}
+                  {codeTab === 'react' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20" />}
                 </button>
                 <button onClick={() => setCodeTab('vue')} className={`px-4 py-3 text-[12px] font-semibold transition-colors relative ${codeTab === 'vue' ? 'text-white' : 'text-slate-500 hover:text-slate-300'}`}>
                   Vue
-                  {codeTab === 'vue' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />}
+                  {codeTab === 'vue' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20" />}
                 </button>
               </div>
               
               <button 
                 onClick={handleCopy}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
-                  isCopied ? 'bg-emerald-500 text-white' : 'bg-white/10 hover:bg-white/20 text-white'
+                  isCopied ? 'bg-white text-white' : 'bg-white/10 hover:bg-white/20 text-white'
                 }`}
               >
                 {isCopied ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -207,7 +207,7 @@ export default function WidgetSetupPage() {
             </div>
             
             <div className="p-6 overflow-x-auto custom-scrollbar bg-black/50">
-              <pre className="text-[13px] text-emerald-400/90 font-mono leading-loose">
+              <pre className="text-[13px] text-white/90 font-mono leading-loose">
                 <code>{getCurrentCode()}</code>
               </pre>
             </div>
@@ -222,8 +222,8 @@ export default function WidgetSetupPage() {
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-white flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
               </span>
               Live Preview
             </h3>
@@ -231,9 +231,9 @@ export default function WidgetSetupPage() {
           </div>
           <div className="bg-[#111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden h-[700px] flex flex-col">
             <div className="bg-[#1a1a1a] border-b border-white/10 p-3 flex items-center gap-2 shrink-0">
-              <div className="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-slate-400"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-slate-400"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
               <div className="ml-4 bg-black/50 text-[10px] text-slate-400 px-3 py-1 rounded-full border border-white/5 flex-1 text-center font-mono truncate">
                 {widgetUrl}
               </div>

@@ -11,7 +11,7 @@ export default function IntegrationsPage() {
       />
 
       <div className="bg-[#111] border border-white/10 rounded-2xl p-8 shadow-xl relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-3xl pointer-events-none rounded-full"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-3xl pointer-events-none rounded-full"></div>
         
         <div className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-between mb-8">
           <div className="flex items-start gap-4">
@@ -42,15 +42,15 @@ export default function IntegrationsPage() {
             </div>
             <ArrowRight className="w-5 h-5 text-slate-600 hidden md:block" />
             <div className="flex-1">
-              <div className="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center mx-auto md:mx-0 mb-3">
-                <span className="font-bold text-indigo-400 font-mono">AI</span>
+              <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mx-auto md:mx-0 mb-3">
+                <span className="font-bold text-white font-mono">AI</span>
               </div>
               <p className="text-sm text-slate-400">2. Our AI reads the diff and summarizes the technical changes.</p>
             </div>
             <ArrowRight className="w-5 h-5 text-slate-600 hidden md:block" />
             <div className="flex-1">
-              <div className="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto md:mx-0 mb-3">
-                <LinkIcon className="w-5 h-5 text-emerald-400" />
+              <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mx-auto md:mx-0 mb-3">
+                <LinkIcon className="w-5 h-5 text-white" />
               </div>
               <p className="text-sm text-slate-400">3. A new draft is instantly created in your Releases dashboard.</p>
             </div>

@@ -96,7 +96,7 @@ export default async function DashboardOverviewPage() {
 
       {!hasReleases && !hasSkippedEmptyState ? (
         <div className="bg-[#111] border border-white/10 rounded-2xl p-8 sm:p-12 relative overflow-hidden flex flex-col items-center text-center shadow-xl mt-4 sm:mt-8 group hover:border-white/20 transition-colors">
-          <div className="w-14 h-14 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mb-5 shadow-[0_0_15px_rgba(99,102,241,0.1)] group-hover:scale-110 transition-transform">
+          <div className="w-14 h-14 bg-white/5 border border-white/10 text-white rounded-2xl flex items-center justify-center mb-5 shadow-[0_0_15px_rgba(99,102,241,0.1)] group-hover:scale-110 transition-transform">
             <Plus className="w-6 h-6" />
           </div>
           <h2 className="text-xl sm:text-2xl font-semibold tracking-tight mb-2.5 text-white">
@@ -138,22 +138,22 @@ export default async function DashboardOverviewPage() {
         <>
           {/* Real Engagement Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-indigo-500/50 transition-colors">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 blur-2xl pointer-events-none rounded-full"></div>
+            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-white/20 transition-colors">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 blur-2xl pointer-events-none rounded-full"></div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-indigo-500/20 text-indigo-400 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-white/10 text-white rounded-lg flex items-center justify-center">
                   <Eye className="w-5 h-5" />
                 </div>
                 <h3 className="font-semibold text-slate-300">Total Views</h3>
               </div>
               <div className="text-4xl font-bold tracking-tight mb-1">{totalViews.toLocaleString()}</div>
-              <p className="text-xs text-indigo-400 font-medium">Across all projects</p>
+              <p className="text-xs text-white font-medium">Across all projects</p>
             </div>
 
-            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-2xl pointer-events-none rounded-full"></div>
+            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-white/50 transition-colors">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 blur-2xl pointer-events-none rounded-full"></div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-white/10 text-white rounded-lg flex items-center justify-center">
                   <MessageSquare className="w-5 h-5" />
                 </div>
                 <h3 className="font-semibold text-slate-300">User Satisfaction</h3>
@@ -174,10 +174,10 @@ export default async function DashboardOverviewPage() {
               <p className="text-xs text-slate-500">Likes, hoorays, & loves</p>
             </div>
             
-            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-yellow-500/50 transition-colors">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-500/10 blur-2xl pointer-events-none rounded-full"></div>
+            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-slate-400/50 transition-colors">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-slate-400/10 blur-2xl pointer-events-none rounded-full"></div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-yellow-500/20 text-yellow-400 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-slate-400/20 text-slate-300 rounded-lg flex items-center justify-center">
                   <Activity className="w-5 h-5" />
                 </div>
                 <h3 className="font-semibold text-slate-300">Active Projects</h3>
@@ -191,12 +191,12 @@ export default async function DashboardOverviewPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
             
             {/* Top Performing Release */}
-            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-indigo-500/50 transition-colors">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-3xl pointer-events-none rounded-full group-hover:bg-indigo-500/20 transition-all duration-500"></div>
+            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-white/20 transition-colors">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl pointer-events-none rounded-full group-hover:bg-white/10 transition-all duration-500"></div>
               
               <div className="mb-6 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-indigo-500/20 text-indigo-400 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(99,102,241,0.15)] group-hover:scale-110 transition-transform">
+                  <div className="w-10 h-10 bg-white/10 text-white rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(99,102,241,0.15)] group-hover:scale-110 transition-transform">
                     <TrendingUp className="w-5 h-5" />
                   </div>
                   <div>
@@ -205,17 +205,17 @@ export default async function DashboardOverviewPage() {
                   </div>
                 </div>
                 <div className="w-8 h-8 bg-white/5 rounded-full flex items-center justify-center border border-white/10">
-                  <Star className="w-4 h-4 text-indigo-400" />
+                  <Star className="w-4 h-4 text-white" />
                 </div>
               </div>
 
               {topRelease ? (
-                <div className="bg-gradient-to-r from-[#161616] to-[#111] border border-white/10 rounded-xl p-5 relative overflow-hidden shadow-inner group-hover:border-indigo-500/30 transition-colors">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)]"></div>
+                <div className="bg-gradient-to-r from-[#161616] to-[#111] border border-white/10 rounded-xl p-5 relative overflow-hidden shadow-inner group-hover:border-white/10 transition-colors">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-white/20 shadow-[0_0_10px_rgba(99,102,241,0.8)]"></div>
                   <h4 className="text-white font-semibold text-lg mb-2 truncate" title={topRelease.title}>{topRelease.title}</h4>
                   <div className="flex items-center gap-4 text-sm text-slate-400">
-                    <span className="flex items-center gap-1.5"><Activity className="w-4 h-4 text-indigo-400" /> Score: {topRelease.score}</span>
-                    <Link href="/dashboard/releases" className="text-indigo-400 hover:text-indigo-300 underline font-medium ml-auto">View Details</Link>
+                    <span className="flex items-center gap-1.5"><Activity className="w-4 h-4 text-white" /> Score: {topRelease.score}</span>
+                    <Link href="/dashboard/releases" className="text-white hover:text-slate-200 underline font-medium ml-auto">View Details</Link>
                   </div>
                 </div>
               ) : (
@@ -226,12 +226,12 @@ export default async function DashboardOverviewPage() {
             </div>
 
             {/* Sentiment Distribution */}
-            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl pointer-events-none rounded-full group-hover:bg-emerald-500/20 transition-all duration-500"></div>
+            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-white/50 transition-colors">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl pointer-events-none rounded-full group-hover:bg-white/10 transition-all duration-500"></div>
               
               <div className="mb-6 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform">
+                  <div className="w-10 h-10 bg-white/10 text-white rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform">
                     <BarChart3 className="w-5 h-5" />
                   </div>
                   <div>
@@ -244,12 +244,12 @@ export default async function DashboardOverviewPage() {
               {(allFeedbacks && allFeedbacks.length > 0) ? (
                 <div className="space-y-5 mt-2 relative z-10 bg-[#161616] border border-white/5 rounded-xl p-5">
                   <div className="w-full h-3 rounded-full overflow-hidden flex bg-[#222] shadow-inner">
-                    <div style={{ width: `${(positiveCount / allFeedbacks.length) * 100}%` }} className="bg-gradient-to-r from-emerald-500 to-emerald-400 h-full transition-all duration-1000 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                    <div style={{ width: `${(positiveCount / allFeedbacks.length) * 100}%` }} className="bg-gradient-to-r from-white to-white h-full transition-all duration-1000 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
                     <div style={{ width: `${(neutralCount / allFeedbacks.length) * 100}%` }} className="bg-slate-500 h-full transition-all duration-1000"></div>
-                    <div style={{ width: `${(negativeCount / allFeedbacks.length) * 100}%` }} className="bg-gradient-to-r from-red-500 to-red-400 h-full transition-all duration-1000 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+                    <div style={{ width: `${(negativeCount / allFeedbacks.length) * 100}%` }} className="bg-gradient-to-r from-slate-400 to-slate-300 h-full transition-all duration-1000 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
                   </div>
                   <div className="flex justify-between items-center text-xs font-medium bg-[#111] py-2 px-3 rounded-lg border border-white/5">
-                    <div className="flex items-center gap-1.5 text-emerald-400">
+                    <div className="flex items-center gap-1.5 text-white">
                       <Smile className="w-3.5 h-3.5" /> {positiveCount} Pos
                     </div>
                     <div className="w-px h-3 bg-white/10"></div>
@@ -257,7 +257,7 @@ export default async function DashboardOverviewPage() {
                       <Meh className="w-3.5 h-3.5" /> {neutralCount} Neu
                     </div>
                     <div className="w-px h-3 bg-white/10"></div>
-                    <div className="flex items-center gap-1.5 text-red-400">
+                    <div className="flex items-center gap-1.5 text-slate-300">
                       <Frown className="w-3.5 h-3.5" /> {negativeCount} Neg
                     </div>
                   </div>

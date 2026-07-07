@@ -14,7 +14,7 @@ const features = [
     backContent: "Integrate deeply with your product. Our floating widget supports unread badges, read receipts, and opens an in-app feed so users never have to leave your platform to see what's new.",
     image: "/images/feature-widget.png",
     badgeText: "Core",
-    badgeColor: "bg-indigo-500 text-white shadow-indigo-500/50"
+    badgeColor: "bg-white/20 text-white shadow-white/20"
   },
   {
     id: "releaseeditor",
@@ -32,7 +32,7 @@ const features = [
     backContent: "Your own dedicated changelog.changeyof.com page. Fully optimized for SEO to drive organic traffic, with RSS feeds, dark mode, and custom domains.",
     image: "/images/feature-page.png",
     badgeText: "Update",
-    badgeColor: "bg-amber-400 text-black shadow-amber-500/50"
+    badgeColor: "bg-slate-300 text-black shadow-slate-400/50"
   },
   {
     id: "engagement",
@@ -41,7 +41,7 @@ const features = [
     backContent: "Built for speed. Our script is less than 5KB gzipped and loads fully asynchronously. It won't block your main thread, ensuring your product's performance remains pristine.",
     image: "/images/feature-performance.png",
     badgeText: "Speed",
-    badgeColor: "bg-emerald-500 text-white shadow-emerald-500/50"
+    badgeColor: "bg-white text-white shadow-white/50"
   },
   {
     id: "feedback",
@@ -116,7 +116,7 @@ function FeatureScrollCard({ feature, index, total, scrollYProgress }: { feature
           className="absolute inset-0 bg-gradient-to-br from-[#181818] to-[#0a0a0a] border border-white/10 rounded-[1.5rem] p-5 md:p-6 flex flex-col justify-center items-center text-center shadow-[0_0_40px_rgba(255,255,255,0.05)] overflow-hidden"
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl pointer-events-none"></div>
           <h3 className="text-lg font-bold text-white mb-2 tracking-tight relative z-10">
             {feature.title}
@@ -188,7 +188,7 @@ export default function CoreFeaturesSection() {
               className="text-center w-full max-w-4xl mx-auto mb-10 flex flex-col items-center"
             >
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-300 text-[10px] md:text-xs font-medium mb-3 backdrop-blur-sm">
-                <span className="flex h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                <span className="flex h-1.5 w-1.5 rounded-full bg-white/20 animate-pulse"></span>
                 The Changelog Engine
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-white mb-4 leading-tight">

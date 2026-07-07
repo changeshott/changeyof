@@ -56,18 +56,18 @@ export default async function ChangelogPage({ params }: { params: Promise<{ id: 
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "New": return <Zap className="w-5 h-5 text-emerald-500" />;
-      case "Fix": return <Bug className="w-5 h-5 text-rose-500" />;
-      case "Improvement": return <Sparkles className="w-5 h-5 text-blue-500" />;
+      case "New": return <Zap className="w-5 h-5 text-white" />;
+      case "Fix": return <Bug className="w-5 h-5 text-slate-400" />;
+      case "Improvement": return <Sparkles className="w-5 h-5 text-slate-300" />;
       default: return <Bell className="w-5 h-5 text-slate-500" />;
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "New": return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
-      case "Fix": return "bg-rose-500/10 text-rose-500 border-rose-500/20";
-      case "Improvement": return "bg-blue-500/10 text-blue-500 border-blue-500/20";
+      case "New": return "bg-white/5 text-white border-white/10";
+      case "Fix": return "bg-slate-400/10 text-slate-400 border-slate-400/20";
+      case "Improvement": return "bg-slate-300/10 text-slate-300 border-slate-300/20";
       default: return "bg-slate-500/10 text-slate-500 border-slate-500/20";
     }
   };

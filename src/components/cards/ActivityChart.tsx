@@ -61,7 +61,7 @@ export default function ActivityChart({ className = "" }: ActivityChartProps) {
   return (
     <div className={`bg-[#111] border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden group ${className}`}>
       {/* Background glow */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 blur-3xl pointer-events-none rounded-full transition-opacity group-hover:bg-indigo-500/10"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-white/20/5 blur-3xl pointer-events-none rounded-full transition-opacity group-hover:bg-white/5"></div>
       
       <div className="mb-6">
         <h3 className="text-lg font-bold text-white tracking-tight mb-1">Engagement Trend</h3>

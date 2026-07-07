@@ -23,7 +23,7 @@ export default function DeleteReleaseButton({ id, title }: { id: string, title: 
     <button 
       onClick={handleDelete}
       disabled={isDeleting}
-      className="p-1.5 text-slate-500 hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors disabled:opacity-50"
+      className="p-1.5 text-slate-500 hover:text-slate-400 hover:bg-white/5 rounded-md transition-colors disabled:opacity-50"
       title="Delete Release"
     >
       <Trash2 className="w-4 h-4" />

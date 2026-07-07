@@ -52,10 +52,10 @@ export default async function AnalyticsPage() {
       ) : (
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
-              <ThumbsUp className="w-8 h-8 text-emerald-400 mb-3" />
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
+              <ThumbsUp className="w-8 h-8 text-white mb-3" />
               <div className="text-3xl font-bold text-white mb-1">{positive}</div>
-              <div className="text-emerald-400/80 text-sm font-medium uppercase tracking-wider">Positive</div>
+              <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Positive</div>
             </div>
             
             <div className="bg-slate-500/10 border border-slate-500/20 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
@@ -64,7 +64,7 @@ export default async function AnalyticsPage() {
               <div className="text-slate-400/80 text-sm font-medium uppercase tracking-wider">Neutral</div>
             </div>
 
-            <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
+            <div className="bg-slate-400/10 border border-slate-400/20 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
               <ThumbsDown className="w-8 h-8 text-rose-400 mb-3" />
               <div className="text-3xl font-bold text-white mb-1">{negative}</div>
               <div className="text-rose-400/80 text-sm font-medium uppercase tracking-wider">Negative</div>
@@ -80,13 +80,13 @@ export default async function AnalyticsPage() {
                 <div key={fb.id} className="p-6 hover:bg-white/5 transition-colors">
                   <div className="flex items-start gap-4">
                     <div className="mt-1">
-                      {fb.sentiment === "positive" && <ThumbsUp className="w-5 h-5 text-emerald-400" />}
+                      {fb.sentiment === "positive" && <ThumbsUp className="w-5 h-5 text-white" />}
                       {fb.sentiment === "neutral" && <MessageSquare className="w-5 h-5 text-slate-400" />}
                       {fb.sentiment === "negative" && <ThumbsDown className="w-5 h-5 text-rose-400" />}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs font-bold text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded">
+                        <span className="text-xs font-bold text-white bg-white/5 px-2 py-0.5 rounded">
                           {fb.release_notes?.projects?.name || "Unknown Project"}
                         </span>
                         <span className="text-xs text-slate-400">

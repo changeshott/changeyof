@@ -88,7 +88,7 @@ export default function IncidentUpdatesPage() {
                  <span className="text-white font-bold text-sm">Active Incident: API Degradation</span>
                </div>
                <div className="p-8">
-                 <div className="border-l-2 border-red-500 pl-4 mb-6">
+                 <div className="border-l-2 border-slate-400 pl-4 mb-6">
                     <h4 className="text-white font-bold mb-1">Investigating</h4>
                     <p className="text-white/60 text-sm">We are currently investigating elevated latency and error rates on our core API endpoints. We will provide an update shortly.</p>
                  </div>

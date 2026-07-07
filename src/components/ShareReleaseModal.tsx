@@ -121,7 +121,7 @@ export default function ShareReleaseModal({ isOpen, onClose, release, projectDom
                 className="w-full flex items-center justify-between p-4 bg-black border border-white/10 rounded-xl hover:bg-white/5 transition-all group disabled:opacity-50"
               >
                 <div className="flex items-center gap-3 text-white">
-                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-indigo-500 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
                     <ImageIcon className="w-4 h-4" />
                   </div>
                   <div className="flex flex-col items-start">
@@ -138,7 +138,7 @@ export default function ShareReleaseModal({ isOpen, onClose, release, projectDom
                 className="w-full flex items-center justify-between p-4 bg-black border border-white/10 rounded-xl hover:bg-white/5 transition-all group disabled:opacity-50"
               >
                 <div className="flex items-center gap-3 text-white">
-                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-indigo-500 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
                     <ImageIcon className="w-4 h-4" />
                   </div>
                   <div className="flex flex-col items-start">

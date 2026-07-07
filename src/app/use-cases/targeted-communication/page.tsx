@@ -97,7 +97,7 @@ export default function TargetedCommunicationPage() {
                      <span className="text-white/60 text-sm">is exactly</span>
                      <span className="px-3 py-1 bg-white text-black text-xs font-bold rounded-md uppercase">Admin</span>
                   </div>
-                  <div className="mt-4 flex items-center gap-2 text-indigo-400 text-sm font-semibold">
+                  <div className="mt-4 flex items-center gap-2 text-white text-sm font-semibold">
                      <Target className="w-4 h-4" /> Estimated reach: 1,240 users
                   </div>
                </div>

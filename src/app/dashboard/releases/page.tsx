@@ -86,14 +86,14 @@ export default async function ReleasesPage({
                       
                       if (isScheduled) {
                         return (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-400/10 text-slate-300">
                             <CalendarClock className="w-3 h-3" /> Scheduled
                           </span>
                         );
                       }
                       
                       return (
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${release.status === 'published' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-500/10 text-slate-400'}`}>
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${release.status === 'published' ? 'bg-white/5 text-white' : 'bg-slate-500/10 text-slate-400'}`}>
                           {release.status === 'published' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                           {release.status}
                         </span>

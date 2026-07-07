@@ -83,7 +83,7 @@ export default function CommunityUpdatesPage() {
           </div>
           <div className="flex-1 w-full">
             <div className="bg-[#111] p-8 rounded-[2rem] border border-white/10 shadow-2xl relative">
-               <div className="absolute top-4 right-4 w-12 h-12 bg-indigo-500/20 rounded-full blur-xl" />
+               <div className="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full blur-xl" />
                <div className="flex items-start gap-4">
                  <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden shrink-0">
                     <UsersRound className="w-6 h-6 text-slate-600" />

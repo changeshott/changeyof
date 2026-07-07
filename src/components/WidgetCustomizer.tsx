@@ -125,7 +125,7 @@ export default function WidgetCustomizer({
               name="theme_mode" 
               value={formDataState.theme_mode}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="auto">Auto (Syncs with OS)</option>
               <option value="light">Always Light Mode</option>
@@ -138,7 +138,7 @@ export default function WidgetCustomizer({
               name="font_family" 
               value={formDataState.font_family}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="inter">Inter (Default)</option>
               <option value="roboto">Roboto</option>
@@ -152,7 +152,7 @@ export default function WidgetCustomizer({
               name="accent_color" 
               value={formDataState.accent_color}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="indigo">Indigo</option>
               <option value="emerald">Emerald</option>
@@ -167,7 +167,7 @@ export default function WidgetCustomizer({
               name="button_style" 
               value={formDataState.button_style}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="solid">Solid</option>
               <option value="outline">Outline</option>
@@ -183,7 +183,7 @@ export default function WidgetCustomizer({
               name="trigger_type" 
               value={formDataState.trigger_type}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="floating">Floating Badge (Bottom Corner)</option>
               <option value="custom">Custom Element Binding</option>
@@ -196,7 +196,7 @@ export default function WidgetCustomizer({
               name="unseen_badge" 
               value={formDataState.unseen_badge}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="true">Show Red Dot for unread updates</option>
               <option value="false">Hide Dot</option>
@@ -213,7 +213,7 @@ export default function WidgetCustomizer({
               value={formDataState.header_title}
               onChange={handleChange}
               placeholder="Latest Updates"
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             />
           </div>
           <div>
@@ -224,7 +224,7 @@ export default function WidgetCustomizer({
               value={formDataState.header_description}
               onChange={handleChange}
               placeholder="What's new in our product"
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             />
           </div>
         </div>
@@ -236,7 +236,7 @@ export default function WidgetCustomizer({
               name="trigger_icon" 
               value={formDataState.trigger_icon}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="bell">Bell</option>
               <option value="megaphone">Megaphone</option>
@@ -249,7 +249,7 @@ export default function WidgetCustomizer({
               name="widget_position" 
               value={formDataState.widget_position}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="bottom-right">Bottom Right</option>
               <option value="bottom-left">Bottom Left</option>
@@ -261,7 +261,7 @@ export default function WidgetCustomizer({
               name="hide_branding" 
               value={formDataState.hide_branding}
               onChange={handleChange}
-              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500"
+              className="w-full bg-black border border-[#333] rounded-lg px-4 py-2.5 text-sm text-white focus:border-white/20"
             >
               <option value="false">Show &quot;Powered by Changeyof&quot;</option>
               <option value="true">Hide Branding (Pro)</option>
@@ -273,7 +273,7 @@ export default function WidgetCustomizer({
       <div className="p-4 border-t border-white/10 bg-[#161616] flex items-center justify-between">
         <div>
           {message.text && (
-            <span className={`text-sm ${message.type === 'error' ? 'text-red-400' : 'text-emerald-400'}`}>
+            <span className={`text-sm ${message.type === 'error' ? 'text-slate-300' : 'text-white'}`}>
               {message.text}
             </span>
           )}

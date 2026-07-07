@@ -82,6 +82,7 @@ export default function ReleaseEditorPage() {
   const [notifySlack, setNotifySlack] = useState(false);
   const [notifyTwitter, setNotifyTwitter] = useState(false);
   const [notifyGithub, setNotifyGithub] = useState(false);
+  const [notifyEmail, setNotifyEmail] = useState(false);
   
   // UI States
   const [showSEO, setShowSEO] = useState(false);
@@ -170,6 +171,7 @@ export default function ReleaseEditorPage() {
     // Don't send notify_twitter to backend, handle it on frontend
     if (notifySlack) formData.append("notify_slack", "true");
     if (notifyGithub) formData.append("notify_github", "true");
+    if (notifyEmail) formData.append("notify_email", "true");
     if (targetSegment) formData.append("target_segment", targetSegment);
     if (ctaText) formData.append("cta_text", ctaText);
     if (ctaLink) formData.append("cta_link", ctaLink);
@@ -321,7 +323,7 @@ export default function ReleaseEditorPage() {
                 onChange={(e) => setCustomTagInput(e.target.value)}
                 onKeyDown={addCustomTag}
                 placeholder="Add custom tag (Enter)"
-                className="w-full bg-[#161616] border border-white/10 rounded-lg pl-7 pr-3 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#161616] border border-white/10 rounded-lg pl-7 pr-3 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20"
               />
             </div>
           </div>
@@ -337,7 +339,7 @@ export default function ReleaseEditorPage() {
               value={scheduledFor}
               onChange={(e) => setScheduledFor(e.target.value)}
               style={{ colorScheme: 'dark' }}
-              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 [&::-webkit-calendar-picker-indicator]:opacity-50 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
+              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-white/20 [&::-webkit-calendar-picker-indicator]:opacity-50 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
             />
           </div>
 
@@ -351,7 +353,7 @@ export default function ReleaseEditorPage() {
               value={version}
               onChange={(e) => setVersion(e.target.value)}
               placeholder="e.g. v2.4.1"
-              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono"
+              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-white/20 font-mono"
             />
           </div>
 
@@ -365,7 +367,7 @@ export default function ReleaseEditorPage() {
               value={targetSegment}
               onChange={(e) => setTargetSegment(e.target.value.toLowerCase())}
               placeholder="e.g. all, premium, pro"
-              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-white/20"
             />
           </div>
 
@@ -383,14 +385,14 @@ export default function ReleaseEditorPage() {
                 value={ctaText}
                 onChange={(e) => setCtaText(e.target.value)}
                 placeholder="Button Text (e.g., Update Now)"
-                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20"
               />
               <input 
                 type="text" 
                 value={ctaLink}
                 onChange={(e) => setCtaLink(e.target.value)}
                 placeholder="URL (e.g., https://myapp.com/download)"
-                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono"
+                className="w-full bg-[#161616] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20 font-mono"
               />
             </div>
           </div>
@@ -419,7 +421,7 @@ export default function ReleaseEditorPage() {
                     value={slug}
                     onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))}
                     placeholder="my-awesome-release"
-                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20 font-mono"
                   />
                 </div>
                 <div>
@@ -429,7 +431,7 @@ export default function ReleaseEditorPage() {
                     value={metaTitle}
                     onChange={(e) => setMetaTitle(e.target.value)}
                     placeholder="Optional title tag"
-                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20"
                   />
                 </div>
                 <div>
@@ -438,7 +440,7 @@ export default function ReleaseEditorPage() {
                     value={metaDescription}
                     onChange={(e) => setMetaDescription(e.target.value)}
                     placeholder="Brief description for search engines..."
-                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none h-16"
+                    className="w-full bg-[#161616] border border-white/10 rounded-md px-2 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/20 resize-none h-16"
                   ></textarea>
                 </div>
               </div>
@@ -456,11 +458,24 @@ export default function ReleaseEditorPage() {
             <div className="flex flex-col gap-2">
               <label className="flex items-center gap-2 cursor-pointer group">
                 <input type="checkbox" className="hidden" checked={notifySlack} onChange={(e) => setNotifySlack(e.target.checked)} />
-                <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifySlack ? 'bg-indigo-500 border-indigo-500' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
+                <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifySlack ? 'bg-white/20 border-white/20' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
                   {notifySlack && <div className="w-2 h-2 bg-white rounded-sm" />}
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-slate-300 group-hover:text-white transition-colors">
                   <MessageSquare className="w-3.5 h-3.5" /> Post to Slack
+                </div>
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" className="hidden" checked={notifyEmail} onChange={(e) => setNotifyEmail(e.target.checked)} />
+                <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifyEmail ? 'bg-white/20 border-white/20' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
+                  {notifyEmail && <div className="w-2 h-2 bg-white rounded-sm" />}
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-slate-300 group-hover:text-white transition-colors">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Email Subscribers
                 </div>
               </label>
               
@@ -479,7 +494,7 @@ export default function ReleaseEditorPage() {
                         }} 
                         disabled={!isGithubConfigured}
                       />
-                      <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifyGithub && isGithubConfigured ? 'bg-emerald-500 border-emerald-500' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
+                      <div className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${notifyGithub && isGithubConfigured ? 'bg-white border-white' : 'bg-[#161616] border-white/20 group-hover:border-white/40'}`}>
                         {notifyGithub && isGithubConfigured && <div className="w-2 h-2 bg-white rounded-sm" />}
                       </div>
                       <div className="flex items-center gap-1.5 text-xs text-slate-300 group-hover:text-white transition-colors">
@@ -487,7 +502,7 @@ export default function ReleaseEditorPage() {
                       </div>
                     </label>
                     {!isGithubConfigured && (
-                      <Link href={`/dashboard/projects/${projectId}/settings`} className="text-[10px] text-emerald-500 hover:underline ml-6">
+                      <Link href={`/dashboard/projects/${projectId}/settings`} className="text-[10px] text-white hover:underline ml-6">
                         Configure in Settings
                       </Link>
                     )}

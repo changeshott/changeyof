@@ -23,7 +23,7 @@ export default function DeleteProjectButton({ id, projectName }: { id: string, p
     <button 
       onClick={handleDelete}
       disabled={isDeleting}
-      className="text-slate-400 hover:text-red-500 transition-colors disabled:opacity-50"
+      className="text-slate-400 hover:text-slate-400 transition-colors disabled:opacity-50"
       title="Delete Project"
     >
       <Trash2 className="w-4 h-4" />

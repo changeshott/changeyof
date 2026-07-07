@@ -63,7 +63,7 @@ export default function ReleasesFilterBar() {
           placeholder="Search releases by title..." 
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full bg-black border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+          className="w-full bg-black border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all"
         />
       </div>
 
@@ -73,7 +73,7 @@ export default function ReleasesFilterBar() {
           <select 
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all cursor-pointer appearance-none"
+            className="bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-white/20 transition-all cursor-pointer appearance-none"
           >
             <option value="all">All Types</option>
             <option value="New">New</option>
@@ -85,7 +85,7 @@ export default function ReleasesFilterBar() {
         <select 
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all cursor-pointer appearance-none"
+          className="bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-white/20 transition-all cursor-pointer appearance-none"
         >
           <option value="all">All Statuses</option>
           <option value="published">Published</option>

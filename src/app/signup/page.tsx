@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Loader2, Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import { Loader2, Eye, EyeOff, CheckCircle2, ArrowLeft } from "lucide-react";
 import { signup, loginWithGithub } from "../login/actions";
 import GridSnakes from "@/components/GridSnakes";
 import Particles from "@/components/Particles";
@@ -34,11 +34,11 @@ export default function SignupPage() {
   const strength = getPasswordStrength(password);
   
   const getStrengthColor = () => {
-    if (strength === 0) return "bg-slate-700";
-    if (strength <= 1) return "bg-red-500";
-    if (strength === 2) return "bg-amber-500";
-    if (strength === 3) return "bg-blue-400";
-    return "bg-emerald-500";
+    if (strength === 0) return "bg-slate-800";
+    if (strength <= 1) return "bg-slate-600";
+    if (strength === 2) return "bg-slate-400";
+    if (strength === 3) return "bg-slate-200";
+    return "bg-white";
   };
 
   const getStrengthLabel = () => {
@@ -103,7 +103,7 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
+    <main className="relative min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-4 overflow-hidden">
       <CustomCursor />
       
       {/* Background Elements to match Hero Section */}
@@ -113,61 +113,68 @@ export default function SignupPage() {
         <div className="opacity-30"><GridSnakes /></div>
         <Particles />
         <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_800px_at_50%_50%,transparent,var(--background))]"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[120px] mix-blend-screen"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] mix-blend-screen"></div>
       </div>
 
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 w-full max-w-md px-6 sm:px-0"
+        className="relative z-10 w-full max-w-sm px-6 sm:px-0"
       >
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block group">
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.15)] mx-auto mb-6 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.25)] transition-all duration-500"
-            >
-              <span className="text-black font-extrabold text-xl tracking-tighter leading-none select-none">cf</span>
-            </motion.div>
-          </Link>
-          <h2 className="text-3xl font-medium tracking-tight text-white mb-2">
-            Create an account
-          </h2>
-          <p className="text-sm text-slate-400">
-            Already have an account? <Link href="/login" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-indigo-400/30 hover:after:bg-indigo-300">Log in</Link>
-          </p>
+        <div className="mb-4 flex flex-col items-center w-full">
+          <div className="w-full flex justify-start mb-2">
+            <Link href="/" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors group">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home
+            </Link>
+          </div>
+          <div className="text-center w-full">
+            <Link href="/" className="inline-block group">
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.15)] mx-auto mb-3 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.25)] transition-all duration-500"
+              >
+                <span className="text-black font-extrabold text-lg tracking-tighter leading-none select-none">cf</span>
+              </motion.div>
+            </Link>
+            <h2 className="text-2xl font-medium tracking-tight text-white mb-1">
+              Create an account
+            </h2>
+            <p className="text-sm text-slate-400">
+              Already have an account? <Link href="/login" className="text-white hover:text-slate-200 transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-white/30 hover:after:bg-white/60">Log in</Link>
+            </p>
+          </div>
         </div>
 
-        <div className="bg-[#111111]/80 backdrop-blur-xl py-8 px-6 sm:px-10 rounded-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] relative overflow-hidden">
+        <div className="bg-[#111111]/80 backdrop-blur-xl py-5 px-6 sm:px-6 rounded-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
           {success ? (
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center py-6"
+              className="text-center py-3"
             >
-              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-emerald-400/10 border border-emerald-400/20 mb-6 shadow-[0_0_30px_rgba(52,211,153,0.15)]">
-                <CheckCircle2 className="h-8 w-8 text-emerald-400" />
+              <div className="mx-auto flex items-center justify-center h-10 w-10 rounded-full bg-white/5 border border-white/20 mb-3 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+                <CheckCircle2 className="h-5 w-5 text-white" />
               </div>
               <h3 className="text-xl font-medium text-white mb-3 tracking-tight">Check your email</h3>
-              <p className="text-slate-400 text-sm mb-8 leading-relaxed">
+              <p className="text-slate-400 text-sm mb-6 leading-relaxed">
                 We sent a confirmation link to <br/><span className="text-white font-medium">{email}</span>. <br/>
                 Please click it to activate your account.
               </p>
-              <Link href="/login" className="inline-block px-8 py-3 border border-white/20 rounded-xl shadow-sm text-sm font-medium text-white bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all active:scale-95 group">
+              <Link href="/login" className="inline-block px-6 py-2.5 border border-white/20 rounded-xl shadow-sm text-sm font-medium text-white bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all active:scale-95 group">
                 <span className="group-hover:text-white transition-colors">Return to Login</span>
               </Link>
             </motion.div>
           ) : (
             <>
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-2 gap-3 mb-4">
                 <button
                   onClick={handleGoogleLogin}
                   disabled={loading}
-                  className="group relative flex justify-center items-center gap-2 py-3 px-4 rounded-xl text-sm font-medium text-white overflow-hidden transition-all active:scale-95 border border-white/10 bg-white/5 hover:bg-white/10"
+                  className="group relative flex justify-center items-center gap-2 py-2 px-3 rounded-xl text-sm font-medium text-white overflow-hidden transition-all active:scale-95 border border-white/10 bg-white/5 hover:bg-white/10"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out"></div>
                   <svg className="w-5 h-5 relative z-10" viewBox="0 0 24 24">
@@ -182,7 +189,7 @@ export default function SignupPage() {
                 <button
                   onClick={handleGithubLogin}
                   disabled={loading}
-                  className="group relative flex justify-center items-center gap-2 py-3 px-4 rounded-xl text-sm font-medium text-white overflow-hidden transition-all active:scale-95 border border-white/10 bg-white/5 hover:bg-white/10"
+                  className="group relative flex justify-center items-center gap-2 py-2 px-3 rounded-xl text-sm font-medium text-white overflow-hidden transition-all active:scale-95 border border-white/10 bg-white/5 hover:bg-white/10"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out"></div>
                   <svg className="w-5 h-5 relative z-10" viewBox="0 0 24 24" fill="currentColor">
@@ -192,7 +199,7 @@ export default function SignupPage() {
                 </button>
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-white/10" />
                 </div>
@@ -201,9 +208,9 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              <form className="space-y-5">
+              <form className="space-y-3">
                 <div className="group">
-                  <label className="block text-sm font-medium text-slate-300 mb-1.5 transition-colors group-focus-within:text-white">
+                  <label className="block text-sm font-medium text-slate-300 mb-1 transition-colors group-focus-within:text-white">
                     Email address
                   </label>
                   <div className="relative">
@@ -213,14 +220,14 @@ export default function SignupPage() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="appearance-none block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all sm:text-sm hover:bg-white/[0.07]"
+                      className="appearance-none block w-full px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all sm:text-sm hover:bg-white/[0.07]"
                       placeholder="name@example.com"
                     />
                   </div>
                 </div>
 
                 <div className="group">
-                  <label className="block text-sm font-medium text-slate-300 mb-1.5 transition-colors group-focus-within:text-white">
+                  <label className="block text-sm font-medium text-slate-300 mb-1 transition-colors group-focus-within:text-white">
                     Password
                   </label>
                   <div className="relative">
@@ -230,7 +237,7 @@ export default function SignupPage() {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="appearance-none block w-full px-4 py-3 pr-11 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all sm:text-sm hover:bg-white/[0.07]"
+                      className="appearance-none block w-full px-4 py-2 pr-11 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all sm:text-sm hover:bg-white/[0.07]"
                       placeholder="••••••••"
                     />
                     <button
@@ -253,7 +260,7 @@ export default function SignupPage() {
                       animate={{ opacity: 1, height: 'auto' }}
                       className="mt-3"
                     >
-                      <div className="flex gap-1.5 h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                      <div className="flex gap-1.5 h-1 w-full bg-white/5 rounded-full overflow-hidden">
                         {[...Array(4)].map((_, i) => (
                           <div 
                             key={i}
@@ -272,18 +279,18 @@ export default function SignupPage() {
                   <motion.div 
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
-                    className="text-red-400 text-sm font-medium text-center bg-red-400/10 py-2.5 rounded-lg border border-red-400/20"
+                    className="text-slate-300 text-sm font-medium text-center bg-white/5 py-2.5 rounded-lg border border-white/10"
                   >
                     {error}
                   </motion.div>
                 )}
 
-                <div className="pt-2">
+                <div className="pt-1">
                   <button
                     type="submit"
                     formAction={handleAction}
                     disabled={loading || !email || !password || strength < 2}
-                    className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)] text-sm font-medium text-black bg-white hover:bg-slate-100 hover:scale-[1.02] active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:hover:scale-100 overflow-hidden"
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)] text-sm font-medium text-black bg-white hover:bg-slate-100 hover:scale-[1.02] active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:hover:scale-100 overflow-hidden"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out"></div>
                     {loading ? <Loader2 className="w-5 h-5 animate-spin relative z-10" /> : <span className="relative z-10">Sign Up</span>}

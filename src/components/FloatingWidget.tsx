@@ -97,7 +97,7 @@ export default function FloatingWidget() {
     {
       id: 2,
       type: "improvement",
-      icon: <Zap className="w-3 h-3 text-blue-500" />,
+      icon: <Zap className="w-3 h-3 text-slate-300" />,
       title: "Lightning Fast Loading",
       date: "Yesterday",
       description: "We've optimized our edge network to serve your widgets 3x faster globally.",
@@ -192,11 +192,11 @@ export default function FloatingWidget() {
           >
             {/* Header */}
             <div className="bg-[#111] p-4 text-white relative shrink-0 overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-2xl -mr-8 -mt-8" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-slate-300/20 to-purple-500/20 rounded-full blur-2xl -mr-8 -mt-8" />
               <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-pink-500/20 to-orange-500/20 rounded-full blur-2xl -ml-6 -mb-6" />
               
               <div className="relative z-10 flex items-center gap-2.5 mb-1">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-300 to-purple-600 flex items-center justify-center shadow-lg">
                   <Bell className="w-3.5 h-3.5 text-white" />
                 </div>
                 <div>
@@ -239,7 +239,7 @@ export default function FloatingWidget() {
                     placeholder="Get updates via email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 text-xs px-3 py-1.5 rounded-md border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white"
+                    className="flex-1 text-xs px-3 py-1.5 rounded-md border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-slate-300/20 focus:border-slate-300 transition-all bg-white"
                     required
                   />
                   <button 
@@ -274,7 +274,7 @@ export default function FloatingWidget() {
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white rounded-full flex items-center justify-center"
+              className="absolute -top-1 -right-1 w-5 h-5 bg-slate-400 border-2 border-white rounded-full flex items-center justify-center"
             >
               <span className="text-[9px] font-bold text-white">{unreadCount}</span>
             </motion.div>
@@ -282,7 +282,7 @@ export default function FloatingWidget() {
         </AnimatePresence>
 
         {!isOpen && unreadCount > 0 && (
-          <span className="absolute inset-0 rounded-full animate-ping bg-blue-500 opacity-20" />
+          <span className="absolute inset-0 rounded-full animate-ping bg-slate-300 opacity-20" />
         )}
       </motion.button>
     </div>

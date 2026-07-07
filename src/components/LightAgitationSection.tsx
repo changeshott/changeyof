@@ -13,9 +13,9 @@ const cards = [
     desc: "Pushing code to your repository just to announce a minor bug fix or a tiny improvement.",
     icon: Code,
     color: "from-blue-50 to-blue-100/50",
-    iconColor: "text-blue-500",
+    iconColor: "text-slate-300",
     border: "border-blue-200/50",
-    glow: "bg-blue-400/20 group-hover:bg-blue-500/30"
+    glow: "bg-slate-200/20 group-hover:bg-slate-300/30"
   },
   {
     title: "Lost in the Algorithm",
@@ -31,27 +31,27 @@ const cards = [
     desc: "Users simply don't notice the hard work you put into new updates without a dedicated feed.",
     icon: EyeOff,
     color: "from-red-50 to-red-100/50",
-    iconColor: "text-red-500",
+    iconColor: "text-slate-400",
     border: "border-red-200/50",
-    glow: "bg-red-400/20 group-hover:bg-red-500/30"
+    glow: "bg-white/10 group-hover:bg-slate-400/30"
   },
   {
     title: "Fragmented Communication",
     desc: "Sending emails, tweeting, and writing blog posts means your release notes are scattered everywhere.",
     icon: Layers,
     color: "from-amber-50 to-amber-100/50",
-    iconColor: "text-amber-500",
+    iconColor: "text-slate-400",
     border: "border-amber-200/50",
-    glow: "bg-amber-400/20 group-hover:bg-amber-500/30"
+    glow: "bg-slate-300/20 group-hover:bg-slate-400/30"
   },
   {
     title: "High Maintenance",
     desc: "Maintaining a custom changelog page drains resources that should be spent on building the core product.",
     icon: XCircle,
     color: "from-rose-50 to-rose-100/50",
-    iconColor: "text-rose-500",
+    iconColor: "text-slate-400",
     border: "border-rose-200/50",
-    glow: "bg-rose-400/20 group-hover:bg-rose-500/30"
+    glow: "bg-rose-400/20 group-hover:bg-slate-400/30"
   }
 ];
 
